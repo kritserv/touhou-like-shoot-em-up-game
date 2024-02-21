@@ -1,5 +1,5 @@
 import pygame
-from bulletobject import Bullet
+from gameclass.bulletobject import Bullet
 
 screen_width = 1024
 screen_height = 768
@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
 
 		time_now = pygame.time.get_ticks()
 
-		if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
+		if key[pygame.K_z] and time_now - self.last_shot > cooldown:
 			bullet1 = Bullet(self.rect.centerx - 25, self.rect.top)
 			bullet2 = Bullet(self.rect.centerx, self.rect.top)
 			bullet3 = Bullet(self.rect.centerx + 25, self.rect.top)
