@@ -21,8 +21,9 @@ scroll = 0
 tiles = ceil(screen_height / bg_height) + 1
 
 player_group = pygame.sprite.Group()
+bullet_group = pygame.sprite.Group()
 
-player = Player(int(screen_width / 2) - 200, screen_height - 100, 7)
+player = Player(int(screen_width / 2) - 200, screen_height - 100, 7, bullet_group)
 player_group.add(player)
 
 
@@ -46,7 +47,10 @@ while run:
 	dt = clock.tick(fps) / 100
 	player.update(dt)
 
+	bullet_group.update()
+
 	player_group.draw(screen)
+	bullet_group.draw(screen)
 	pygame.display.update()
 
 pygame.quit()

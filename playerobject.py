@@ -1,4 +1,5 @@
 import pygame
+from bulletobject import Bullet
 
 screen_width = 1024
 screen_height = 768
@@ -8,7 +9,7 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self, x, y, health):
+	def __init__(self, x, y, health, bullet_group):
 		pygame.sprite.Sprite.__init__(self)
 		self.spritesheet = {
 			"idle": pygame.image.load("img/player_idle.png"),
@@ -22,12 +23,16 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = [x, y]
 		self.health_start = health
 		self.health_remaining = health
+		self.last_shot = pygame.time.get_ticks()
 		self.animation_time = 0.5
 		self.current_time = 0
 		self.direction = "idle"
+		self.bullet_group = bullet_group
 
 	def update(self, dt):
 		speed = 10
+		cooldown = 100
+
 		key = pygame.key.get_pressed()
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			self.rect.x -= speed
@@ -41,6 +46,17 @@ class Player(pygame.sprite.Sprite):
 			self.rect.y -= speed
 		if key[pygame.K_DOWN] and self.rect.bottom < screen_height:
 			self.rect.y += speed
+
+		time_now = pygame.time.get_ticks()
+
+		if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
+			bullet1 = Bullet(self.rect.centerx - 25, self.rect.top)
+			bullet2 = Bullet(self.rect.centerx, self.rect.top)
+			bullet3 = Bullet(self.rect.centerx + 25, self.rect.top)
+			self.bullet_group.add(bullet1)
+			self.bullet_group.add(bullet2)			
+			self.bullet_group.add(bullet3)
+			self.last_shot = time_now
 
 		pygame.draw.rect(screen, red, (700, 200, 250, 35))
 		if self.health_remaining > 0:
