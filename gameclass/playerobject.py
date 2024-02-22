@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			self.rect.x -= speed
 			self.direction = "left"
-		elif key[pygame.K_RIGHT] and self.rect.right < screen_width - 400:
+		elif key[pygame.K_RIGHT] and self.rect.right < screen_width - 410:
 			self.rect.x += speed
 			self.direction = "right"
 		else:
