@@ -30,10 +30,14 @@ class Player(pygame.sprite.Sprite):
 		self.bullet_group = bullet_group
 
 	def update(self, dt):
-		speed = 10
+		speed = 12
 		cooldown = 100
+		bullet_spread = 35
 
 		key = pygame.key.get_pressed()
+		if key[pygame.K_LSHIFT]:
+		    speed = 6
+		    bullet_spread = 15
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			self.rect.x -= speed
 			self.direction = "left"
@@ -50,9 +54,9 @@ class Player(pygame.sprite.Sprite):
 		time_now = pygame.time.get_ticks()
 
 		if key[pygame.K_z] and time_now - self.last_shot > cooldown:
-			bullet1 = Bullet(self.rect.centerx - 25, self.rect.top)
+			bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top)
 			bullet2 = Bullet(self.rect.centerx, self.rect.top)
-			bullet3 = Bullet(self.rect.centerx + 25, self.rect.top)
+			bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top)
 			self.bullet_group.add(bullet1)
 			self.bullet_group.add(bullet2)			
 			self.bullet_group.add(bullet3)
