@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
 		bullet_spread = 35
 
 		key = pygame.key.get_pressed()
-		if key[pygame.K_LSHIFT]:
+		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
 		    speed = 6
 		    bullet_spread = 15
 		if key[pygame.K_LEFT] and self.rect.left > 20:
