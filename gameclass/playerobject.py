@@ -30,6 +30,8 @@ class Player(pygame.sprite.Sprite):
 		self.direction = "idle"
 		self.bullet_group = bullet_group
 		self.stop_shooting = stop_shooting
+		self.score = 0
+		self.graze = 0
 
 	def update(self, dt):
 		speed = 12
@@ -67,12 +69,18 @@ class Player(pygame.sprite.Sprite):
 
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
-		pygame.draw.rect(screen, black, (700, 200, 250, 35))
+		pygame.draw.rect(screen, black, (750, 190, 210, 25))
 		if self.health_remaining > 0:
-		    pygame.draw.rect(screen, green, (700, 200, int(250 * (self.health_remaining / self.health_start)), 35))
+		    pygame.draw.rect(screen, green, (750, 190, int(210 * (self.health_remaining / self.health_start)), 25))
 		self.current_time += dt
 		
 		if self.current_time >= self.animation_time:
 		    self.current_time = 0
 		    self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 		    self.image = self.images[self.direction][self.current_image]
+
+class GrazingHitbox(pygame.sprite.Sprite):
+    def __init__(self, player):
+        self.player = player
+        self.image = pygame.Surface((player.rect.width - 20, player.rect.height - 20), pygame.SRCALPHA)
+        self.rect = self.image.get_rect(center = player.rect.center)

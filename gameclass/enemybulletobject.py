@@ -7,6 +7,7 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.center = [x, y]
 		self.mask = pygame.mask.from_surface(self.image)
+		self.grazed = False
 
 	def update(self):
 		self.rect.y += 10

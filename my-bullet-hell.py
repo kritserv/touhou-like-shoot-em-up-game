@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from math import ceil
-from gameclass.playerobject import Player
+from gameclass.playerobject import Player, GrazingHitbox
 from gameclass.enemyobject import Enemy
 from gameclass.enemybulletobject import EnemyBullet
 
@@ -15,6 +15,20 @@ screen_height = 768
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Bullet Hell")
+
+white = (255, 255, 255)
+grey = (200, 200, 200)
+text_font = pygame.font.SysFont(None, 26)
+
+def draw_text(text, font, text_col, x, y):
+    image = font.render(text, True, text_col)
+    screen.blit(image, (x, y))
+
+def clear_all_bullet():
+    for enemybullet in enemybullet_group:
+        enemybullet.kill()
+    for bullet in bullet_group:
+        bullet.kill()
 
 bg = pygame.image.load("img/background.png").convert()
 bg_height = bg.get_height()
@@ -43,6 +57,15 @@ enemy_group.add(enemy)
 show_player_hitbox = True
 run = True
 while run:
+	screen.fill((0, 0, 0))
+	draw_text("HISCORE", text_font, white, 650, 50)
+	draw_text("SCORE", text_font, white, 650, 100)
+	draw_text(str(player.score), text_font, white, 750, 100)
+	draw_text("PLAYER", text_font, grey, 650, 200)
+	draw_text("BOMB", text_font, grey, 650, 250)
+	draw_text("POWER", text_font, grey, 650, 350)
+	draw_text("GRAZE", text_font, grey, 650, 400)
+	draw_text(str(player.graze), text_font, white, 750, 400)
 
 	clock.tick(fps)
 
@@ -67,11 +90,8 @@ while run:
 	        enemy.kill()
 	        enemy_stop_shooting = True
 	        player.stop_shooting = True
-	        for enemybullet in enemybullet_group:
-	            enemybullet.kill()
-	        for bullet in bullet_group:
-	            bullet.kill()
-	            
+	        clear_all_bullet()
+
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
 	    player.health_remaining -= 10
 
@@ -80,14 +100,19 @@ while run:
 	        enemy_stop_shooting = True
 	        player.stop_shooting = True
 	        show_player_hitbox = False
-	        for enemybullet in enemybullet_group:
-	            enemybullet.kill()
-	        for bullet in bullet_group:
-	            bullet.kill()
+	        clear_all_bullet()
 
+	grazing_hitbox = GrazingHitbox(player)
+	grazing_bullets = pygame.sprite.spritecollide(grazing_hitbox, enemybullet_group, False, pygame.sprite.collide_rect)
+	for enemybullet in grazing_bullets:
+	    if not enemybullet.grazed:
+	        player.graze += 1
+	        player.score += 500
+	        enemybullet.grazed = True
+	            
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
-			run = False
+		    run = False
 
 	dt = clock.tick(fps) / 100
 	player.update(dt)
