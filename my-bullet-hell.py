@@ -40,7 +40,7 @@ last_enemy_shot = pygame.time.get_ticks()
 enemy = Enemy(int(screen_width / 2) - 200, screen_height - 600, 500, bullet_group)
 enemy_group.add(enemy)
 
-
+show_player_hitbox = True
 run = True
 while run:
 
@@ -54,10 +54,6 @@ while run:
 	if abs(scroll) > bg_height:
 		scroll = 0
 
-	if enemy.health_remaining <= 0 or player.health_remaining <= 0:
-	    enemy_stop_shooting = True
-	    player.stop_shooting = True
-
 	time_now = pygame.time.get_ticks()
 	if time_now - last_enemy_shot > enemy_cooldown and enemy_stop_shooting == False:
 		enemybullet = EnemyBullet(enemy.rect.centerx, enemy.rect.bottom)
@@ -69,14 +65,25 @@ while run:
 
 	    if enemy.health_remaining <= 0:
 	        enemy.kill()
+	        enemy_stop_shooting = True
+	        player.stop_shooting = True
 	        for enemybullet in enemybullet_group:
 	            enemybullet.kill()
+	        for bullet in bullet_group:
+	            bullet.kill()
 	            
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
 	    player.health_remaining -= 10
 
 	    if player.health_remaining <= 0:
 	        player.kill()
+	        enemy_stop_shooting = True
+	        player.stop_shooting = True
+	        show_player_hitbox = False
+	        for enemybullet in enemybullet_group:
+	            enemybullet.kill()
+	        for bullet in bullet_group:
+	            bullet.kill()
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -96,7 +103,7 @@ while run:
 
 	key = pygame.key.get_pressed()
 	if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
-	    if player.health_remaining > 0:
+	    if show_player_hitbox == True:
 	        hitbox_position = player.rect.topleft
 	        screen.blit(player.hitbox_image, hitbox_position)
 	pygame.display.update()
