@@ -40,3 +40,5 @@ class Enemy(pygame.sprite.Sprite):
 			self.current_time = 0
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
+
+		self.mask = pygame.mask.from_surface(self.image)

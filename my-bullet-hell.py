@@ -27,8 +27,11 @@ bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 enemybullet_group = pygame.sprite.Group()
 
-player_hp = 7
-player = Player(int(screen_width / 2) - 200, screen_height - 100, player_hp, bullet_group)
+player_stop_shooting = False
+enemy_stop_shooting = False
+
+player_hp = 70
+player = Player(int(screen_width / 2) - 200, screen_height - 100, player_hp, bullet_group, player_stop_shooting)
 player_group.add(player)
 
 enemy_hp = 500
@@ -36,6 +39,7 @@ enemy_cooldown = 500
 last_enemy_shot = pygame.time.get_ticks()
 enemy = Enemy(int(screen_width / 2) - 200, screen_height - 600, 500, bullet_group)
 enemy_group.add(enemy)
+
 
 run = True
 while run:
@@ -50,11 +54,29 @@ while run:
 	if abs(scroll) > bg_height:
 		scroll = 0
 
+	if enemy.health_remaining <= 0 or player.health_remaining <= 0:
+	    enemy_stop_shooting = True
+	    player.stop_shooting = True
+
 	time_now = pygame.time.get_ticks()
-	if time_now - last_enemy_shot > enemy_cooldown:
+	if time_now - last_enemy_shot > enemy_cooldown and enemy_stop_shooting == False:
 		enemybullet = EnemyBullet(enemy.rect.centerx, enemy.rect.bottom)
 		enemybullet_group.add(enemybullet)
 		last_enemy_shot = time_now
+		
+	if pygame.sprite.spritecollide(enemy, bullet_group, True, pygame.sprite.collide_mask):
+	    enemy.health_remaining -= 10
+
+	    if enemy.health_remaining <= 0:
+	        enemy.kill()
+	        for enemybullet in enemybullet_group:
+	            enemybullet.kill()
+	            
+	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
+	    player.health_remaining -= 10
+
+	    if player.health_remaining <= 0:
+	        player.kill()
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -71,6 +93,12 @@ while run:
 	bullet_group.draw(screen)
 	enemy_group.draw(screen)
 	enemybullet_group.draw(screen)
+
+	key = pygame.key.get_pressed()
+	if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
+	    if player.health_remaining > 0:
+	        hitbox_position = player.rect.topleft
+	        screen.blit(player.hitbox_image, hitbox_position)
 	pygame.display.update()
 
 pygame.quit()

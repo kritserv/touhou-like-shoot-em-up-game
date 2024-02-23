@@ -5,11 +5,11 @@ screen_width = 1024
 screen_height = 768
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-red = (255, 0, 0)
+black = (0, 0, 0)
 green = (0, 255, 0)
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self, x, y, health, bullet_group):
+	def __init__(self, x, y, health, bullet_group, stop_shooting):
 		pygame.sprite.Sprite.__init__(self)
 		self.spritesheet = {
 			"idle": pygame.image.load("img/player_idle.png"),
@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
 		self.image = self.images["idle"][self.current_image]
 		self.rect = self.image.get_rect()
 		self.rect.center = [x, y]
+		self.hitbox_image = pygame.image.load("img/player_hitbox.png").convert_alpha()
 		self.health_start = health
 		self.health_remaining = health
 		self.last_shot = pygame.time.get_ticks()
@@ -28,16 +29,18 @@ class Player(pygame.sprite.Sprite):
 		self.current_time = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group
+		self.stop_shooting = stop_shooting
 
 	def update(self, dt):
 		speed = 12
 		cooldown = 100
-		bullet_spread = 35
+		bullet_spread = 45
 
 		key = pygame.key.get_pressed()
 		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
-		    speed = 6
-		    bullet_spread = 15
+			speed = 6
+			bullet_spread = 15
+		
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			self.rect.x -= speed
 			self.direction = "left"
@@ -52,22 +55,24 @@ class Player(pygame.sprite.Sprite):
 			self.rect.y += speed
 
 		time_now = pygame.time.get_ticks()
+		if self.stop_shooting == False:
+			if key[pygame.K_z] and time_now - self.last_shot > cooldown:
+			    bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top)
+			    bullet2 = Bullet(self.rect.centerx, self.rect.top)
+			    bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top)
+			    self.bullet_group.add(bullet1)
+			    self.bullet_group.add(bullet2)
+			    self.bullet_group.add(bullet3)
+			    self.last_shot = time_now
 
-		if key[pygame.K_z] and time_now - self.last_shot > cooldown:
-			bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top)
-			bullet2 = Bullet(self.rect.centerx, self.rect.top)
-			bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top)
-			self.bullet_group.add(bullet1)
-			self.bullet_group.add(bullet2)			
-			self.bullet_group.add(bullet3)
-			self.last_shot = time_now
+		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
-		pygame.draw.rect(screen, red, (700, 200, 250, 35))
+		pygame.draw.rect(screen, black, (700, 200, 250, 35))
 		if self.health_remaining > 0:
-			pygame.draw.rect(screen, green, (700, 200, int(250 * (self.health_remaining / self.health_start)), 35))
-
+		    pygame.draw.rect(screen, green, (700, 200, int(250 * (self.health_remaining / self.health_start)), 35))
 		self.current_time += dt
+		
 		if self.current_time >= self.animation_time:
-			self.current_time = 0
-			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
-			self.image = self.images[self.direction][self.current_image]
+		    self.current_time = 0
+		    self.current_image = (self.current_image + 1) % len(self.images[self.direction])
+		    self.image = self.images[self.direction][self.current_image]
