@@ -1,39 +1,17 @@
 import pygame
-from pygame.locals import *
 from math import ceil
 from gameclass.playerobject import Player, GrazingHitbox
 from gameclass.enemyobject import Enemy
 from gameclass.enemybulletobject import EnemyBullet
+from gamefunc.utility import load_setting, load_color, draw_ui_text, clear_all_bullet
 
 pygame.init()
 
-clock = pygame.time.Clock()
-fps = 60
-
-screen_width = 1024
-screen_height = 768
-screen = pygame.display.set_mode((screen_width, screen_height))
+clock, fps, screen_width, screen_height, screen = load_setting()
 screen_info = (screen_width, screen_height, screen)
+white, grey, black, red, green = load_color()
 
 pygame.display.set_caption("Bullet Hell")
-
-white = (255, 255, 255)
-grey = (200, 200, 200)
-black = (0, 0, 0)
-red = (255, 0, 0)
-green = (0, 255, 0)
-
-ui_font = pygame.font.SysFont(None, 26)
-
-def draw_text(text, font, text_col, x, y):
-    image = font.render(text, True, text_col)
-    screen.blit(image, (x, y))
-
-def clear_all_bullet():
-    for enemybullet in enemybullet_group:
-        enemybullet.kill()
-    for bullet in bullet_group:
-        bullet.kill()
 
 bg = pygame.image.load("img/background.png").convert()
 bg_height = bg.get_height()
@@ -58,15 +36,8 @@ enemy_group.add(enemy)
 show_player_hitbox = True
 run = True
 while run:
-	screen.fill((0, 0, 0))
-	draw_text("HISCORE", ui_font, white, 650, 50)
-	draw_text("SCORE", ui_font, white, 650, 100)
-	draw_text(str(player.score), ui_font, white, 750, 100)
-	draw_text("PLAYER", ui_font, grey, 650, 200)
-	draw_text("BOMB", ui_font, grey, 650, 250)
-	draw_text("POWER", ui_font, grey, 650, 350)
-	draw_text("GRAZE", ui_font, grey, 650, 400)
-	draw_text(str(player.graze), ui_font, white, 750, 400)
+	screen.fill(black)
+	draw_ui_text(screen, player.score, player.graze, white, grey)
 
 	clock.tick(fps)
 
@@ -93,7 +64,7 @@ while run:
 	        enemy_stop_shooting = True
 	        player.stop_shooting = True
 	        player.score += 300
-	        clear_all_bullet()
+	        clear_all_bullet(enemybullet_group, bullet_group)
 
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
 	    if not player.invincible:
@@ -105,11 +76,11 @@ while run:
 	        enemy_stop_shooting = True
 	        player.stop_shooting = True
 	        show_player_hitbox = False
-	        clear_all_bullet()
+	        clear_all_bullet(enemybullet_group, bullet_group)
 
 	if player.invincible:
-	    if pygame.time.get_ticks() - player.last_hit_time <= 4000:
-	        temp_image = player.original_image.copy()
+	    if pygame.time.get_ticks() - player.last_hit_time <= 2000:
+	        temp_image = player.original_image#.copy()
 	        temp_image.set_alpha(128)
 	        player.image = temp_image
 	    else:
