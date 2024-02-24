@@ -95,7 +95,9 @@ while run:
 	        clear_all_bullet()
 
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
-	    player.health_remaining -= 10
+	    if not player.invincible:
+	        player.health_remaining -= 10
+	        player.reset()
 
 	    if player.health_remaining <= 0:
 	        player.kill()
@@ -103,6 +105,15 @@ while run:
 	        player.stop_shooting = True
 	        show_player_hitbox = False
 	        clear_all_bullet()
+
+	if player.invincible:
+	    if pygame.time.get_ticks() - player.last_hit_time <= 4000:
+	        temp_image = player.original_image.copy()
+	        temp_image.set_alpha(128)
+	        player.image = temp_image
+	    else:
+	        player.image = player.original_image
+	        player.invincible = False
 
 	grazing_hitbox = GrazingHitbox(player)
 	grazing_bullets = pygame.sprite.spritecollide(grazing_hitbox, enemybullet_group, False, pygame.sprite.collide_rect)

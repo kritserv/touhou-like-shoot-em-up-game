@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 64, i * 64, 64, 64)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0
 		self.image = self.images["idle"][self.current_image]
+		self.original_image = self.image
 		self.rect = self.image.get_rect()
 		self.rect.center = [x, y]
 		self.hitbox_image = pygame.image.load("img/player_hitbox.png").convert_alpha()
@@ -30,8 +31,15 @@ class Player(pygame.sprite.Sprite):
 		self.direction = "idle"
 		self.bullet_group = bullet_group
 		self.stop_shooting = stop_shooting
+		self.invincible = False
+		self.last_hit_time = 0
 		self.score = 0
 		self.graze = 0
+
+	def reset(self):
+		self.rect.topleft = (int(screen_width / 2) - 200, screen_height - 100)
+		self.invincible = True
+		self.last_hit_time = pygame.time.get_ticks()
 
 	def update(self, dt):
 		speed = 12
@@ -45,10 +53,12 @@ class Player(pygame.sprite.Sprite):
 		
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			self.rect.x -= speed
-			self.direction = "left"
+			if not self.invincible:
+			    self.direction = "left"
 		elif key[pygame.K_RIGHT] and self.rect.right < screen_width - 410:
 			self.rect.x += speed
-			self.direction = "right"
+			if not self.invincible:
+			    self.direction = "right"
 		else:
 			self.direction = "idle"
 		if key[pygame.K_UP] and self.rect.top > 0:
