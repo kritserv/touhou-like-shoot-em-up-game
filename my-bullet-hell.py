@@ -29,7 +29,6 @@ last_enemy_shot = pygame.time.get_ticks()
 enemy = Enemy(screen_info, bullet_group, black, red)
 enemy_group.add(enemy)
 
-show_player_hitbox = True
 run = True
 while run:
 	screen.fill(black)
@@ -65,7 +64,7 @@ while run:
 	        player.kill()
 	        enemy_stop_shooting = True
 	        player.stop_shooting = True
-	        show_player_hitbox = False
+	        player.disable_hitbox = True
 	        clear_all_bullet(enemybullet_group, bullet_group)
 
 	if player.invincible:
@@ -103,7 +102,7 @@ while run:
 
 	key = pygame.key.get_pressed()
 	if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
-	    if show_player_hitbox == True:
+	    if not player.disable_hitbox:
 	        hitbox_position = player.rect.topleft
 	        screen.blit(player.hitbox_image, hitbox_position)
 	pygame.display.update()
