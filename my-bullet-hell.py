@@ -20,14 +20,12 @@ bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 enemybullet_group = pygame.sprite.Group()
 
-enemy_stop_shooting = False
-
 player = Player(screen_info, bullet_group, black, green)
 player_group.add(player)
 
-last_enemy_shot = pygame.time.get_ticks()
 enemy = Enemy(screen_info, bullet_group, black, red)
 enemy_group.add(enemy)
+last_enemy_shot = pygame.time.get_ticks()
 
 run = True
 while run:
@@ -39,7 +37,7 @@ while run:
 	background.scroll_up()
 
 	time_now = pygame.time.get_ticks()
-	if time_now - last_enemy_shot > enemy.cooldown and enemy_stop_shooting == False:
+	if time_now - last_enemy_shot > enemy.cooldown and enemy.stop_shooting == False:
 		enemybullet = EnemyBullet(enemy.rect.centerx, enemy.rect.bottom)
 		enemybullet_group.add(enemybullet)
 		last_enemy_shot = time_now
@@ -50,7 +48,7 @@ while run:
 
 	    if enemy.health_remaining <= 0:
 	        enemy.kill()
-	        enemy_stop_shooting = True
+	        enemy.stop_shooting = True
 	        player.stop_shooting = True
 	        player.score += 300
 	        clear_all_bullet(enemybullet_group, bullet_group)
@@ -62,7 +60,7 @@ while run:
 
 	    if player.health_remaining <= 0:
 	        player.kill()
-	        enemy_stop_shooting = True
+	        enemy.stop_shooting = True
 	        player.stop_shooting = True
 	        player.disable_hitbox = True
 	        clear_all_bullet(enemybullet_group, bullet_group)

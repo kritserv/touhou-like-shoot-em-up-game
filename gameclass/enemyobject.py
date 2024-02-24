@@ -28,6 +28,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.current_time = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group
+		self.stop_shooting = False
 
 	def update(self, dt):
 		speed = 10
