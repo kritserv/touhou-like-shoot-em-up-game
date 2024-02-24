@@ -1,16 +1,16 @@
 import pygame
 from gameclass.bulletobject import Bullet
 
-screen_width = 1024
-screen_height = 768
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-black = (0, 0, 0)
-green = (0, 255, 0)
-
 class Player(pygame.sprite.Sprite):
-	def __init__(self, x, y, health, bullet_group, stop_shooting):
+	def __init__(self, screen_info, bullet_group, black, green):
 		pygame.sprite.Sprite.__init__(self)
+		self.screen_width = screen_info[0]
+		self.screen_height = screen_info[1]
+		self.screen = screen_info[2]
+		self.x = int(self.screen_width / 2) - 200
+		self.y = self.screen_height - 100
+		self.black = black
+		self.green = green
 		self.spritesheet = {
 			"idle": pygame.image.load("img/player_idle.png"),
 			"left": pygame.image.load("img/player_left.png"),
@@ -21,23 +21,25 @@ class Player(pygame.sprite.Sprite):
 		self.image = self.images["idle"][self.current_image]
 		self.original_image = self.image
 		self.rect = self.image.get_rect()
-		self.rect.center = [x, y]
+		self.rect.center = (self.x, self.y)
+		self.original_x = self.x
+		self.original_y = self.y
 		self.hitbox_image = pygame.image.load("img/player_hitbox.png").convert_alpha()
-		self.health_start = health
-		self.health_remaining = health
+		self.health_start = 3
+		self.health_remaining = 3
 		self.last_shot = pygame.time.get_ticks()
 		self.animation_time = 0.5
 		self.current_time = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group
-		self.stop_shooting = stop_shooting
+		self.stop_shooting = False
 		self.invincible = False
 		self.last_hit_time = 0
 		self.score = 0
 		self.graze = 0
 
 	def reset(self):
-		self.rect.topleft = (int(screen_width / 2) - 200, screen_height - 100)
+		self.rect.center = (self.original_x, self.original_y)
 		self.invincible = True
 		self.last_hit_time = pygame.time.get_ticks()
 
@@ -55,7 +57,7 @@ class Player(pygame.sprite.Sprite):
 			self.rect.x -= speed
 			if not self.invincible:
 			    self.direction = "left"
-		elif key[pygame.K_RIGHT] and self.rect.right < screen_width - 410:
+		elif key[pygame.K_RIGHT] and self.rect.right < self.screen_width - 410:
 			self.rect.x += speed
 			if not self.invincible:
 			    self.direction = "right"
@@ -63,7 +65,7 @@ class Player(pygame.sprite.Sprite):
 			self.direction = "idle"
 		if key[pygame.K_UP] and self.rect.top > 0:
 			self.rect.y -= speed
-		if key[pygame.K_DOWN] and self.rect.bottom < screen_height:
+		if key[pygame.K_DOWN] and self.rect.bottom < self.screen_height:
 			self.rect.y += speed
 
 		time_now = pygame.time.get_ticks()
@@ -79,9 +81,9 @@ class Player(pygame.sprite.Sprite):
 
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
-		pygame.draw.rect(screen, black, (750, 190, 210, 25))
+		pygame.draw.rect(self.screen, self.black, (750, 190, 210, 25))
 		if self.health_remaining > 0:
-		    pygame.draw.rect(screen, green, (750, 190, int(210 * (self.health_remaining / self.health_start)), 25))
+		    pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.health_remaining / self.health_start)), 25))
 		self.current_time += dt
 		
 		if self.current_time >= self.animation_time:

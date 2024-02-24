@@ -12,13 +12,18 @@ fps = 60
 
 screen_width = 1024
 screen_height = 768
-
 screen = pygame.display.set_mode((screen_width, screen_height))
+screen_info = (screen_width, screen_height, screen)
+
 pygame.display.set_caption("Bullet Hell")
 
 white = (255, 255, 255)
 grey = (200, 200, 200)
-text_font = pygame.font.SysFont(None, 26)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+
+ui_font = pygame.font.SysFont(None, 26)
 
 def draw_text(text, font, text_col, x, y):
     image = font.render(text, True, text_col)
@@ -41,31 +46,27 @@ bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 enemybullet_group = pygame.sprite.Group()
 
-player_stop_shooting = False
 enemy_stop_shooting = False
 
-player_hp = 70
-player = Player(int(screen_width / 2) - 200, screen_height - 100, player_hp, bullet_group, player_stop_shooting)
+player = Player(screen_info, bullet_group, black, green)
 player_group.add(player)
 
-enemy_hp = 500
-enemy_cooldown = 500
 last_enemy_shot = pygame.time.get_ticks()
-enemy = Enemy(int(screen_width / 2) - 200, screen_height - 600, 500, bullet_group)
+enemy = Enemy(screen_info, bullet_group, black, red)
 enemy_group.add(enemy)
 
 show_player_hitbox = True
 run = True
 while run:
 	screen.fill((0, 0, 0))
-	draw_text("HISCORE", text_font, white, 650, 50)
-	draw_text("SCORE", text_font, white, 650, 100)
-	draw_text(str(player.score), text_font, white, 750, 100)
-	draw_text("PLAYER", text_font, grey, 650, 200)
-	draw_text("BOMB", text_font, grey, 650, 250)
-	draw_text("POWER", text_font, grey, 650, 350)
-	draw_text("GRAZE", text_font, grey, 650, 400)
-	draw_text(str(player.graze), text_font, white, 750, 400)
+	draw_text("HISCORE", ui_font, white, 650, 50)
+	draw_text("SCORE", ui_font, white, 650, 100)
+	draw_text(str(player.score), ui_font, white, 750, 100)
+	draw_text("PLAYER", ui_font, grey, 650, 200)
+	draw_text("BOMB", ui_font, grey, 650, 250)
+	draw_text("POWER", ui_font, grey, 650, 350)
+	draw_text("GRAZE", ui_font, grey, 650, 400)
+	draw_text(str(player.graze), ui_font, white, 750, 400)
 
 	clock.tick(fps)
 
@@ -78,7 +79,7 @@ while run:
 		scroll = 0
 
 	time_now = pygame.time.get_ticks()
-	if time_now - last_enemy_shot > enemy_cooldown and enemy_stop_shooting == False:
+	if time_now - last_enemy_shot > enemy.cooldown and enemy_stop_shooting == False:
 		enemybullet = EnemyBullet(enemy.rect.centerx, enemy.rect.bottom)
 		enemybullet_group.add(enemybullet)
 		last_enemy_shot = time_now
@@ -96,7 +97,7 @@ while run:
 
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
 	    if not player.invincible:
-	        player.health_remaining -= 10
+	        player.health_remaining -= 1
 	        player.reset()
 
 	    if player.health_remaining <= 0:
