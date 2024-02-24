@@ -85,11 +85,13 @@ while run:
 		
 	if pygame.sprite.spritecollide(enemy, bullet_group, True, pygame.sprite.collide_mask):
 	    enemy.health_remaining -= 10
+	    player.score += 30
 
 	    if enemy.health_remaining <= 0:
 	        enemy.kill()
 	        enemy_stop_shooting = True
 	        player.stop_shooting = True
+	        player.score += 300
 	        clear_all_bullet()
 
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
