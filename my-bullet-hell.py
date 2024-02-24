@@ -23,7 +23,7 @@ enemybullet_group = pygame.sprite.Group()
 player = Player(screen_info, bullet_group, black, green)
 player_group.add(player)
 
-enemy = Enemy(screen_info, bullet_group, black, red)
+enemy = Enemy(screen_info, black, red)
 enemy_group.add(enemy)
 last_enemy_shot = pygame.time.get_ticks()
 
@@ -50,6 +50,7 @@ while run:
 	        enemy.kill()
 	        enemy.stop_shooting = True
 	        player.stop_shooting = True
+	        player.invincible = False
 	        player.score += 300
 	        clear_all_bullet(enemybullet_group, bullet_group)
 
@@ -67,7 +68,7 @@ while run:
 
 	if player.invincible:
 	    if pygame.time.get_ticks() - player.last_hit_time <= 2000:
-	        temp_image = player.original_image#.copy()
+	        temp_image = player.original_image.copy()
 	        temp_image.set_alpha(128)
 	        player.image = temp_image
 	    else:

@@ -1,7 +1,7 @@
 import pygame
 
 class Enemy(pygame.sprite.Sprite):
-	def __init__(self, screen_info, bullet_group, black, red):
+	def __init__(self, screen_info, black, red):
 		pygame.sprite.Sprite.__init__(self)
 		self.screen_width = screen_info[0]
 		self.screen_height = screen_info[1]
@@ -27,7 +27,6 @@ class Enemy(pygame.sprite.Sprite):
 		self.animation_time = 0.5
 		self.current_time = 0
 		self.direction = "idle"
-		self.bullet_group = bullet_group
 		self.stop_shooting = False
 
 	def update(self, dt):
