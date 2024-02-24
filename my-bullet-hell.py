@@ -1,8 +1,8 @@
 import pygame
-from math import ceil
 from gameclass.playerobject import Player, GrazingHitbox
 from gameclass.enemyobject import Enemy
 from gameclass.enemybulletobject import EnemyBullet
+from gameclass.backgroundobject import BackGround
 from gamefunc.utility import load_setting, load_color, draw_ui_text, clear_all_bullet
 
 pygame.init()
@@ -13,11 +13,7 @@ white, grey, black, red, green = load_color()
 
 pygame.display.set_caption("Bullet Hell")
 
-bg = pygame.image.load("img/background.png").convert()
-bg_height = bg.get_height()
-
-scroll = 0
-tiles = ceil(screen_height / bg_height) + 1
+background = BackGround(screen_info)
 
 player_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
@@ -41,13 +37,7 @@ while run:
 
 	clock.tick(fps)
 
-	for i in range(0, tiles):
-		screen.blit(bg, (20, i * bg_height + scroll))
-
-	scroll -= 6
-
-	if abs(scroll) > bg_height:
-		scroll = 0
+	background.scroll_up()
 
 	time_now = pygame.time.get_ticks()
 	if time_now - last_enemy_shot > enemy.cooldown and enemy_stop_shooting == False:
