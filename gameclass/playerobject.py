@@ -25,8 +25,8 @@ class Player(pygame.sprite.Sprite):
 		self.original_x = self.x
 		self.original_y = self.y
 		self.hitbox_image = pygame.image.load("img/player_hitbox.png").convert_alpha()
-		self.health_start = 3
-		self.health_remaining = 3
+		self.life_start = 3
+		self.life_remaining = 3
 		self.last_shot = pygame.time.get_ticks()
 		self.animation_time = 0.5
 		self.current_time = 0
@@ -92,8 +92,8 @@ class Player(pygame.sprite.Sprite):
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
 		pygame.draw.rect(self.screen, self.black, (750, 190, 210, 25))
-		if self.health_remaining > 0:
-		    pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.health_remaining / self.health_start)), 25))
+		if self.life_remaining > 0:
+		    pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 		self.current_time += dt
 		
 		if self.current_time >= self.animation_time:
