@@ -7,7 +7,23 @@ def load_setting():
     screen_height = 768
     screen = pygame.display.set_mode((screen_width, screen_height))
     return clock, fps, screen_width, screen_height, screen
-    
+
+def save_hi_score(player_score, hi_score):
+    if player_score >= hi_score:
+        with open(".hiscore", "w") as file:
+            file.write(str(player_score))
+        file.close()
+        
+def load_highscore():
+    try:
+        with open(".hiscore", "r") as file:
+            return int(file.read())
+    except:
+        with open(".hiscore", "w") as file:
+            file.write("0")
+        file.close()
+        return 0
+
 def load_color():
     white = (255, 255, 255)
     grey = (200, 200, 200)
@@ -20,9 +36,12 @@ def draw_text(text, font, text_col, x, y, screen):
     image = font.render(text, True, text_col)
     screen.blit(image, (x, y))
 
-def draw_ui_text(screen, player_score, player_graze, white, grey):
+def draw_ui_text(screen, hi_score, player_score, player_graze, white, grey):    
+    if player_score >= hi_score:
+        hi_score = player_score
     ui_font = pygame.font.SysFont(None, 26)
     draw_text("HISCORE", ui_font, white, 650, 50, screen)
+    draw_text(str(hi_score), ui_font, white, 750, 50, screen)
     draw_text("SCORE", ui_font, white, 650, 100, screen)
     draw_text(str(player_score), ui_font, white, 750, 100, screen)
     draw_text("PLAYER", ui_font, grey, 650, 200, screen)

@@ -3,13 +3,14 @@ from gameclass.playerobject import Player, GrazingHitbox
 from gameclass.enemyobject import Enemy
 from gameclass.enemybulletobject import EnemyBullet
 from gameclass.backgroundobject import BackGround
-from gamefunc.utility import load_setting, load_color, draw_ui_text, clear_all_bullet
+from gamefunc.utility import load_setting, load_color, draw_ui_text, clear_all_bullet, load_highscore, save_hi_score
 
 pygame.init()
 
 clock, fps, screen_width, screen_height, screen = load_setting()
 screen_info = (screen_width, screen_height, screen)
 white, grey, black, red, green = load_color()
+hi_score = load_highscore()
 
 pygame.display.set_caption("Bullet Hell")
 
@@ -30,7 +31,7 @@ last_enemy_shot = pygame.time.get_ticks()
 run = True
 while run:
 	screen.fill(black)
-	draw_ui_text(screen, player.score, player.graze, white, grey)
+	draw_ui_text(screen, hi_score, player.score, player.graze, white, grey)
 
 	clock.tick(fps)
 
@@ -53,6 +54,7 @@ while run:
 	        player.invincible = False
 	        player.score += 300
 	        clear_all_bullet(enemybullet_group, bullet_group)
+	        save_hi_score(player.score, hi_score)
 
 	if pygame.sprite.spritecollide(player, enemybullet_group, True, pygame.sprite.collide_mask):
 	    if not player.invincible:
