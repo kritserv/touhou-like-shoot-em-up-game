@@ -71,9 +71,12 @@ while run:
 	        temp_image = player.original_image.copy()
 	        temp_image.set_alpha(128)
 	        player.image = temp_image
+	        player.stop_shooting = True
 	    else:
 	        player.image = player.original_image
 	        player.invincible = False
+	        player.image.set_alpha(255)
+	        player.stop_shooting = False
 
 	grazing_hitbox = GrazingHitbox(player)
 	grazing_bullets = pygame.sprite.spritecollide(grazing_hitbox, enemybullet_group, False, pygame.sprite.collide_rect)

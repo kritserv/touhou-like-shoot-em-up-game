@@ -32,6 +32,7 @@ class Player(pygame.sprite.Sprite):
 		self.current_time = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group
+		self.extra_spread_pos = 0
 		self.stop_shooting = False
 		self.disable_hitbox = False
 		self.invincible = False
@@ -41,18 +42,22 @@ class Player(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.center = (self.original_x, self.original_y)
+		self.direction = "idle"
 		self.invincible = True
 		self.last_hit_time = pygame.time.get_ticks()
 
 	def update(self, dt):
 		speed = 12
+		
 		cooldown = 100
-		bullet_spread = 45
+		bullet_spread = 35
+		bullet_extra_spread = (-10, 20, 30, 20, -10)
 
 		key = pygame.key.get_pressed()
 		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
 			speed = 6
 			bullet_spread = 15
+			bullet_extra_spread = (0, 8, 16, 8, 0)
 		
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			self.rect.x -= speed
@@ -71,14 +76,18 @@ class Player(pygame.sprite.Sprite):
 
 		time_now = pygame.time.get_ticks()
 		if self.stop_shooting == False:
+			bullet_spread += bullet_extra_spread[self.extra_spread_pos]
 			if key[pygame.K_z] and time_now - self.last_shot > cooldown:
-			    bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top)
-			    bullet2 = Bullet(self.rect.centerx, self.rect.top)
-			    bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top)
+			    bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
+			    bullet2 = Bullet(self.rect.centerx, self.rect.top, self.screen_width)
+			    bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top, self.screen_width)
 			    self.bullet_group.add(bullet1)
 			    self.bullet_group.add(bullet2)
 			    self.bullet_group.add(bullet3)
 			    self.last_shot = time_now
+			    self.extra_spread_pos += 1
+			    if self.extra_spread_pos >= 5:
+			        self.extra_spread_pos = -1
 
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
