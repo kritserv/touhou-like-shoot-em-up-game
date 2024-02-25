@@ -31,7 +31,7 @@ last_enemy_shot = pygame.time.get_ticks()
 run = True
 while run:
 	screen.fill(black)
-	draw_ui_text(screen, hi_score, player.score, player.graze, white, grey)
+	draw_ui_text(screen, hi_score, player.score, player.graze, clock.get_fps(), white, grey)
 
 	clock.tick(fps)
 
