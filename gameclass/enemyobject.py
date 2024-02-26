@@ -1,7 +1,9 @@
 import pygame
-
+from gameclass.enemybulletobject import EnemyBullet
+from math import pi
+    
 class Enemy(pygame.sprite.Sprite):
-	def __init__(self, screen_info, black, red):
+	def __init__(self, screen_info, enemybullet_group, black, red):
 		pygame.sprite.Sprite.__init__(self)
 		self.screen_width = screen_info[0]
 		self.screen_height = screen_info[1]
@@ -28,6 +30,17 @@ class Enemy(pygame.sprite.Sprite):
 		self.current_time = 0
 		self.direction = "idle"
 		self.stop_shooting = False
+		self.enemybullet_group = enemybullet_group
+		
+	def normal_shoot(self):
+		bullet = EnemyBullet(self.rect.centerx, self.rect.bottom, pi / 2, self.screen_width, self.screen_height)
+		self.enemybullet_group.add(bullet)
+
+	def circular_shoot(self):
+	    for i in range(10):
+	        angle = 2 * pi * i / 10
+	        bullet = EnemyBullet(self.rect.centerx, self.rect.bottom, angle, self.screen_width, self.screen_height)
+	        self.enemybullet_group.add(bullet)
 
 	def update(self, dt):
 		speed = 10

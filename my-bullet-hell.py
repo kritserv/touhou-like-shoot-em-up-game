@@ -24,7 +24,7 @@ enemybullet_group = pygame.sprite.Group()
 player = Player(screen_info, bullet_group, black, green)
 player_group.add(player)
 
-enemy = Enemy(screen_info, black, red)
+enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)
 last_enemy_shot = pygame.time.get_ticks()
 
@@ -39,8 +39,8 @@ while run:
 
 	time_now = pygame.time.get_ticks()
 	if time_now - last_enemy_shot > enemy.cooldown and enemy.stop_shooting == False:
-		enemybullet = EnemyBullet(enemy.rect.centerx, enemy.rect.bottom)
-		enemybullet_group.add(enemybullet)
+		enemy.normal_shoot()
+		enemy.circular_shoot()
 		last_enemy_shot = time_now
 		
 	if pygame.sprite.spritecollide(enemy, bullet_group, True, pygame.sprite.collide_mask):
