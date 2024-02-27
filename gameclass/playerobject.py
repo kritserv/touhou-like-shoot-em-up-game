@@ -1,5 +1,6 @@
 import pygame
 from gameclass.bulletobject import Bullet
+from math import sqrt
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self, screen_info, bullet_group, black, green):
@@ -48,6 +49,8 @@ class Player(pygame.sprite.Sprite):
 
 	def update(self, dt):
 		speed = 12
+		dx = 0
+		dy = 0
 		
 		cooldown = 100
 		bullet_spread = 35
@@ -60,19 +63,26 @@ class Player(pygame.sprite.Sprite):
 			bullet_extra_spread = (0, 8, 16, 8, 0)
 		
 		if key[pygame.K_LEFT] and self.rect.left > 20:
-			self.rect.x -= speed
+			dx = -1
 			if not self.invincible:
 			    self.direction = "left"
 		elif key[pygame.K_RIGHT] and self.rect.right < self.screen_width - 410:
-			self.rect.x += speed
+			dx = 1
 			if not self.invincible:
 			    self.direction = "right"
 		else:
 			self.direction = "idle"
 		if key[pygame.K_UP] and self.rect.top > 0:
-			self.rect.y -= speed
+			dy = -1
 		if key[pygame.K_DOWN] and self.rect.bottom < self.screen_height:
-			self.rect.y += speed
+			dy = 1
+
+		if dx != 0 and dy != 0:
+			dx /= sqrt(2)
+			dy /= sqrt(2)
+
+		self.rect.x += dx * speed
+		self.rect.y += dy * speed
 
 		time_now = pygame.time.get_ticks()
 		if self.stop_shooting == False:
