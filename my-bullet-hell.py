@@ -28,6 +28,7 @@ enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)
 last_enemy_shot = pygame.time.get_ticks()
 
+bullet_count = 0
 run = True
 while run:
 	screen.fill(black)
@@ -37,11 +38,15 @@ while run:
 
 	background.scroll_up()
 
-	time_now = pygame.time.get_ticks()
-	if time_now - last_enemy_shot > enemy.cooldown and enemy.stop_shooting == False:
+	if 0 <= bullet_count < 80:
+		enemy.spiral_shoot()
+	elif 80 <= bullet_count < 130:
 		enemy.normal_shoot()
+	elif 130 <= bullet_count < 230: 
 		enemy.circular_shoot()
-		last_enemy_shot = time_now
+	else:
+		bullet_count = 0
+	bullet_count += 1
 		
 	if pygame.sprite.spritecollide(enemy, bullet_group, True, pygame.sprite.collide_mask):
 	    enemy.health_remaining -= 10

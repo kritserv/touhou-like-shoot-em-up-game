@@ -24,8 +24,11 @@ class Enemy(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		self.health_start = 500
 		self.health_remaining = 500
-		self.cooldown = 500
 		self.last_shot = pygame.time.get_ticks()
+		self.bullet_delay = 300
+		self.bullet_spiral_delay = 1
+		self.last_bullet_time = pygame.time.get_ticks()
+		self.bullet_index = 0
 		self.animation_time = 0.5
 		self.current_time = 0
 		self.direction = "idle"
@@ -33,15 +36,31 @@ class Enemy(pygame.sprite.Sprite):
 		self.enemybullet_group = enemybullet_group
 		
 	def normal_shoot(self):
-		bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height)
-		self.enemybullet_group.add(bullet)
+	    current_time = pygame.time.get_ticks()
+	    if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
+	    	self.last_bullet_time = current_time
+	    	bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height)
+	    	self.enemybullet_group.add(bullet)
 
 	def circular_shoot(self):
 	    amount = 32
-	    for i in range(amount):
-	        angle = 2 * pi * i / amount
-	        bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
-	        self.enemybullet_group.add(bullet)
+	    current_time = pygame.time.get_ticks()
+	    if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
+	    	self.last_bullet_time = current_time
+	    	for i in range(amount):
+	    	    angle = 2 * pi * i / amount
+	    	    bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
+	    	    self.enemybullet_group.add(bullet)
+
+	def spiral_shoot(self):
+	    amount = 32
+	    current_time = pygame.time.get_ticks()
+	    if current_time - self.last_bullet_time > self.bullet_spiral_delay:
+	    	self.last_bullet_time = current_time
+	    	angle = 2 * pi * self.bullet_index / amount
+	    	bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
+	    	self.enemybullet_group.add(bullet)
+	    	self.bullet_index = (self.bullet_index + 1) % amount
 
 	def update(self, dt):
 		speed = 10
