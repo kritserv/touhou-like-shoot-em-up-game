@@ -24,7 +24,6 @@ class Enemy(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		self.health_start = 500
 		self.health_remaining = 500
-		self.last_shot = pygame.time.get_ticks()
 		self.bullet_delay = 300
 		self.bullet_spiral_delay = 1
 		self.last_bullet_time = pygame.time.get_ticks()
