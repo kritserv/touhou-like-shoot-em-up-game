@@ -33,13 +33,14 @@ class Enemy(pygame.sprite.Sprite):
 		self.enemybullet_group = enemybullet_group
 		
 	def normal_shoot(self):
-		bullet = EnemyBullet(self.rect.centerx, self.rect.bottom, pi / 2, self.screen_width, self.screen_height)
+		bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height)
 		self.enemybullet_group.add(bullet)
 
 	def circular_shoot(self):
-	    for i in range(10):
-	        angle = 2 * pi * i / 10
-	        bullet = EnemyBullet(self.rect.centerx, self.rect.bottom, angle, self.screen_width, self.screen_height)
+	    amount = 32
+	    for i in range(amount):
+	        angle = 2 * pi * i / amount
+	        bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
 	        self.enemybullet_group.add(bullet)
 
 	def update(self, dt):
