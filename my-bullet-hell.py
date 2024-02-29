@@ -47,11 +47,15 @@ while run:
 
 		if not enemy.stop_shooting:
 			if 0 <= bullet_count < 80:
-				enemy.spiral_shoot()
-			elif 80 <= bullet_count < 130:
+				enemy.spiral_shoot(30)
+			elif 80 <= bullet_count < 130: 
+				enemy.circular_shoot(48)
+			elif 130 <= bullet_count < 230:
+				enemy.spiral_shoot_2(120)
+			elif 230 <= bullet_count < 240:
+				enemy.circular_shoot(140)
+			elif 240 <= bullet_count < 260:
 				enemy.normal_shoot()
-			elif 130 <= bullet_count < 230: 
-				enemy.circular_shoot()
 			else:
 				bullet_count = 0
 			bullet_count += 1
