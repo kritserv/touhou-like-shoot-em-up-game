@@ -41,7 +41,8 @@ class Player(pygame.sprite.Sprite):
 		self.score = 0
 		self.graze = 0
 
-	def reset(self):
+	def damage_and_reset(self):
+		self.life_remaining -= 1
 		self.rect.center = (self.original_x, self.original_y)
 		self.direction = "idle"
 		self.invincible = True
@@ -65,11 +66,11 @@ class Player(pygame.sprite.Sprite):
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			dx = -1
 			if not self.invincible:
-			    self.direction = "left"
+				self.direction = "left"
 		elif key[pygame.K_RIGHT] and self.rect.right < self.screen_width - 410:
 			dx = 1
 			if not self.invincible:
-			    self.direction = "right"
+				self.direction = "right"
 		else:
 			self.direction = "idle"
 		if key[pygame.K_UP] and self.rect.top > 0:
@@ -88,31 +89,31 @@ class Player(pygame.sprite.Sprite):
 		if self.stop_shooting == False:
 			bullet_spread += bullet_extra_spread[self.extra_spread_pos]
 			if key[pygame.K_z] and time_now - self.last_shot > cooldown:
-			    bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
-			    bullet2 = Bullet(self.rect.centerx, self.rect.top, self.screen_width)
-			    bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top, self.screen_width)
-			    self.bullet_group.add(bullet1)
-			    self.bullet_group.add(bullet2)
-			    self.bullet_group.add(bullet3)
-			    self.last_shot = time_now
-			    self.extra_spread_pos += 1
-			    if self.extra_spread_pos >= 5:
-			        self.extra_spread_pos = -1
+				bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
+				bullet2 = Bullet(self.rect.centerx, self.rect.top, self.screen_width)
+				bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top, self.screen_width)
+				self.bullet_group.add(bullet1)
+				self.bullet_group.add(bullet2)
+				self.bullet_group.add(bullet3)
+				self.last_shot = time_now
+				self.extra_spread_pos += 1
+				if self.extra_spread_pos >= 5:
+					self.extra_spread_pos = -1
 
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
 		pygame.draw.rect(self.screen, self.black, (750, 190, 210, 25))
 		if self.life_remaining > 0:
-		    pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
+			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 		self.current_time += dt
 		
 		if self.current_time >= self.animation_time:
-		    self.current_time = 0
-		    self.current_image = (self.current_image + 1) % len(self.images[self.direction])
-		    self.image = self.images[self.direction][self.current_image]
+			self.current_time = 0
+			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
+			self.image = self.images[self.direction][self.current_image]
 
 class GrazingHitbox(pygame.sprite.Sprite):
-    def __init__(self, player):
-        self.player = player
-        self.image = pygame.Surface((player.rect.width - 20, player.rect.height - 20), pygame.SRCALPHA)
-        self.rect = self.image.get_rect(center = player.rect.center)
+	def __init__(self, player):
+		self.player = player
+		self.image = pygame.Surface((player.rect.width - 20, player.rect.height - 20), pygame.SRCALPHA)
+		self.rect = self.image.get_rect(center = player.rect.center)

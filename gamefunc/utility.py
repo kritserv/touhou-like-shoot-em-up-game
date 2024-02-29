@@ -1,59 +1,44 @@
 import pygame
-
-def load_setting():
-    clock = pygame.time.Clock()
-    fps = 60
-    screen_width = 1024
-    screen_height = 768
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    return clock, fps, screen_width, screen_height, screen
+from gamefunc.variable import clock, screen, white, grey
 
 def save_hi_score(player_score, hi_score):
-    if player_score >= hi_score:
-        with open(".hiscore", "w") as file:
-            file.write(str(player_score))
-        file.close()
-        
+	if player_score >= hi_score:
+		with open(".hiscore", "w") as file:
+			file.write(str(player_score))
+		file.close()
+		
 def load_highscore():
-    try:
-        with open(".hiscore", "r") as file:
-            return int(file.read())
-    except:
-        with open(".hiscore", "w") as file:
-            file.write("0")
-        file.close()
-        return 0
-
-def load_color():
-    white = (255, 255, 255)
-    grey = (200, 200, 200)
-    black = (0, 0, 0)
-    red = (255, 0, 0)
-    green = (0, 255, 0)
-    return white, grey, black, red, green
+	try:
+		with open(".hiscore", "r") as file:
+			return int(file.read())
+	except:
+		with open(".hiscore", "w") as file:
+			file.write("0")
+		file.close()
+		return 0
 
 def draw_text(text, font, text_col, x, y, screen):
-    image = font.render(text, True, text_col)
-    screen.blit(image, (x, y))
+	image = font.render(text, True, text_col)
+	screen.blit(image, (x, y))
 
-def draw_ui_text(screen, hi_score, player_score, player_graze, clock_fps, white, grey):    
-    if player_score >= hi_score:
-        hi_score = player_score
-    ui_font = pygame.font.SysFont(None, 26)
-    draw_text("HISCORE", ui_font, white, 650, 50, screen)
-    draw_text(str(hi_score), ui_font, white, 750, 50, screen)
-    draw_text("SCORE", ui_font, white, 650, 100, screen)
-    draw_text(str(player_score), ui_font, white, 750, 100, screen)
-    draw_text("PLAYER", ui_font, grey, 650, 200, screen)
-    draw_text("BOMB", ui_font, grey, 650, 250, screen)
-    draw_text("POWER", ui_font, grey, 650, 350, screen)
-    draw_text("GRAZE", ui_font, grey, 650, 400, screen)
-    draw_text(str(player_graze), ui_font, white, 750, 400, screen)
-    draw_text(str(clock_fps // 0.1 / 10), ui_font, white, 950, 720, screen)
-    draw_text("fps", ui_font, white, 990, 720, screen)
+def draw_ui_text(hi_score, player_score, player_graze):
+	if player_score >= hi_score:
+		hi_score = player_score
+	ui_font = pygame.font.SysFont(None, 26)
+	draw_text("HISCORE", ui_font, white, 650, 50, screen)
+	draw_text(str(hi_score), ui_font, white, 750, 50, screen)
+	draw_text("SCORE", ui_font, white, 650, 100, screen)
+	draw_text(str(player_score), ui_font, white, 750, 100, screen)
+	draw_text("PLAYER", ui_font, grey, 650, 200, screen)
+	draw_text("BOMB", ui_font, grey, 650, 250, screen)
+	draw_text("POWER", ui_font, grey, 650, 350, screen)
+	draw_text("GRAZE", ui_font, grey, 650, 400, screen)
+	draw_text(str(player_graze), ui_font, white, 750, 400, screen)
+	draw_text(str(clock.get_fps() // 0.1 / 10), ui_font, white, 950, 720, screen)
+	draw_text("fps", ui_font, white, 990, 720, screen)
 
-def clear_all_bullet(enemybullet_group, bullet_group):
-    for enemybullet in enemybullet_group:
-        enemybullet.kill()
-    for bullet in bullet_group:
-        bullet.kill()
+def check_quit_game_event(event):
+	if event.type == pygame.QUIT:
+		return False
+	else:
+		return True
