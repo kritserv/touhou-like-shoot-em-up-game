@@ -1,5 +1,5 @@
 import pygame
-from gamefunc.variable import clock, screen, white, grey
+from gamefunc.variable import clock, screen, white, grey, black
 
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:
@@ -37,8 +37,19 @@ def draw_ui_text(hi_score, player_score, player_graze):
 	draw_text(str(clock.get_fps() // 0.1 / 10), ui_font, white, 950, 720, screen)
 	draw_text("fps", ui_font, white, 990, 720, screen)
 
+def show_title_screen():
+	screen.fill(white)
+	title_font = pygame.font.SysFont(None, 45)
+	draw_text("PRESS ANY KEY TO START", title_font, black, 310, 584, screen)
+
 def check_quit_game_event(event):
 	if event.type == pygame.QUIT:
+		return False
+	else:
+		return True
+
+def check_any_key_event(event):
+	if event.type == pygame.KEYDOWN:
 		return False
 	else:
 		return True
