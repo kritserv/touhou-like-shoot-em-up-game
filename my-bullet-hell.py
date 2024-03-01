@@ -40,7 +40,7 @@ while run:
 				enemy.health_remaining -= 10
 				player.score += 30
 
-				if enemy.health_remaining <= 0:
+				if enemy.health_remaining < 0:
 					clear_all_bullet()
 					bullet_count = 0
 					player.score += 300
