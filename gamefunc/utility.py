@@ -44,7 +44,7 @@ def show_title_screen():
 
 def show_play_again():
 	title_font = pygame.font.SysFont(None, 45)
-	draw_text("PRESS R KEY TO PLAY AGAIN", title_font, white, 90, 584, screen)
+	draw_text("PRESS R TO PLAY AGAIN", title_font, white, 120, 584, screen)
 
 def finish_game():
 	enemy.stop_shooting = True
