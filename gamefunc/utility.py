@@ -70,12 +70,12 @@ def check_quit_game_event(event):
 		return True
 
 def check_any_key_event(event):
-	if event.type == pygame.KEYDOWN:
+	if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
 		return False
 	else:
 		return True
 
-def check_r_key(event):
+def check_r_key_event(event):
 	if event.type == pygame.KEYDOWN:
 		if event.key == pygame.K_r:
 			return True
