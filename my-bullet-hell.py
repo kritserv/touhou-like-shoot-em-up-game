@@ -30,6 +30,7 @@ while run:
 		clock.tick(fps)
 		screen.fill(black)
 		draw_ui_text(hi_score, player.score, player.graze)
+
 		background.scroll_up()
 			
 		if bullet_hit_enemy():
@@ -47,15 +48,15 @@ while run:
 
 		if not enemy.stop_shooting:
 			if 0 <= bullet_count < 80:
-				enemy.spiral_shoot(30)
+				enemy.spiral_shoot(amount = 30, focus_player = True, player = player, delay_before_focus = 200)
 			elif 80 <= bullet_count < 130: 
-				enemy.circular_shoot(48)
+				enemy.circular_shoot(amount = 48, focus_player = False, player = player, delay_before_focus = 0)
 			elif 130 <= bullet_count < 230:
-				enemy.spiral_shoot_2(120)
+				enemy.spiral_shoot_2(amount = 120, focus_player = False, player = player, delay_before_focus = 0)
 			elif 230 <= bullet_count < 240:
-				enemy.circular_shoot(140)
+				enemy.circular_shoot(amount = 140, focus_player = True, player = player, delay_before_focus = 1200)
 			elif 240 <= bullet_count < 260:
-				enemy.normal_shoot()
+				enemy.normal_shoot(focus_player = True, player = player, delay_before_focus = 0)
 			else:
 				bullet_count = 0
 			bullet_count += 1

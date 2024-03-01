@@ -34,39 +34,49 @@ class Enemy(pygame.sprite.Sprite):
 		self.stop_shooting = False
 		self.enemybullet_group = enemybullet_group
 		
-	def normal_shoot(self):
+	def normal_shoot(self, focus_player, player, delay_before_focus):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.last_bullet_time = current_time
-			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height)
+			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height, focus_player)
+			if focus_player:
+				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
 
-	def circular_shoot(self, amount):
+	def circular_shoot(self, amount, focus_player, player, delay_before_focus):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.last_bullet_time = current_time
 			for i in range(amount):
 				angle = 2 * pi * i / amount
-				bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
+				bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player)
+				if focus_player:
+					bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 				self.enemybullet_group.add(bullet)
 
-	def spiral_shoot(self, amount):
+	def spiral_shoot(self, amount, focus_player, player, delay_before_focus):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.last_bullet_time = current_time
 			angle = 2 * pi * self.bullet_index / amount
-			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
+			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player)
+			if focus_player:
+				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
 			self.bullet_index = (self.bullet_index + 1) % amount
 
-	def spiral_shoot_2(self, amount):
+	def spiral_shoot_2(self, amount, focus_player, player, delay_before_focus):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.last_bullet_time = current_time
 			angle = 2 * pi * self.bullet_index / amount
-			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height)
+			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player)
+			if focus_player:
+				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
-			another_bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle + pi, self.screen_width, self.screen_height)
+			another_bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle + pi, self.screen_width, self.screen_height, focus_player)
+			if focus_player:
+				another_bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(another_bullet)
 			self.bullet_index = (self.bullet_index + 1) % amount
 
