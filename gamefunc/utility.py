@@ -1,5 +1,5 @@
 import pygame
-from gamefunc.variable import clock, screen, white, grey, black
+from gamefunc.variable import clock, screen, white, grey, black, player, enemy
 
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:
@@ -42,6 +42,27 @@ def show_title_screen():
 	title_font = pygame.font.SysFont(None, 45)
 	draw_text("PRESS ANY KEY TO START", title_font, black, 310, 584, screen)
 
+def show_play_again():
+	title_font = pygame.font.SysFont(None, 45)
+	draw_text("PRESS ANY KEY TO PLAY AGAIN", title_font, white, 80, 584, screen)
+
+def finish_game():
+	enemy.stop_shooting = True
+	player.stop_shooting = True
+	player.disable_hitbox = True
+	pygame.time.delay(1100)
+	return False
+
+def play_again():
+	player.rect.center = (player.original_x, player.original_y)
+	player.invincible = False
+	player.life_start = 3
+	player.life_remaining = 3
+	enemy.health_remaining = 500
+	enemy.stop_shooting = False
+	player.stop_shooting = False
+	player.score = 0
+
 def check_quit_game_event(event):
 	if event.type == pygame.QUIT:
 		return False
@@ -53,3 +74,4 @@ def check_any_key_event(event):
 		return False
 	else:
 		return True
+
