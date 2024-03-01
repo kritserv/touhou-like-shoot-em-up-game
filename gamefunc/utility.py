@@ -76,3 +76,9 @@ def check_any_key_event(event):
 	else:
 		return True
 
+def check_r_key(event):
+	if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_r:
+			return True
+	else:
+		return False

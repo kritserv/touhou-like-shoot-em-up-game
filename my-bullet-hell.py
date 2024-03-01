@@ -7,7 +7,7 @@ from gamefunc.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	check_quit_game_event, check_any_key_event, \
 	show_title_screen, show_play_again, play_again, \
-	finish_game
+	finish_game, check_r_key
 from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
 	make_player_transparent, is_collide, \
 	player_hold_shift, show_hitbox, \
@@ -55,7 +55,7 @@ while run:
 				elif 130 <= bullet_count < 230:
 					enemy.spiral_shoot_2(amount = 120, focus_player = False, player = player, delay_before_focus = 0)
 				elif 230 <= bullet_count < 240:
-					enemy.circular_shoot(amount = 140, focus_player = True, player = player, delay_before_focus = 1200)
+					enemy.circular_shoot(amount = 140, focus_player = True, player = player, delay_before_focus = 600)
 				elif 240 <= bullet_count < 260:
 					enemy.normal_shoot(focus_player = True, player = player, delay_before_focus = 0)
 				else:
@@ -75,6 +75,13 @@ while run:
 						
 			for event in pygame.event.get():
 				run = check_quit_game_event(event)
+				quick_retry = check_r_key(event)
+				if quick_retry:
+					clear_all_bullet()
+					bullet_count = 0
+					play_again()
+
+
 
 			dt = clock.tick(fps) / 100
 			player.update(dt)
