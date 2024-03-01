@@ -44,19 +44,17 @@ def show_title_screen():
 
 def show_play_again():
 	title_font = pygame.font.SysFont(None, 45)
-	draw_text("PRESS ANY KEY TO PLAY AGAIN", title_font, white, 80, 584, screen)
+	draw_text("PRESS R KEY TO PLAY AGAIN", title_font, white, 90, 584, screen)
 
 def finish_game():
 	enemy.stop_shooting = True
 	player.stop_shooting = True
 	player.disable_hitbox = True
-	pygame.time.delay(1100)
 	return False
 
 def play_again():
 	player.rect.center = (player.original_x, player.original_y)
 	player.invincible = False
-	player.life_start = 3
 	player.life_remaining = 3
 	enemy.health_remaining = 500
 	enemy.stop_shooting = False

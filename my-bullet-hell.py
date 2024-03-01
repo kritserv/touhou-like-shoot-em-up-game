@@ -106,7 +106,8 @@ while run:
 
 			for event in pygame.event.get():
 				run = check_quit_game_event(event)
-				if not check_any_key_event(event):
+				retry = check_r_key(event)
+				if retry:
 					play_again()
 					hi_score = load_highscore()
 					game_start = True
