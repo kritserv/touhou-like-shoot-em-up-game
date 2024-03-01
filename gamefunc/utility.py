@@ -62,6 +62,7 @@ def play_again():
 	enemy.stop_shooting = False
 	player.stop_shooting = False
 	player.disable_hitbox = False
+	player.graze = 0
 	player.score = 0
 
 def check_quit_game_event(event):

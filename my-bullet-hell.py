@@ -108,6 +108,7 @@ while run:
 				run = check_quit_game_event(event)
 				if not check_any_key_event(event):
 					play_again()
+					hi_score = load_highscore()
 					game_start = True
 
 	pygame.display.update()
