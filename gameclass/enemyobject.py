@@ -13,9 +13,9 @@ class Enemy(pygame.sprite.Sprite):
 		self.black = black
 		self.red = red
 		self.spritesheet = {
-			"idle": pygame.image.load("img/enemy_idle.png"),
-			"left": pygame.image.load("img/enemy_left.png"),
-			"right": pygame.image.load("img/enemy_right.png")
+			"idle": pygame.image.load("img/enemy_idle.png").convert_alpha(),
+			"left": pygame.image.load("img/enemy_left.png").convert_alpha(),
+			"right": pygame.image.load("img/enemy_right.png").convert_alpha()
 			}
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 72, i * 88, 72, 88)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0

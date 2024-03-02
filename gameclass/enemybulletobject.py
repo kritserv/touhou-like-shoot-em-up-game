@@ -4,7 +4,7 @@ from math import cos, sin, atan2, pi
 class EnemyBullet(pygame.sprite.Sprite):
 	def __init__(self, x, y, angle, screen_width, screen_height, focus_player):
 		pygame.sprite.Sprite.__init__(self)
-		self.original_image = pygame.image.load("img/enemy_bullet.png")
+		self.original_image = pygame.image.load("img/enemy_bullet.png").convert_alpha()
 		self.image = pygame.transform.rotate(self.original_image, -angle * 180 / pi)
 		self.rect = self.image.get_rect(center = (x, y))
 		self.mask = pygame.mask.from_surface(self.image)

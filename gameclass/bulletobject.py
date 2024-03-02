@@ -3,7 +3,7 @@ import pygame
 class Bullet(pygame.sprite.Sprite):
 	def __init__(self, x, y, screen_width):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("img/bullet.png")
+		self.image = pygame.image.load("img/bullet.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.center = [x, y]
 		self.mask = pygame.mask.from_surface(self.image)
