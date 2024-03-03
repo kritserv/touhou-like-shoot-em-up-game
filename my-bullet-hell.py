@@ -12,7 +12,8 @@ from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
 	make_player_transparent, is_collide, \
 	player_hold_shift, show_hitbox, \
 	update_graze_bullet, clear_all_bullet
-from gamefunc.enemypattern import enemy_shoot_pattern
+from gamefunc.enemypattern import enemy_shoot_pattern, \
+	enemy_move_pattern
 
 pygame.init()
 hi_score = load_highscore()
@@ -50,6 +51,7 @@ while run:
 
 			if not enemy.stop_shooting:
 				bullet_count = enemy_shoot_pattern(bullet_count)
+				enemy_move_pattern(bullet_count)
 
 			if bullet_hit_player():
 				if not player.invincible:

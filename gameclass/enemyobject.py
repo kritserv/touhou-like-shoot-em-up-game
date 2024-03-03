@@ -24,6 +24,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		self.health_start = 500
 		self.health_remaining = 500
+		self.speed = 3
 		self.bullet_delay = 300
 		self.bullet_spiral_delay = 1
 		self.last_bullet_time = pygame.time.get_ticks()
@@ -80,8 +81,19 @@ class Enemy(pygame.sprite.Sprite):
 			self.enemybullet_group.add(another_bullet)
 			self.bullet_index = (self.bullet_index + 1) % amount
 
+	def move_left(self):
+		self.rect.x += -1 * self.speed
+
+	def move_right(self):
+		self.rect.x += 1 * self.speed
+
+	def move_up(self):
+		self.rect.y += -1 * self.speed
+
+	def move_down(self):
+		self.rect.y += 1 * self.speed
+
 	def update(self, dt):
-		speed = 10
 
 		pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))
 		if self.health_remaining > 0:
