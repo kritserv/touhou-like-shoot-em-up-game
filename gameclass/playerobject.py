@@ -41,9 +41,12 @@ class Player(pygame.sprite.Sprite):
 		self.score = 0
 		self.graze = 0
 
+	def reset_position(self):
+		self.rect.center = (self.original_x, self.original_y)
+
 	def damage_and_reset(self):
 		self.life_remaining -= 1
-		self.rect.center = (self.original_x, self.original_y)
+		self.reset_position()
 		self.direction = "idle"
 		self.invincible = True
 		self.last_hit_time = pygame.time.get_ticks()

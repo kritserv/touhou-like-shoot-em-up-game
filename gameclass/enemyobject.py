@@ -93,6 +93,9 @@ class Enemy(pygame.sprite.Sprite):
 	def move_down(self):
 		self.rect.y += 1 * self.speed
 
+	def reset_position(self):
+		self.rect.center = (self.x, self.y)
+
 	def update(self, dt):
 
 		pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))

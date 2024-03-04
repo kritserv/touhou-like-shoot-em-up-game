@@ -53,7 +53,8 @@ def finish_game():
 	return False
 
 def play_again():
-	player.rect.center = (player.original_x, player.original_y)
+	player.reset_position()
+	enemy.reset_position()
 	player.invincible = False
 	player.life_remaining = 3
 	enemy.health_remaining = 500
