@@ -72,8 +72,6 @@ while run:
 					bullet_count = 0
 					play_again()
 
-
-
 			dt = clock.tick(fps) / 100
 			player.update(dt)
 			enemy.update(dt)
