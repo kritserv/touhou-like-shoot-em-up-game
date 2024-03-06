@@ -24,4 +24,4 @@ player_group.add(player)
 enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)
 
-bullet_count = 0
+pattern_change_counter = 0

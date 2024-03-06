@@ -2,7 +2,7 @@ import pygame
 from gamefunc.variable import clock, fps, screen, \
 	black, player_group, bullet_group, \
 	enemy_group, enemybullet_group, \
-	player, enemy, bullet_count, background
+	player, enemy, pattern_change_counter, background
 from gamefunc.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	check_quit_game_event, check_any_key_event, \
@@ -44,14 +44,14 @@ while run:
 
 				if enemy.health_remaining < 0:
 					clear_all_bullet()
-					bullet_count = 0
+					pattern_change_counter = 0
 					player.score += 300
 					save_hi_score(player.score, hi_score)
 					game_start = finish_game()
 
 			if not enemy.stop_shooting:
-				bullet_count = enemy_shoot_pattern(bullet_count)
-				enemy_move_pattern(bullet_count)
+				pattern_change_counter = enemy_shoot_pattern(pattern_change_counter)
+				enemy_move_pattern(pattern_change_counter)
 
 			if bullet_hit_player():
 				if not player.invincible:
@@ -59,7 +59,7 @@ while run:
 
 				if player.life_remaining <= 0:
 					clear_all_bullet()
-					bullet_count = 0
+					pattern_change_counter = 0
 					game_start = finish_game()
 			else:
 				update_graze_bullet()
@@ -69,7 +69,7 @@ while run:
 				quick_retry = check_r_key_event(event)
 				if quick_retry:
 					clear_all_bullet()
-					bullet_count = 0
+					pattern_change_counter = 0
 					play_again()
 
 			dt = clock.tick(fps) / 100
