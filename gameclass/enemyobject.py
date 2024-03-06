@@ -1,7 +1,11 @@
 import pygame
 from gameclass.enemybulletobject import EnemyBullet
 from math import pi
-	
+
+pygame.mixer.pre_init(44100, -16, 2, 512)
+pygame.mixer.init()
+pygame.init()
+
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self, screen_info, enemybullet_group, black, red):
 		pygame.sprite.Sprite.__init__(self)
@@ -22,6 +26,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.image = self.images["idle"][self.current_image]
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)
+		self.shooting_sound = pygame.mixer.Sound("soundeffect/enemy_shoot.wav")
+		self.shooting_sound.set_volume(0.08)
 		self.health_start = 500
 		self.health_remaining = 500
 		self.speed = 3
@@ -34,10 +40,11 @@ class Enemy(pygame.sprite.Sprite):
 		self.direction = "idle"
 		self.stop_shooting = False
 		self.enemybullet_group = enemybullet_group
-		
+
 	def normal_shoot(self, focus_player, player, delay_before_focus, style):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
+			self.shooting_sound.play()
 			self.last_bullet_time = current_time
 			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height, focus_player, style)
 			if focus_player:
@@ -47,6 +54,7 @@ class Enemy(pygame.sprite.Sprite):
 	def circular_shoot(self, amount, focus_player, player, delay_before_focus, style):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
+			self.shooting_sound.play()
 			self.last_bullet_time = current_time
 			for i in range(amount):
 				angle = 2 * pi * i / amount
@@ -58,6 +66,7 @@ class Enemy(pygame.sprite.Sprite):
 	def spiral_shoot(self, amount, focus_player, player, delay_before_focus, style):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_spiral_delay:
+			self.shooting_sound.play()
 			self.last_bullet_time = current_time
 			angle = 2 * pi * self.bullet_index / amount
 			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
@@ -69,6 +78,7 @@ class Enemy(pygame.sprite.Sprite):
 	def spiral_shoot_2(self, amount, focus_player, player, delay_before_focus, style):
 		current_time = pygame.time.get_ticks()
 		if current_time - self.last_bullet_time > self.bullet_spiral_delay:
+			self.shooting_sound.play()
 			self.last_bullet_time = current_time
 			angle = 2 * pi * self.bullet_index / amount
 			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
