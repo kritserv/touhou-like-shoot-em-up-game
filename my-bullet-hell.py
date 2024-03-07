@@ -9,9 +9,8 @@ from gamefunc.utility import draw_ui_text, \
 	show_title_screen, show_play_again, play_again, \
 	finish_game, check_r_key_event
 from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
-	make_player_transparent, is_collide, \
-	player_hold_shift, show_hitbox, \
-	update_graze_bullet, clear_all_bullet
+    is_collide, update_graze_bullet, \
+    clear_all_bullet
 from gamefunc.enemypattern import enemy_shoot_pattern, \
 	enemy_move_pattern
 
@@ -87,11 +86,8 @@ while run:
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
 
-			if player.invincible:
-				make_player_transparent()
-				
-			if player_hold_shift():
-				show_hitbox(player)
+			if player.show_hitbox:
+			    player.draw_hitbox()
 
 		else:
 			show_play_again()

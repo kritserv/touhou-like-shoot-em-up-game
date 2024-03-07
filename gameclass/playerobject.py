@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
 		self.extra_spread_pos = 0
 		self.stop_shooting = False
 		self.disable_hitbox = False
+		self.show_hitbox = False
 		self.invincible = False
 		self.last_hit_time = 0
 		self.score = 0
@@ -51,6 +52,21 @@ class Player(pygame.sprite.Sprite):
 		self.invincible = True
 		self.last_hit_time = pygame.time.get_ticks()
 
+	def draw_hitbox(self):
+	    if not self.disable_hitbox:
+	        hitbox_position = self.rect.topleft
+	        self.screen.blit(self.hitbox_image, hitbox_position)
+
+	def make_transparent(self):
+	    if pygame.time.get_ticks() - self.last_hit_time <= 2000:
+	        temp_image = self.original_image.copy()
+	        temp_image.set_alpha(128)
+	        self.image = temp_image
+	    else:
+	        self.image = self.original_image
+	        self.invincible = False
+	        self.image.set_alpha(255)
+
 	def update(self, dt):
 		speed = 12
 		dx = 0
@@ -59,12 +75,17 @@ class Player(pygame.sprite.Sprite):
 		cooldown = 100
 		bullet_spread = 35
 		bullet_extra_spread = (-10, 20, 30, 20, -10)
+		self.show_hitbox = False
+
+		if self.invincible:
+		    self.make_transparent()
 
 		key = pygame.key.get_pressed()
 		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
 			speed = 6
 			bullet_spread = 15
 			bullet_extra_spread = (0, 8, 16, 8, 0)
+			self.show_hitbox = True
 		
 		if key[pygame.K_LEFT] and self.rect.left > 20:
 			dx = -1

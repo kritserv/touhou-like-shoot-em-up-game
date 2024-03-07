@@ -1,6 +1,6 @@
 import pygame
 from gameclass.playerobject import GrazingHitbox
-from gamefunc.variable import screen, screen_info, white, grey, black, red, green, player, enemy, bullet_group, enemybullet_group
+from gamefunc.variable import white, grey, black, red, green, player, enemy, bullet_group, enemybullet_group
 
 def is_collide(object1, object2, method):
 	if method:
@@ -13,25 +13,6 @@ def bullet_hit_enemy():
 
 def bullet_hit_player(): 
 	return is_collide(player, enemybullet_group, True)
-
-def player_hold_shift():
-	key = pygame.key.get_pressed()
-	return key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]
-
-def show_hitbox(player):
-	if not player.disable_hitbox:
-		hitbox_position = player.rect.topleft
-		screen.blit(player.hitbox_image, hitbox_position)
-
-def make_player_transparent():
-	if pygame.time.get_ticks() - player.last_hit_time <= 2000:
-		temp_image = player.original_image.copy()
-		temp_image.set_alpha(128)
-		player.image = temp_image
-	else:
-		player.image = player.original_image
-		player.invincible = False
-		player.image.set_alpha(255)
 
 def update_graze_bullet():
 	grazing_hitbox = GrazingHitbox(player)
