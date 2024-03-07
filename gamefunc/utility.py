@@ -65,7 +65,7 @@ def play_again():
 	player.score = 0
 
 def check_quit_game_event(event):
-	if event.type == pygame.QUIT:
+	if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_q):
 		return False
 	else:
 		return True
