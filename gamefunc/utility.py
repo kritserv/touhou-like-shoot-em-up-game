@@ -43,6 +43,7 @@ def show_title_screen():
 	draw_text("PRESS ANY KEY TO START", title_font, black, 310, 584, screen)
 
 def show_play_again():
+	pygame.draw.rect(screen, (0, 0, 0), [105, 575, 405, 40])
 	title_font = pygame.font.SysFont(None, 45)
 	draw_text("PRESS R TO PLAY AGAIN", title_font, white, 120, 584, screen)
 
