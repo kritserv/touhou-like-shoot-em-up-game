@@ -1,4 +1,4 @@
-from gamefunc.variable import enemy, player
+from gamevariable.var import enemy, player
 
 def enemy_move_pattern(pattern_change_counter):
 	if 1 <= pattern_change_counter < 40:

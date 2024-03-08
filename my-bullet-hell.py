@@ -1,5 +1,5 @@
 import pygame
-from gamefunc.variable import clock, fps, screen, \
+from gamevariable.var import clock, fps, screen, \
 	black, player_group, bullet_group, \
 	enemy_group, enemybullet_group, \
 	player, enemy, pattern_change_counter, background
