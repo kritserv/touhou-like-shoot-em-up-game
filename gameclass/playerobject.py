@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
 		self.life_start = 3
 		self.life_remaining = 3
 		self.last_shot = pygame.time.get_ticks()
-		self.animation_time = 0.5
+		self.animation_time = 3
 		self.current_time = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group

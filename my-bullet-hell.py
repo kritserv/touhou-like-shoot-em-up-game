@@ -74,7 +74,7 @@ while run:
 					pattern_change_counter = 0
 					play_again()
 
-			dt = clock.tick(fps) / 100
+			dt = clock.tick(fps) / 10
 			player.update(dt)
 			enemy.update(dt)
 

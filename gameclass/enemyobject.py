@@ -35,7 +35,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.bullet_spiral_delay = 1
 		self.last_bullet_time = pygame.time.get_ticks()
 		self.bullet_index = 0
-		self.animation_time = 0.5
+		self.animation_time = 3
 		self.current_time = 0
 		self.direction = "idle"
 		self.stop_shooting = False
