@@ -3,7 +3,7 @@ from math import ceil
 
 class BackGround():
 	def __init__(self, screen_info):
-		self.bg = pygame.image.load("img/background.png").convert()
+		self.bg = pygame.image.load("gameasset/img/background.png").convert()
 		self.bg_height = self.bg.get_height()
 		self.screen_width = screen_info[0]
 		self.screen_height = screen_info[1]

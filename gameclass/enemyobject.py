@@ -17,16 +17,16 @@ class Enemy(pygame.sprite.Sprite):
 		self.black = black
 		self.red = red
 		self.spritesheet = {
-			"idle": pygame.image.load("img/enemy_idle.png").convert_alpha(),
-			"left": pygame.image.load("img/enemy_left.png").convert_alpha(),
-			"right": pygame.image.load("img/enemy_right.png").convert_alpha()
+			"idle": pygame.image.load("gameasset/img/enemy_idle.png").convert_alpha(),
+			"left": pygame.image.load("gameasset/img/enemy_left.png").convert_alpha(),
+			"right": pygame.image.load("gameasset/img/enemy_right.png").convert_alpha()
 			}
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 72, i * 88, 72, 88)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0
 		self.image = self.images["idle"][self.current_image]
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)
-		self.shooting_sound = pygame.mixer.Sound("soundeffect/enemy_shoot.wav")
+		self.shooting_sound = pygame.mixer.Sound("gameasset/soundeffect/enemy_shoot.wav")
 		self.shooting_sound.set_volume(0.08)
 		self.health_start = 500
 		self.health_remaining = 500

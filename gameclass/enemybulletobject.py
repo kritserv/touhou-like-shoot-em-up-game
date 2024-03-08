@@ -6,10 +6,10 @@ class EnemyBullet(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.style = style
 		if self.style == 1:
-			self.original_image = pygame.image.load("img/enemy_bullet.png").convert_alpha()
+			self.original_image = pygame.image.load("gameasset/img/enemy_bullet.png").convert_alpha()
 			self.image = pygame.transform.rotate(self.original_image, -angle * 180 / pi)
 		else:
-			self.image = pygame.image.load("img/enemy_bullet_round.png").convert_alpha()
+			self.image = pygame.image.load("gameasset/img/enemy_bullet_round.png").convert_alpha()
 		self.rect = self.image.get_rect(center = (x, y))
 		self.mask = pygame.mask.from_surface(self.image)
 		self.grazed = False

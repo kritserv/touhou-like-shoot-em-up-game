@@ -13,9 +13,9 @@ class Player(pygame.sprite.Sprite):
 		self.black = black
 		self.green = green
 		self.spritesheet = {
-			"idle": pygame.image.load("img/player_idle.png").convert_alpha(),
-			"left": pygame.image.load("img/player_left.png").convert_alpha(),
-			"right": pygame.image.load("img/player_right.png").convert_alpha()
+			"idle": pygame.image.load("gameasset/img/player_idle.png").convert_alpha(),
+			"left": pygame.image.load("gameasset/img/player_left.png").convert_alpha(),
+			"right": pygame.image.load("gameasset/img/player_right.png").convert_alpha()
 			}
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 64, i * 64, 64, 64)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0
@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		self.original_x = self.x
 		self.original_y = self.y
-		self.hitbox_image = pygame.image.load("img/player_hitbox.png").convert_alpha()
+		self.hitbox_image = pygame.image.load("gameasset/img/player_hitbox.png").convert_alpha()
 		self.life_start = 3
 		self.life_remaining = 3
 		self.last_shot = pygame.time.get_ticks()
@@ -68,7 +68,7 @@ class Player(pygame.sprite.Sprite):
 	        self.image.set_alpha(255)
 
 	def update(self, dt):
-		speed = 12
+		speed = 13
 		dx = 0
 		dy = 0
 		
