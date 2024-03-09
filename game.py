@@ -1,4 +1,9 @@
 import pygame
+
+pygame.mixer.init()
+pygame.mixer.pre_init(44100, -16, 2, 512)
+pygame.init()
+
 from gamevariable.var import clock, fps, screen, \
 	black, player_group, bullet_group, \
 	enemy_group, enemybullet_group, \
@@ -14,10 +19,6 @@ from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
     clear_all_bullet
 from gamefunc.enemypattern import enemy_shoot_pattern, \
 	enemy_move_pattern
-
-pygame.mixer.pre_init(44100, -8, 2, 512)
-pygame.mixer.init()
-pygame.init()
 
 hi_score = load_highscore()
 pygame.display.set_caption("Bullet Hell")

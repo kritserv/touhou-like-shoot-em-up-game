@@ -2,10 +2,6 @@ import pygame
 from gameclass.enemybulletobject import EnemyBullet
 from math import pi
 
-pygame.mixer.pre_init(44100, -16, 2, 512)
-pygame.mixer.init()
-pygame.init()
-
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self, screen_info, enemybullet_group, black, red):
 		pygame.sprite.Sprite.__init__(self)
