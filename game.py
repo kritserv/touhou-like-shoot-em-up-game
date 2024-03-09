@@ -3,7 +3,7 @@ from gamevariable.var import clock, fps, screen, \
 	black, player_group, bullet_group, \
 	enemy_group, enemybullet_group, \
 	player, enemy, pattern_change_counter, background, \
-	pause
+	pause, game_start_sound
 from gamefunc.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	check_quit_game_event, check_any_key_event, \
@@ -31,7 +31,10 @@ while run:
 					
 		for event in pygame.event.get():
 			run = check_quit_game_event(event)
-			title_screen = check_any_key_event(event)
+			title_screen_toggle = check_any_key_event(event)
+			if title_screen_toggle:
+				game_start_sound.play()
+				title_screen = not title_screen
 
 	else:
 		if game_start:
@@ -42,10 +45,12 @@ while run:
 			background.scroll_up(pause)
 				
 			if bullet_hit_enemy():
+				enemy.damaged_sound.play()
 				enemy.health_remaining -= 10
 				player.score += 30
 
 				if enemy.health_remaining < 0:
+					enemy.death_sound.play()
 					clear_all_bullet()
 					pattern_change_counter = 0
 					player.score += 300
@@ -58,6 +63,7 @@ while run:
 
 			if bullet_hit_player():
 				if not player.invincible:
+					player.damaged_sound.play()
 					player.damage_and_reset()
 
 				if player.life_remaining <= 0:
@@ -74,6 +80,7 @@ while run:
 					pause = not pause
 				quick_retry = check_r_key_event(event)
 				if quick_retry:
+					game_start_sound.play()
 					if pause:
 						pause = not pause
 					clear_all_bullet()
@@ -103,6 +110,7 @@ while run:
 				run = check_quit_game_event(event)
 				retry = check_r_key_event(event)
 				if retry:
+					game_start_sound.play()
 					play_again()
 					hi_score = load_highscore()
 					game_start = True

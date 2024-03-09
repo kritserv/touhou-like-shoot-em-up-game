@@ -17,6 +17,13 @@ class Player(pygame.sprite.Sprite):
 			"left": pygame.image.load("gameasset/img/player_left.png").convert_alpha(),
 			"right": pygame.image.load("gameasset/img/player_right.png").convert_alpha()
 			}
+		self.hitbox_image = pygame.image.load("gameasset/img/player_hitbox.png").convert_alpha()
+		self.shooting_sound = pygame.mixer.Sound("gameasset/soundeffect/player_shoot.wav")
+		self.shooting_sound.set_volume(0.06)
+		self.damaged_sound = pygame.mixer.Sound("gameasset/soundeffect/player_damaged.wav")
+		self.damaged_sound.set_volume(0.07)
+		self.pickup_sound = pygame.mixer.Sound("gameasset/soundeffect/player_pickup.wav")
+		self.pickup_sound.set_volume(0.07)
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 64, i * 64, 64, 64)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0
 		self.image = self.images["idle"][self.current_image]
@@ -25,7 +32,6 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		self.original_x = self.x
 		self.original_y = self.y
-		self.hitbox_image = pygame.image.load("gameasset/img/player_hitbox.png").convert_alpha()
 		self.life_start = 3
 		self.life_remaining = 3
 		self.last_shot = pygame.time.get_ticks()
@@ -113,6 +119,7 @@ class Player(pygame.sprite.Sprite):
 		if self.stop_shooting == False:
 			bullet_spread += bullet_extra_spread[self.extra_spread_pos]
 			if key[pygame.K_z] and time_now - self.last_shot > cooldown:
+				self.shooting_sound.play()
 				bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
 				bullet2 = Bullet(self.rect.centerx, self.rect.top, self.screen_width)
 				bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top, self.screen_width)

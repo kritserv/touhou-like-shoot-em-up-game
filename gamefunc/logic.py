@@ -8,7 +8,7 @@ def is_collide(object1, object2, method):
 	else:
 		return pygame.sprite.spritecollide(object1, object2, False, pygame.sprite.collide_rect)
 
-def bullet_hit_enemy(): 
+def bullet_hit_enemy():
 	return is_collide(enemy, bullet_group, True)
 
 def bullet_hit_player(): 

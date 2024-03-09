@@ -27,3 +27,6 @@ enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)
 
 pattern_change_counter = 0
+
+game_start_sound = pygame.mixer.Sound("gameasset/soundeffect/start_game.wav")
+game_start_sound.set_volume(0.06)
