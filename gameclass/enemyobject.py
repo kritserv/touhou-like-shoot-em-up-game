@@ -106,12 +106,12 @@ class Enemy(pygame.sprite.Sprite):
 	def reset_position(self):
 		self.rect.center = (self.x, self.y)
 
-	def update(self, dt):
-
+	def draw_health_bar(self):
 		pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))
 		if self.health_remaining > 0:
 			pygame.draw.rect(self.screen, self.red, (55, 20, int(530 * (self.health_remaining / self.health_start)), 15))
 
+	def update(self, dt):
 		self.current_time += dt
 		if self.current_time >= self.animation_time:
 			self.current_time = 0

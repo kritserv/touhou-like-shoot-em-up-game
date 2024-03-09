@@ -73,6 +73,11 @@ class Player(pygame.sprite.Sprite):
 	        self.invincible = False
 	        self.image.set_alpha(255)
 
+	def draw_health_bar(self):
+		pygame.draw.rect(self.screen, self.black, (750, 190, 210, 25))
+		if self.life_remaining > 0:
+			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
+
 	def update(self, dt):
 		speed = 13
 		dx = 0
@@ -133,9 +138,6 @@ class Player(pygame.sprite.Sprite):
 
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
-		pygame.draw.rect(self.screen, self.black, (750, 190, 210, 25))
-		if self.life_remaining > 0:
-			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 		self.current_time += dt
 		
 		if self.current_time >= self.animation_time:

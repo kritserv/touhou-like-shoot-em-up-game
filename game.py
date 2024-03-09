@@ -95,11 +95,12 @@ while run:
 				bullet_group.update()
 				enemybullet_group.update()
 			
+			player.draw_health_bar()
+			enemy.draw_health_bar()
 			player_group.draw(screen)
 			bullet_group.draw(screen)
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
-    		
 
 			if player.show_hitbox:
 			    player.draw_hitbox()
