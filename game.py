@@ -2,12 +2,13 @@ import pygame
 from gamevariable.var import clock, fps, screen, \
 	black, player_group, bullet_group, \
 	enemy_group, enemybullet_group, \
-	player, enemy, pattern_change_counter, background
+	player, enemy, pattern_change_counter, background, \
+	pause
 from gamefunc.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	check_quit_game_event, check_any_key_event, \
 	show_title_screen, show_play_again, play_again, \
-	finish_game, check_r_key_event
+	finish_game, check_r_key_event, check_esc_key_event
 from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
     is_collide, update_graze_bullet, \
     clear_all_bullet
@@ -38,7 +39,7 @@ while run:
 			screen.fill(black)
 			draw_ui_text(hi_score, player.score, player.graze)
 
-			background.scroll_up()
+			background.scroll_up(pause)
 				
 			if bullet_hit_enemy():
 				enemy.health_remaining -= 10
@@ -51,7 +52,7 @@ while run:
 					save_hi_score(player.score, hi_score)
 					game_start = finish_game()
 
-			if not enemy.stop_shooting:
+			if not enemy.stop_shooting and not pause:
 				pattern_change_counter = enemy_shoot_pattern(pattern_change_counter)
 				enemy_move_pattern(pattern_change_counter)
 
@@ -68,23 +69,29 @@ while run:
 						
 			for event in pygame.event.get():
 				run = check_quit_game_event(event)
+				toggle_pause = check_esc_key_event(event)
+				if toggle_pause:
+					pause = not pause
 				quick_retry = check_r_key_event(event)
 				if quick_retry:
+					if pause:
+						pause = not pause
 					clear_all_bullet()
 					pattern_change_counter = 0
 					play_again()
-
+					
 			dt = clock.tick(fps) / 10
-			player.update(dt)
-			enemy.update(dt)
-
-			bullet_group.update()
-			enemybullet_group.update()
-
+			if not pause:
+				player.update(dt)
+				enemy.update(dt)
+				bullet_group.update()
+				enemybullet_group.update()
+			
 			player_group.draw(screen)
 			bullet_group.draw(screen)
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
+    		
 
 			if player.show_hitbox:
 			    player.draw_hitbox()

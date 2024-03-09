@@ -11,10 +11,11 @@ class BackGround():
 		self.scroll = 0
 		self.tiles = ceil(self.screen_height / self.bg_height) + 1
 		
-	def scroll_up(self):
+	def scroll_up(self, pause):
 		for i in range(0, self.tiles):
 			self.screen.blit(self.bg, (20, i * self.bg_height + self.scroll))
-		self.scroll -= 6
+		if not pause:
+			self.scroll -= 6
 
 		if abs(self.scroll) > self.bg_height:
 			self.scroll = 0

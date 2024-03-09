@@ -83,3 +83,10 @@ def check_r_key_event(event):
 			return True
 	else:
 		return False
+
+def check_esc_key_event(event):
+	if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_ESCAPE:
+			return True
+	else:
+		return False

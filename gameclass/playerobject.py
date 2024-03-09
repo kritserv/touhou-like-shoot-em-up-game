@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
 
 		if self.invincible:
 		    self.make_transparent()
-
+		
 		key = pygame.key.get_pressed()
 		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
 			speed = 6
@@ -105,7 +105,7 @@ class Player(pygame.sprite.Sprite):
 		if dx != 0 and dy != 0:
 			dx /= sqrt(2)
 			dy /= sqrt(2)
-
+		
 		self.rect.x += dx * speed
 		self.rect.y += dy * speed
 
