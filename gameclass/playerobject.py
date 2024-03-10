@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
 			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 
 	def update(self, dt):
-		speed = 13
+		speed = 12
 		dx = 0
 		dy = 0
 		

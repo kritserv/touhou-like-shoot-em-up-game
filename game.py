@@ -40,10 +40,6 @@ while run:
 	else:
 		if game_start:
 			clock.tick(fps)
-			screen.fill(black)
-			draw_ui_text(hi_score, player.score, player.graze)
-
-			background.scroll_up(pause)
 				
 			if bullet_hit_enemy():
 				enemy.damaged_sound.play()
@@ -94,7 +90,10 @@ while run:
 				enemy.update(dt)
 				bullet_group.update()
 				enemybullet_group.update()
-			
+				
+			screen.fill(black)
+			draw_ui_text(hi_score, player.score, player.graze)
+			background.scroll_up(pause)
 			player.draw_health_bar()
 			enemy.draw_health_bar()
 			player_group.draw(screen)

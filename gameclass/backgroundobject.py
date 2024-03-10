@@ -1,5 +1,4 @@
 import pygame
-from math import ceil
 
 class BackGround():
 	def __init__(self, screen_info):
@@ -8,14 +7,24 @@ class BackGround():
 		self.screen_width = screen_info[0]
 		self.screen_height = screen_info[1]
 		self.screen = screen_info[2]
-		self.scroll = 0
-		self.tiles = ceil(self.screen_height / self.bg_height) + 1
-		
-	def scroll_up(self, pause):
-		for i in range(0, self.tiles):
-			self.screen.blit(self.bg, (20, i * self.bg_height + self.scroll))
-		if not pause:
-			self.scroll -= 6
+		self.scrolls = 0
 
-		if abs(self.scroll) > self.bg_height:
-			self.scroll = 0
+	def scroll_up(self, pause):
+		self.screen.blit(self.bg, (20, self.scrolls))
+		self.screen.blit(self.bg, (20, self.bg_height + self.scrolls))
+
+		if not pause:
+			self.scrolls -= 6
+
+		if abs(self.scrolls) > self.bg_height:
+			self.scrolls = 0
+		
+	def scroll_down(self, pause):
+		self.screen.blit(self.bg, (20, -self.bg_height - self.scrolls))
+		self.screen.blit(self.bg, (20, 0 - self.scrolls))
+		
+		if not pause:
+			self.scrolls -= 6
+
+		if self.scrolls < -self.bg_height:
+		 	self.scrolls = 0
