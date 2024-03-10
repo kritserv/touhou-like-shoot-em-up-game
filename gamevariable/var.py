@@ -2,9 +2,9 @@ import pygame
 from gameclass.playerobject import Player
 from gameclass.enemyobject import Enemy
 from gameclass.backgroundobject import BackGround
+from gameclass.timerobject import Timer
 
 clock = pygame.time.Clock()
-fps = 60
 screen_width = 1024
 screen_height = 768
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -26,7 +26,7 @@ player_group.add(player)
 enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)
 
-pattern_change_counter = 0
-
 game_start_sound = pygame.mixer.Sound("gameasset/soundeffect/start_game.wav")
 game_start_sound.set_volume(0.06)
+
+timer = Timer()

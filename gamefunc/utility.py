@@ -1,5 +1,6 @@
 import pygame
-from gamevariable.var import clock, screen, white, grey, black, player, enemy
+import time
+from gamevariable.var import clock, screen, white, grey, black, player, enemy, timer
 
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:
@@ -34,7 +35,9 @@ def draw_ui_text(hi_score, player_score, player_graze):
 	draw_text("POWER", ui_font, grey, 650, 350, screen)
 	draw_text("GRAZE", ui_font, grey, 650, 400, screen)
 	draw_text(str(player_graze), ui_font, white, 750, 400, screen)
-	draw_text(str(clock.get_fps() // 0.1 / 10), ui_font, white, 950, 720, screen)
+	draw_text("TIMER", ui_font, white, 630, 720, screen)
+	draw_text(str(timer.get_elapsed_time()), ui_font, white, 690, 720, screen)
+	draw_text(str(clock.get_fps() // 0.1 / 10), ui_font, white, 940, 720, screen)
 	draw_text("fps", ui_font, white, 990, 720, screen)
 
 def show_title_screen():
@@ -51,6 +54,7 @@ def finish_game():
 	enemy.stop_shooting = True
 	player.stop_shooting = True
 	player.disable_hitbox = True
+	timer.pause()
 	return False
 
 def play_again():
@@ -64,6 +68,7 @@ def play_again():
 	player.disable_hitbox = False
 	player.graze = 0
 	player.score = 0
+	timer.restart()
 
 def check_quit_game_event(event):
 	if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_q):

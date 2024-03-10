@@ -11,9 +11,10 @@ class EnemyBullet(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.image.load("gameasset/img/enemy_bullet_round.png").convert_alpha()
 		self.rect = self.image.get_rect(center = (x, y))
+		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.mask = pygame.mask.from_surface(self.image)
 		self.grazed = False
-		self.speed = 10
+		self.speed = 500
 		self.vx = self.speed * cos(angle)
 		self.vy = self.speed * sin(angle)
 		self.screen_width = screen_width
@@ -27,9 +28,11 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.delay = delay
 		self.create_time = pygame.time.get_ticks()
 
-	def update(self):	    
-		self.rect.y += self.vy
-		self.rect.x += self.vx
+	def update(self, dt):	    
+		self.pos.y += self.vy * dt
+		self.rect.y = round(self.pos.y)
+		self.pos.x += self.vx * dt
+		self.rect.x = round(self.pos.x)
 
 		if self.rect.top > self.screen_height or self.rect.bottom < 0 or self.rect.left < 12 or self.rect.right > self.screen_width - 395:
 			self.kill()

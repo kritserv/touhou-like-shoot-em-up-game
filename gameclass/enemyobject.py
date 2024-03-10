@@ -28,34 +28,36 @@ class Enemy(pygame.sprite.Sprite):
 		self.image = self.images["idle"][self.current_image]
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)
+		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.health_start = 500
 		self.health_remaining = 500
-		self.speed = 3
+		self.speed = 50
 		self.bullet_delay = 300
-		self.bullet_spiral_delay = 1
+		self.bullet_spiral_delay = 50
 		self.last_bullet_time = pygame.time.get_ticks()
 		self.bullet_index = 0
-		self.animation_time = 3
+		self.animation_time = 0.1
+		self.current_frame = 0
 		self.current_time = 0
 		self.direction = "idle"
 		self.stop_shooting = False
 		self.enemybullet_group = enemybullet_group
 
 	def normal_shoot(self, focus_player, player, delay_before_focus, style):
-		current_time = pygame.time.get_ticks()
-		if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
+		self.current_time = pygame.time.get_ticks()
+		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.shooting_sound.play()
-			self.last_bullet_time = current_time
+			self.last_bullet_time = self.current_time
 			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height, focus_player, style)
 			if focus_player:
 				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
 
 	def circular_shoot(self, amount, focus_player, player, delay_before_focus, style):
-		current_time = pygame.time.get_ticks()
-		if current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
+		self.current_time = pygame.time.get_ticks()
+		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.shooting_sound.play()
-			self.last_bullet_time = current_time
+			self.last_bullet_time = self.current_time
 			for i in range(amount):
 				angle = 2 * pi * i / amount
 				bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
@@ -64,10 +66,10 @@ class Enemy(pygame.sprite.Sprite):
 				self.enemybullet_group.add(bullet)
 
 	def spiral_shoot(self, amount, focus_player, player, delay_before_focus, style):
-		current_time = pygame.time.get_ticks()
-		if current_time - self.last_bullet_time > self.bullet_spiral_delay:
+		self.current_time = pygame.time.get_ticks()
+		if self.current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.shooting_sound.play()
-			self.last_bullet_time = current_time
+			self.last_bullet_time = self.current_time
 			angle = 2 * pi * self.bullet_index / amount
 			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
 			if focus_player:
@@ -76,10 +78,10 @@ class Enemy(pygame.sprite.Sprite):
 			self.bullet_index = (self.bullet_index + 1) % amount
 
 	def spiral_shoot_2(self, amount, focus_player, player, delay_before_focus, style):
-		current_time = pygame.time.get_ticks()
-		if current_time - self.last_bullet_time > self.bullet_spiral_delay:
+		self.current_time = pygame.time.get_ticks()
+		if self.current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.shooting_sound.play()
-			self.last_bullet_time = current_time
+			self.last_bullet_time = self.current_time
 			angle = 2 * pi * self.bullet_index / amount
 			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
 			if focus_player:
@@ -91,20 +93,25 @@ class Enemy(pygame.sprite.Sprite):
 			self.enemybullet_group.add(another_bullet)
 			self.bullet_index = (self.bullet_index + 1) % amount
 
-	def move_left(self):
-		self.rect.x += -1 * self.speed
+	def move_left(self, dt):
+		self.pos.x  += -1 * self.speed * dt
+		self.rect.x = round(self.pos.x)
 
-	def move_right(self):
-		self.rect.x += 1 * self.speed
+	def move_right(self, dt):
+		self.pos.x  += 1 * self.speed * dt
+		self.rect.x = round(self.pos.x)
 
-	def move_up(self):
-		self.rect.y += -1 * self.speed
+	def move_up(self, dt):
+		self.pos.y  += -1 * self.speed * dt
+		self.rect.y = round(self.pos.y)
 
-	def move_down(self):
-		self.rect.y += 1 * self.speed
+	def move_down(self, dt):
+		self.pos.y  += 1 * self.speed * dt
+		self.rect.y = round(self.pos.y)
 
 	def reset_position(self):
 		self.rect.center = (self.x, self.y)
+		self.pos = pygame.math.Vector2(self.rect.topleft)
 
 	def draw_health_bar(self):
 		pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))
@@ -112,9 +119,9 @@ class Enemy(pygame.sprite.Sprite):
 			pygame.draw.rect(self.screen, self.red, (55, 20, int(530 * (self.health_remaining / self.health_start)), 15))
 
 	def update(self, dt):
-		self.current_time += dt
-		if self.current_time >= self.animation_time:
-			self.current_time = 0
+		self.current_frame += dt
+		if self.current_frame >= self.animation_time:
+			self.current_frame -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
 

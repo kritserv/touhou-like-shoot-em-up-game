@@ -30,12 +30,13 @@ class Player(pygame.sprite.Sprite):
 		self.original_image = self.image
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)
+		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.original_x = self.x
 		self.original_y = self.y
 		self.life_start = 3
 		self.life_remaining = 3
 		self.last_shot = pygame.time.get_ticks()
-		self.animation_time = 3
+		self.animation_time = 0.1
 		self.current_time = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group
@@ -50,6 +51,7 @@ class Player(pygame.sprite.Sprite):
 
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)
+		self.pos = pygame.math.Vector2(self.rect.topleft)
 
 	def damage_and_reset(self):
 		self.life_remaining -= 1
@@ -79,7 +81,7 @@ class Player(pygame.sprite.Sprite):
 			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 
 	def update(self, dt):
-		speed = 12
+		speed = 450
 		dx = 0
 		dy = 0
 		
@@ -93,7 +95,7 @@ class Player(pygame.sprite.Sprite):
 		
 		key = pygame.key.get_pressed()
 		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
-			speed = 6
+			speed = 120
 			bullet_spread = 15
 			bullet_extra_spread = (0, 8, 16, 8, 0)
 			self.show_hitbox = True
@@ -117,8 +119,10 @@ class Player(pygame.sprite.Sprite):
 			dx /= sqrt(2)
 			dy /= sqrt(2)
 		
-		self.rect.x += dx * speed
-		self.rect.y += dy * speed
+		self.pos.x += dx * speed * dt
+		self.rect.x = round(self.pos.x)
+		self.pos.y += dy * speed * dt
+		self.rect.y = round(self.pos.y)
 
 		time_now = pygame.time.get_ticks()
 		if self.stop_shooting == False:
@@ -138,10 +142,10 @@ class Player(pygame.sprite.Sprite):
 
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
+
 		self.current_time += dt
-		
 		if self.current_time >= self.animation_time:
-			self.current_time = 0
+			self.current_time -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
 
