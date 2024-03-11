@@ -80,20 +80,16 @@ class Player(pygame.sprite.Sprite):
 		if self.life_remaining > 0:
 			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 
-	def update(self, dt):
+	def calculate_value(self, key):
 		speed = 450
 		dx = 0
 		dy = 0
-		
+
 		cooldown = 100
 		bullet_spread = 35
 		bullet_extra_spread = (-10, 20, 30, 20, -10)
 		self.show_hitbox = False
 
-		if self.invincible:
-		    self.make_transparent()
-		
-		key = pygame.key.get_pressed()
 		if key[pygame.K_LSHIFT] or key[pygame.K_RSHIFT]:
 			speed = 120
 			bullet_spread = 15
@@ -118,12 +114,16 @@ class Player(pygame.sprite.Sprite):
 		if dx != 0 and dy != 0:
 			dx /= sqrt(2)
 			dy /= sqrt(2)
-		
+		return speed, dx, dy, bullet_spread, bullet_extra_spread, cooldown
+
+	def move(self, speed, dx, dy, dt):
 		self.pos.x += dx * speed * dt
 		self.rect.x = round(self.pos.x)
 		self.pos.y += dy * speed * dt
 		self.rect.y = round(self.pos.y)
+		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
+	def shoot(self, bullet_spread, bullet_extra_spread, cooldown, key):
 		time_now = pygame.time.get_ticks()
 		if self.stop_shooting == False:
 			bullet_spread += bullet_extra_spread[self.extra_spread_pos]
@@ -139,15 +139,19 @@ class Player(pygame.sprite.Sprite):
 				self.extra_spread_pos += 1
 				if self.extra_spread_pos >= 5:
 					self.extra_spread_pos = -1
-
-		self.mask = pygame.mask.from_surface(self.hitbox_image)
-
-
+	def animate(self, dt):
 		self.current_time += dt
 		if self.current_time >= self.animation_time:
 			self.current_time -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
+
+	def update(self, dt):
+		key = pygame.key.get_pressed()
+		speed, dx, dy, bullet_spread, bullet_extra_spread, cooldown = self.calculate_value(key)
+		self.move(speed, dx, dy, dt)
+		self.shoot(bullet_spread, bullet_extra_spread, cooldown, key)
+		self.animate(dt)
 
 class GrazingHitbox(pygame.sprite.Sprite):
 	def __init__(self, player):

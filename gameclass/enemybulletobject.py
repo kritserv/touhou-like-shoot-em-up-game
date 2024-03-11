@@ -28,22 +28,28 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.delay = delay
 		self.create_time = pygame.time.get_ticks()
 
-	def update(self, dt):	    
+	def bullet_focus_on_player(self):
+		if pygame.time.get_ticks() - self.create_time > self.delay and not self.direction_updated:
+			dx = self.target_x - self.rect.centerx
+			dy = self.target_y - self.rect.centery
+			angle = atan2(dy, dx)
+			if self.style == 1:
+				self.image = pygame.transform.rotate(self.original_image, -angle * 180 / pi)
+			self.vx = self.speed * cos(angle)
+			self.vy = self.speed * sin(angle)
+			self.direction_updated = True
+
+	def move(self, dt):
 		self.pos.y += self.vy * dt
 		self.rect.y = round(self.pos.y)
 		self.pos.x += self.vx * dt
 		self.rect.x = round(self.pos.x)
 
+	def update(self, dt):
+		self.move(dt)
+
 		if self.rect.top > self.screen_height or self.rect.bottom < 0 or self.rect.left < 12 or self.rect.right > self.screen_width - 395:
 			self.kill()
 
 		if self.focus_player:
-			if pygame.time.get_ticks() - self.create_time > self.delay and not self.direction_updated:
-				dx = self.target_x - self.rect.centerx
-				dy = self.target_y - self.rect.centery
-				angle = atan2(dy, dx)
-				if self.style == 1:
-					self.image = pygame.transform.rotate(self.original_image, -angle * 180 / pi)
-				self.vx = self.speed * cos(angle)
-				self.vy = self.speed * sin(angle)
-				self.direction_updated = True
+			self.bullet_focus_on_player()

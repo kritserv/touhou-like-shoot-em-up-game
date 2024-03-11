@@ -109,6 +109,9 @@ class Enemy(pygame.sprite.Sprite):
 		self.pos.y  += 1 * self.speed * dt
 		self.rect.y = round(self.pos.y)
 
+	def move_mask(self):
+		self.mask = pygame.mask.from_surface(self.image)
+
 	def reset_position(self):
 		self.rect.center = (self.x, self.y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)
@@ -118,11 +121,13 @@ class Enemy(pygame.sprite.Sprite):
 		if self.health_remaining > 0:
 			pygame.draw.rect(self.screen, self.red, (55, 20, int(530 * (self.health_remaining / self.health_start)), 15))
 
-	def update(self, dt):
+	def animate(self, dt):
 		self.current_frame += dt
 		if self.current_frame >= self.animation_time:
 			self.current_frame -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
 
-		self.mask = pygame.mask.from_surface(self.image)
+	def update(self, dt):
+		self.animate(dt)
+		self.move_mask()

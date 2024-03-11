@@ -9,22 +9,25 @@ class BackGround():
 		self.screen = screen_info[2]
 		self.scrolls = 0
 
-	def scroll_up(self, pause, dt):
+	def scroll_up(self):
 		self.screen.blit(self.bg, (20, self.scrolls))
 		self.screen.blit(self.bg, (20, self.bg_height + self.scrolls))
-
-		if not pause:
-			self.scrolls -= 160 * dt
 
 		if abs(self.scrolls) > self.bg_height:
 			self.scrolls = 0
 		
-	def scroll_down(self, pause, dt):
+	def scroll_down(self):
 		self.screen.blit(self.bg, (20, -self.bg_height - self.scrolls))
 		self.screen.blit(self.bg, (20, 0 - self.scrolls))
-		
-		if not pause:
-			self.scrolls -= 160 * dt
 
 		if self.scrolls < -self.bg_height:
 		 	self.scrolls = 0
+
+	def update(self, up_0_or_down_1, pause, dt):
+		if up_0_or_down_1:
+			self.scroll_down()
+		else:
+			self.scroll_up()
+
+		if not pause:
+			self.scrolls -= 160 * dt

@@ -4,7 +4,7 @@ import time
 pygame.mixer.init()
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
-prev_time = time.time()
+pygame.display.set_caption("Bullet Hell")
 
 from gamevariable.var import clock, screen, \
 	black, player_group, bullet_group, \
@@ -21,8 +21,7 @@ from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
     clear_all_bullet
 
 hi_score = load_highscore()
-pygame.display.set_caption("Bullet Hell")
-
+prev_time = time.time()
 title_screen = True
 game_start = True
 run = True
@@ -93,8 +92,8 @@ while run:
 				enemybullet_group.update(dt)
 				
 			screen.fill(black)
+			background.update(0, pause, dt)
 			draw_ui_text(hi_score, player.score, player.graze)
-			background.scroll_up(pause, dt)
 			player.draw_health_bar()
 			enemy.draw_health_bar()
 			player_group.draw(screen)
