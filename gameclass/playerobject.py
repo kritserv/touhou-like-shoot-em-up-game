@@ -53,20 +53,20 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = (self.original_x, self.original_y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)
 
-	def damage_and_reset(self):
+	def damage_and_reset(self, timer):
 		self.life_remaining -= 1
 		self.reset_position()
 		self.direction = "idle"
 		self.invincible = True
-		self.last_hit_time = pygame.time.get_ticks()
+		self.last_hit_time = timer.get_elapsed_time()
 
 	def draw_hitbox(self):
 	    if not self.disable_hitbox:
 	        hitbox_position = self.rect.topleft
 	        self.screen.blit(self.hitbox_image, hitbox_position)
 
-	def make_transparent(self):
-	    if pygame.time.get_ticks() - self.last_hit_time <= 2000:
+	def make_transparent(self, timer):
+	    if timer.get_elapsed_time() - self.last_hit_time <= 2:
 	        temp_image = self.original_image.copy()
 	        temp_image.set_alpha(128)
 	        self.image = temp_image
@@ -139,6 +139,7 @@ class Player(pygame.sprite.Sprite):
 				self.extra_spread_pos += 1
 				if self.extra_spread_pos >= 5:
 					self.extra_spread_pos = -1
+
 	def animate(self, dt):
 		self.current_time += dt
 		if self.current_time >= self.animation_time:
@@ -146,11 +147,13 @@ class Player(pygame.sprite.Sprite):
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
 
-	def update(self, dt):
+	def update(self, dt, timer):
 		key = pygame.key.get_pressed()
 		speed, dx, dy, bullet_spread, bullet_extra_spread, cooldown = self.calculate_value(key)
 		self.move(speed, dx, dy, dt)
 		self.shoot(bullet_spread, bullet_extra_spread, cooldown, key)
+		if self.invincible:
+			self.make_transparent(timer)
 		self.animate(dt)
 
 class GrazingHitbox(pygame.sprite.Sprite):

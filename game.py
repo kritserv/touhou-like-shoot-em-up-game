@@ -57,12 +57,12 @@ while run:
 					game_start = finish_game()
 
 			if not enemy.stop_shooting and not pause:
-				pass
+				enemy.circular_shoot(amount = 10, focus_player = True, player = player, delay_before_focus = 300, style = 1)
 
 			if bullet_hit_player():
 				if not player.invincible:
 					player.damaged_sound.play()
-					player.damage_and_reset()
+					player.damage_and_reset(timer)
 
 				if player.life_remaining <= 0:
 					clear_all_bullet()
@@ -86,7 +86,7 @@ while run:
 					play_again()
 					
 			if not pause:
-				player.update(dt)
+				player.update(dt, timer)
 				enemy.update(dt)
 				bullet_group.update(dt)
 				enemybullet_group.update(dt)
