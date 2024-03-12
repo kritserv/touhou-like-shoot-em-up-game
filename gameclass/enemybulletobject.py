@@ -1,5 +1,6 @@
 import pygame
 from math import cos, sin, atan2, pi
+from gameclass.timerobject import Timer
 
 class EnemyBullet(pygame.sprite.Sprite):
 	def __init__(self, x, y, angle, screen_width, screen_height, focus_player, style):
@@ -21,15 +22,17 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.screen_height = screen_height
 		self.focus_player = focus_player
 		self.direction_updated = False
+		self.target_delay_timer = Timer()
+		self.target_delay_timer.start()
 
 	def set_target(self, target_x, target_y, delay):
 		self.target_x = target_x
 		self.target_y = target_y
 		self.delay = delay
-		self.create_time = pygame.time.get_ticks()
+		self.create_time = self.target_delay_timer.get_elapsed_time()
 
-	def bullet_focus_on_player(self):
-		if pygame.time.get_ticks() - self.create_time > self.delay and not self.direction_updated:
+	def focus_on_player(self):
+		if self.target_delay_timer.get_elapsed_time() - self.create_time > self.delay and not self.direction_updated:
 			dx = self.target_x - self.rect.centerx
 			dy = self.target_y - self.rect.centery
 			angle = atan2(dy, dx)
@@ -52,4 +55,4 @@ class EnemyBullet(pygame.sprite.Sprite):
 			self.kill()
 
 		if self.focus_player:
-			self.bullet_focus_on_player()
+			self.focus_on_player()
