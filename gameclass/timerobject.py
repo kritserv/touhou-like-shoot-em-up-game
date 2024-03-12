@@ -38,6 +38,6 @@ class Timer():
 
 	def get_elapsed_time(self):
 		if self.is_paused:
-			return round(self.elapsed_time)
+			return round(self.elapsed_time, 3)
 		else:
-			return round(self.elapsed_time + time.time() - self.start_time)
+			return round(self.elapsed_time + time.time() - self.start_time, 3)

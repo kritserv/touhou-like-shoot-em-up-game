@@ -1,5 +1,6 @@
 import pygame
 from gameclass.bulletobject import Bullet
+from gameclass.timerobject import Timer
 from math import sqrt
 
 class Player(pygame.sprite.Sprite):
@@ -48,6 +49,8 @@ class Player(pygame.sprite.Sprite):
 		self.last_hit_time = 0
 		self.score = 0
 		self.graze = 0
+		self.shoot_timer = Timer()
+		self.shoot_timer.start()
 
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)
@@ -80,12 +83,11 @@ class Player(pygame.sprite.Sprite):
 		if self.life_remaining > 0:
 			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
 
-	def calculate_value(self, key):
+	def calculate_value_from_key_pressed(self, key):
 		speed = 450
 		dx = 0
 		dy = 0
 
-		cooldown = 100
 		bullet_spread = 35
 		bullet_extra_spread = (-10, 20, 30, 20, -10)
 		self.show_hitbox = False
@@ -114,7 +116,7 @@ class Player(pygame.sprite.Sprite):
 		if dx != 0 and dy != 0:
 			dx /= sqrt(2)
 			dy /= sqrt(2)
-		return speed, dx, dy, bullet_spread, bullet_extra_spread, cooldown
+		return speed, dx, dy, bullet_spread, bullet_extra_spread
 
 	def move(self, speed, dx, dy, dt):
 		self.pos.x += dx * speed * dt
@@ -123,11 +125,11 @@ class Player(pygame.sprite.Sprite):
 		self.rect.y = round(self.pos.y)
 		self.mask = pygame.mask.from_surface(self.hitbox_image)
 
-	def shoot(self, bullet_spread, bullet_extra_spread, cooldown, key):
-		time_now = pygame.time.get_ticks()
+	def shoot(self, bullet_spread, bullet_extra_spread, key):
+		cooldown = 0.1
 		if self.stop_shooting == False:
 			bullet_spread += bullet_extra_spread[self.extra_spread_pos]
-			if key[pygame.K_z] and time_now - self.last_shot > cooldown:
+			if key[pygame.K_z] and self.shoot_timer.get_elapsed_time() > cooldown:
 				self.shooting_sound.play()
 				bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
 				bullet2 = Bullet(self.rect.centerx, self.rect.top, self.screen_width)
@@ -135,7 +137,7 @@ class Player(pygame.sprite.Sprite):
 				self.bullet_group.add(bullet1)
 				self.bullet_group.add(bullet2)
 				self.bullet_group.add(bullet3)
-				self.last_shot = time_now
+				self.shoot_timer.restart()
 				self.extra_spread_pos += 1
 				if self.extra_spread_pos >= 5:
 					self.extra_spread_pos = -1
@@ -149,12 +151,12 @@ class Player(pygame.sprite.Sprite):
 
 	def update(self, dt, timer):
 		key = pygame.key.get_pressed()
-		speed, dx, dy, bullet_spread, bullet_extra_spread, cooldown = self.calculate_value(key)
+		speed, dx, dy, bullet_spread, bullet_extra_spread = self.calculate_value_from_key_pressed(key)
 		self.move(speed, dx, dy, dt)
-		self.shoot(bullet_spread, bullet_extra_spread, cooldown, key)
+		self.shoot(bullet_spread, bullet_extra_spread, key)
+		self.animate(dt)
 		if self.invincible:
 			self.make_transparent(timer)
-		self.animate(dt)
 
 class GrazingHitbox(pygame.sprite.Sprite):
 	def __init__(self, player):
