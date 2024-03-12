@@ -34,7 +34,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.health_remaining = 500
 		self.speed = 50
 		self.shoot_timer = Timer()
-		self.bullet_delay = 0.3
+		self.bullet_delay = 0.7#0.3
 		self.bullet_spiral_delay = 0.05
 		self.last_bullet_time = self.shoot_timer.get_elapsed_time()
 		self.bullet_index = 0
@@ -61,51 +61,51 @@ class Enemy(pygame.sprite.Sprite):
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
 
-	def normal_shoot(self, focus_player, player, delay_before_focus, style):
+	def normal_shoot(self, focus_player, player, delay_before_focus, style, slow_at_center):
 		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
-			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height, focus_player, style)
+			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, pi / 2, self.screen_width, self.screen_height, focus_player, style, slow_at_center)
 			if focus_player:
 				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
 
-	def circular_shoot(self, amount, focus_player, player, delay_before_focus, style):
+	def circular_shoot(self, amount, focus_player, player, delay_before_focus, style, slow_at_center):
 		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
 			for i in range(amount):
 				angle = 2 * pi * i / amount
-				bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
+				bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style, slow_at_center)
 				if focus_player:
 					bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 				self.enemybullet_group.add(bullet)
 
-	def spiral_shoot(self, amount, focus_player, player, delay_before_focus, style):
+	def spiral_shoot(self, amount, focus_player, player, delay_before_focus, style, slow_at_center):
 		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
 			angle = 2 * pi * self.bullet_index / amount
-			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
+			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style, slow_at_center)
 			if focus_player:
 				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
 			self.bullet_index = (self.bullet_index + 1) % amount
 
-	def spiral_shoot_2(self, amount, focus_player, player, delay_before_focus, style):
+	def spiral_shoot_2(self, amount, focus_player, player, delay_before_focus, style, slow_at_center):
 		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
 			angle = 2 * pi * self.bullet_index / amount
-			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style)
+			bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle, self.screen_width, self.screen_height, focus_player, style, slow_at_center)
 			if focus_player:
 				bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(bullet)
-			another_bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle + pi, self.screen_width, self.screen_height, focus_player, style)
+			another_bullet = EnemyBullet(self.rect.centerx, self.rect.centery, angle + pi, self.screen_width, self.screen_height, focus_player, style, slow_at_center)
 			if focus_player:
 				another_bullet.set_target(player.rect.centerx, player.rect.centery, delay_before_focus)
 			self.enemybullet_group.add(another_bullet)

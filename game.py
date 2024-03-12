@@ -59,7 +59,7 @@ while run:
 					game_start = finish_game()
 
 			if not enemy.stop_shooting and not pause:
-				enemy.spiral_shoot(amount = 20, focus_player = True, player = player, delay_before_focus = 0.3, style = 1)
+				enemy.circular_shoot(amount = 25, focus_player = False, player = player, delay_before_focus = 0, style = 1, slow_at_center = True)
 
 			if bullet_hit_player():
 				if not player.invincible:

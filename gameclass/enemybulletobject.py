@@ -3,7 +3,7 @@ from math import cos, sin, atan2, pi
 from gameclass.timerobject import Timer
 
 class EnemyBullet(pygame.sprite.Sprite):
-	def __init__(self, x, y, angle, screen_width, screen_height, focus_player, style):
+	def __init__(self, x, y, angle, screen_width, screen_height, focus_player, style, slow_at_center):
 		pygame.sprite.Sprite.__init__(self)
 		self.style = style
 		if self.style == 1:
@@ -16,8 +16,9 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.mask = pygame.mask.from_surface(self.image)
 		self.grazed = False
 		self.speed = 500
-		self.vx = self.speed * cos(angle)
-		self.vy = self.speed * sin(angle)
+		self.angle = angle
+		self.slow_at_center = slow_at_center
+		self.slowed = False
 		self.screen_width = screen_width
 		self.screen_height = screen_height
 		self.focus_player = focus_player
@@ -38,20 +39,31 @@ class EnemyBullet(pygame.sprite.Sprite):
 		if self.target_delay_timer.get_elapsed_time() - self.create_time > self.delay and not self.direction_updated:
 			dx = self.target_x - self.rect.centerx
 			dy = self.target_y - self.rect.centery
-			angle = atan2(dy, dx)
+			self.angle = atan2(dy, dx)
 			if self.style == 1:
-				self.image = pygame.transform.rotate(self.original_image, -angle * 180 / pi)
-			self.vx = self.speed * cos(angle)
-			self.vy = self.speed * sin(angle)
+				self.image = pygame.transform.rotate(self.original_image, -self.angle * 180 / pi)
+			self.vx = self.speed * cos(self.angle)
+			self.vy = self.speed * sin(self.angle)
 			self.direction_updated = True
 
 	def move(self, dt):
+		self.vx = self.speed * cos(self.angle)
+		self.vy = self.speed * sin(self.angle)
 		self.pos.y += self.vy * dt
 		self.rect.y = round(self.pos.y)
 		self.pos.x += self.vx * dt
 		self.rect.x = round(self.pos.x)
 
+	def slow_down_at_center(self):
+		if self.slow_at_center:
+			if self.rect.centery > self.screen_height / 2:
+				self.speed = 380
+				self.slowed = True
+
 	def update(self, dt):
+		if not self.slowed:
+			self.slow_down_at_center()
+
 		self.move(dt)
 
 		if self.rect.top > self.screen_height or self.rect.bottom < 0 or self.rect.left < 12 or self.rect.right > self.screen_width - 395:
