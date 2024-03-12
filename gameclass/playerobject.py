@@ -52,6 +52,22 @@ class Player(pygame.sprite.Sprite):
 		self.invincible_timer = Timer()
 		self.invincible_timer.start()
 
+	def restart_timer(self):
+		self.shoot_timer.restart()
+		self.invincible_timer.restart()
+
+	def pause_timer(self):
+		self.shoot_timer.pause()
+		self.invincible_timer.pause()
+
+	def resume_timer(self):
+		self.shoot_timer.resume()
+		self.invincible_timer.resume()
+
+	def toggle_pause_timer(self):
+		self.shoot_timer.toggle_pause()
+		self.invincible_timer.toggle_pause()
+
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)

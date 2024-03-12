@@ -76,6 +76,9 @@ while run:
 				if toggle_pause:
 					pause = not pause
 					timer.toggle_pause()
+					player.toggle_pause_timer()
+					enemy.toggle_pause_timer()
+					for enemybullet in enemybullet_group: enemybullet.toggle_pause_timer()
 				quick_retry = check_r_key_event(event)
 				if quick_retry:
 					game_start_sound.play()

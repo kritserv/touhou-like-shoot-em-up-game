@@ -46,6 +46,19 @@ class Enemy(pygame.sprite.Sprite):
 		self.stop_shooting = False
 		self.enemybullet_group = enemybullet_group
 
+	def restart_timer(self):
+		self.shoot_timer.restart()
+		self.last_bullet_time = self.shoot_timer.get_elapsed_time()
+
+	def pause_timer(self):
+		self.shoot_timer.pause()
+
+	def resume_timer(self):
+		self.shoot_timer.resume()
+
+	def toggle_pause_timer(self):
+		self.shoot_timer.toggle_pause()
+
 	def normal_shoot(self, focus_player, player, delay_before_focus, style):
 		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:

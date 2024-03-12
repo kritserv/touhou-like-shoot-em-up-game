@@ -25,6 +25,9 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.target_delay_timer = Timer()
 		self.target_delay_timer.start()
 
+	def toggle_pause_timer(self):
+		self.target_delay_timer.toggle_pause()
+
 	def set_target(self, target_x, target_y, delay):
 		self.target_x = target_x
 		self.target_y = target_y

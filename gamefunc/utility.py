@@ -54,6 +54,8 @@ def finish_game():
 	enemy.stop_shooting = True
 	player.stop_shooting = True
 	player.disable_hitbox = True
+	player.pause_timer()
+	enemy.pause_timer()
 	timer.pause()
 	return False
 
@@ -68,6 +70,8 @@ def play_again():
 	player.disable_hitbox = False
 	player.graze = 0
 	player.score = 0
+	player.restart_timer()
+	enemy.restart_timer()
 	timer.restart()
 
 def check_quit_game_event(event):
