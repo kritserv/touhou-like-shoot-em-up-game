@@ -34,7 +34,6 @@ class Enemy(pygame.sprite.Sprite):
 		self.health_remaining = 500
 		self.speed = 50
 		self.shoot_timer = Timer()
-		self.shoot_timer.start()
 		self.bullet_delay = 0.3
 		self.bullet_spiral_delay = 0.05
 		self.last_bullet_time = self.shoot_timer.get_elapsed_time()
@@ -45,6 +44,9 @@ class Enemy(pygame.sprite.Sprite):
 		self.direction = "idle"
 		self.stop_shooting = False
 		self.enemybullet_group = enemybullet_group
+
+	def start_timer(self):
+		self.shoot_timer.start()
 
 	def restart_timer(self):
 		self.shoot_timer.restart()

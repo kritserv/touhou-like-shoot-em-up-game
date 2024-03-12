@@ -39,6 +39,8 @@ while run:
 			if title_screen_toggle:
 				game_start_sound.play()
 				timer.start()
+				player.start_timer()
+				enemy.start_timer()
 				title_screen = not title_screen
 
 	else:

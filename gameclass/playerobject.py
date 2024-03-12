@@ -48,8 +48,10 @@ class Player(pygame.sprite.Sprite):
 		self.score = 0
 		self.graze = 0
 		self.shoot_timer = Timer()
-		self.shoot_timer.start()
 		self.invincible_timer = Timer()
+
+	def start_timer(self):
+		self.shoot_timer.start()
 		self.invincible_timer.start()
 
 	def restart_timer(self):
