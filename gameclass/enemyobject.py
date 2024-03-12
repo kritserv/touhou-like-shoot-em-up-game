@@ -1,6 +1,7 @@
 import pygame
 from gameclass.enemybulletobject import EnemyBullet
 from math import pi
+from gameclass.timerobject import Timer
 
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self, screen_info, enemybullet_group, black, red):
@@ -32,9 +33,11 @@ class Enemy(pygame.sprite.Sprite):
 		self.health_start = 500
 		self.health_remaining = 500
 		self.speed = 50
-		self.bullet_delay = 300
-		self.bullet_spiral_delay = 50
-		self.last_bullet_time = pygame.time.get_ticks()
+		self.shoot_timer = Timer()
+		self.shoot_timer.start()
+		self.bullet_delay = 0.3
+		self.bullet_spiral_delay = 0.05
+		self.last_bullet_time = self.shoot_timer.get_elapsed_time()
 		self.bullet_index = 0
 		self.animation_time = 0.1
 		self.current_frame = 0
@@ -44,7 +47,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.enemybullet_group = enemybullet_group
 
 	def normal_shoot(self, focus_player, player, delay_before_focus, style):
-		self.current_time = pygame.time.get_ticks()
+		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
@@ -54,7 +57,7 @@ class Enemy(pygame.sprite.Sprite):
 			self.enemybullet_group.add(bullet)
 
 	def circular_shoot(self, amount, focus_player, player, delay_before_focus, style):
-		self.current_time = pygame.time.get_ticks()
+		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
@@ -66,7 +69,7 @@ class Enemy(pygame.sprite.Sprite):
 				self.enemybullet_group.add(bullet)
 
 	def spiral_shoot(self, amount, focus_player, player, delay_before_focus, style):
-		self.current_time = pygame.time.get_ticks()
+		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
@@ -78,7 +81,7 @@ class Enemy(pygame.sprite.Sprite):
 			self.bullet_index = (self.bullet_index + 1) % amount
 
 	def spiral_shoot_2(self, amount, focus_player, player, delay_before_focus, style):
-		self.current_time = pygame.time.get_ticks()
+		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_spiral_delay:
 			self.shooting_sound.play()
 			self.last_bullet_time = self.current_time
