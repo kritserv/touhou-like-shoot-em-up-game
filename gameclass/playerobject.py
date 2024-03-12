@@ -36,9 +36,8 @@ class Player(pygame.sprite.Sprite):
 		self.original_y = self.y
 		self.life_start = 3
 		self.life_remaining = 3
-		self.last_shot = pygame.time.get_ticks()
 		self.animation_time = 0.1
-		self.current_time = 0
+		self.current_frame = 0
 		self.direction = "idle"
 		self.bullet_group = bullet_group
 		self.extra_spread_pos = 0
@@ -46,11 +45,12 @@ class Player(pygame.sprite.Sprite):
 		self.disable_hitbox = False
 		self.show_hitbox = False
 		self.invincible = False
-		self.last_hit_time = 0
 		self.score = 0
 		self.graze = 0
 		self.shoot_timer = Timer()
 		self.shoot_timer.start()
+		self.invincible_timer = Timer()
+		self.invincible_timer.start()
 
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)
@@ -61,15 +61,15 @@ class Player(pygame.sprite.Sprite):
 		self.reset_position()
 		self.direction = "idle"
 		self.invincible = True
-		self.last_hit_time = timer.get_elapsed_time()
+		self.last_hit_time = self.invincible_timer.get_elapsed_time()
 
 	def draw_hitbox(self):
 	    if not self.disable_hitbox:
 	        hitbox_position = self.rect.topleft
 	        self.screen.blit(self.hitbox_image, hitbox_position)
 
-	def make_transparent(self, timer):
-	    if timer.get_elapsed_time() - self.last_hit_time <= 2:
+	def make_transparent(self):
+	    if self.invincible_timer.get_elapsed_time() - self.last_hit_time <= 2:
 	        temp_image = self.original_image.copy()
 	        temp_image.set_alpha(128)
 	        self.image = temp_image
@@ -143,20 +143,20 @@ class Player(pygame.sprite.Sprite):
 					self.extra_spread_pos = -1
 
 	def animate(self, dt):
-		self.current_time += dt
-		if self.current_time >= self.animation_time:
-			self.current_time -= self.animation_time
+		self.current_frame += dt
+		if self.current_frame >= self.animation_time:
+			self.current_frame -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
 
-	def update(self, dt, timer):
+	def update(self, dt):
 		key = pygame.key.get_pressed()
 		speed, dx, dy, bullet_spread, bullet_extra_spread = self.calculate_value_from_key_pressed(key)
 		self.move(speed, dx, dy, dt)
 		self.shoot(bullet_spread, bullet_extra_spread, key)
 		self.animate(dt)
 		if self.invincible:
-			self.make_transparent(timer)
+			self.make_transparent()
 
 class GrazingHitbox(pygame.sprite.Sprite):
 	def __init__(self, player):

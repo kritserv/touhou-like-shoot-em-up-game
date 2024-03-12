@@ -86,7 +86,7 @@ while run:
 					play_again()
 					
 			if not pause:
-				player.update(dt, timer)
+				player.update(dt)
 				enemy.update(dt)
 				bullet_group.update(dt)
 				enemybullet_group.update(dt)
