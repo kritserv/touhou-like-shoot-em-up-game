@@ -121,6 +121,6 @@ while run:
 					hi_score = load_highscore()
 					game_start = True
 
-	pygame.display.update()
+	pygame.display.flip()
 
 pygame.quit()

@@ -5,9 +5,13 @@ from gameclass.backgroundobject import BackGround
 from gameclass.timerobject import Timer
 
 clock = pygame.time.Clock()
+
 screen_width = 1024
 screen_height = 768
-screen = pygame.display.set_mode((screen_width, screen_height))
+
+screen = pygame.display.set_mode((screen_width, screen_height), 
+		pygame.RESIZABLE|pygame.SCALED)
+
 screen_info = (screen_width, screen_height, screen)
 
 pause = False
