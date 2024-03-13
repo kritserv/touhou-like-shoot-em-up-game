@@ -15,7 +15,8 @@ from gamefunc.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	check_quit_game_event, check_any_key_event, \
 	show_title_screen, show_play_again, play_again, \
-	finish_game, check_r_key_event, check_esc_key_event
+	finish_game, check_r_key_event, check_esc_key_event, \
+	check_full_screen_toggle_event
 from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
     is_collide, update_graze_bullet, \
     clear_all_bullet
@@ -42,6 +43,7 @@ while run:
 				player.start_timer()
 				enemy.start_timer()
 				title_screen = not title_screen
+			check_full_screen_toggle_event(event)
 
 	else:
 		if game_start:
@@ -95,6 +97,7 @@ while run:
 					clear_all_bullet()
 					game_run_time = time.time()
 					play_again()
+				check_full_screen_toggle_event(event)
 					
 			if not pause:
 				player.update(dt)
@@ -126,6 +129,7 @@ while run:
 					play_again()
 					hi_score = load_highscore()
 					game_start = True
+				check_full_screen_toggle_event(event)
 
 	pygame.display.flip()
 
