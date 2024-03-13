@@ -17,14 +17,14 @@ def bullet_hit_player():
 def update_graze_bullet():
 	grazing_hitbox = GrazingHitbox(player)
 	grazing_bullets = is_collide(grazing_hitbox, enemybullet_group, False)
-	for enemybullet in grazing_bullets:
-		if not enemybullet.grazed:
+	for bullet in grazing_bullets:
+		if not bullet.grazed:
 			player.graze += 1
 			player.score += 500
-			enemybullet.grazed = True
+			bullet.grazed = True
 
 def clear_all_bullet():
-	for enemybullet in enemybullet_group:
-		enemybullet.kill()
+	for bullet in enemybullet_group:
+		bullet.kill()
 	for bullet in bullet_group:
 		bullet.kill()
