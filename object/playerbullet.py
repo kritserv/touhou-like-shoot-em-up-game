@@ -1,9 +1,9 @@
 import pygame
 
-class Bullet(pygame.sprite.Sprite):
+class PlayerBullet(pygame.sprite.Sprite):
 	def __init__(self, x, y, screen_width):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("gameasset/img/bullet.png").convert_alpha()
+		self.image = pygame.image.load("asset/img/bullet.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.center = [x, y]
 		self.pos = pygame.math.Vector2(self.rect.topleft)

@@ -1,10 +1,10 @@
 import pygame
-from gameclass.bulletobject import Bullet
-from gameclass.timerobject import Timer
+from object.playerbullet import PlayerBullet
+from object.timer import Timer
 from math import sqrt
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self, screen_info, bullet_group, black, green):
+	def __init__(self, screen_info, playerbullet_group, black, green):
 		pygame.sprite.Sprite.__init__(self)
 		self.screen_width = screen_info[0]
 		self.screen_height = screen_info[1]
@@ -14,16 +14,16 @@ class Player(pygame.sprite.Sprite):
 		self.black = black
 		self.green = green
 		self.spritesheet = {
-			"idle": pygame.image.load("gameasset/img/player_idle.png").convert_alpha(),
-			"left": pygame.image.load("gameasset/img/player_left.png").convert_alpha(),
-			"right": pygame.image.load("gameasset/img/player_right.png").convert_alpha()
+			"idle": pygame.image.load("asset/img/player_idle.png").convert_alpha(),
+			"left": pygame.image.load("asset/img/player_left.png").convert_alpha(),
+			"right": pygame.image.load("asset/img/player_right.png").convert_alpha()
 			}
-		self.hitbox_image = pygame.image.load("gameasset/img/player_hitbox.png").convert_alpha()
-		self.shooting_sound = pygame.mixer.Sound("gameasset/soundeffect/player_shoot.wav")
+		self.hitbox_image = pygame.image.load("asset/img/player_hitbox.png").convert_alpha()
+		self.shooting_sound = pygame.mixer.Sound("asset/soundeffect/player_shoot.wav")
 		self.shooting_sound.set_volume(0.06)
-		self.damaged_sound = pygame.mixer.Sound("gameasset/soundeffect/player_damaged.wav")
+		self.damaged_sound = pygame.mixer.Sound("asset/soundeffect/player_damaged.wav")
 		self.damaged_sound.set_volume(0.07)
-		self.pickup_sound = pygame.mixer.Sound("gameasset/soundeffect/player_pickup.wav")
+		self.pickup_sound = pygame.mixer.Sound("asset/soundeffect/player_pickup.wav")
 		self.pickup_sound.set_volume(0.07)
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 64, i * 64, 64, 64)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0
@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
 		self.animation_time = 0.1
 		self.current_frame = 0
 		self.direction = "idle"
-		self.bullet_group = bullet_group
+		self.playerbullet_group = playerbullet_group
 		self.extra_spread_pos = 0
 		self.stop_shooting = False
 		self.disable_hitbox = False
@@ -149,12 +149,12 @@ class Player(pygame.sprite.Sprite):
 			bullet_spread += bullet_extra_spread[self.extra_spread_pos]
 			if key[pygame.K_z] and self.shoot_timer.get_elapsed_time() > cooldown:
 				self.shooting_sound.play()
-				bullet1 = Bullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
-				bullet2 = Bullet(self.rect.centerx, self.rect.top, self.screen_width)
-				bullet3 = Bullet(self.rect.centerx + bullet_spread, self.rect.top, self.screen_width)
-				self.bullet_group.add(bullet1)
-				self.bullet_group.add(bullet2)
-				self.bullet_group.add(bullet3)
+				bullet1 = PlayerBullet(self.rect.centerx - bullet_spread, self.rect.top, self.screen_width)
+				bullet2 = PlayerBullet(self.rect.centerx, self.rect.top, self.screen_width)
+				bullet3 = PlayerBullet(self.rect.centerx + bullet_spread, self.rect.top, self.screen_width)
+				self.playerbullet_group.add(bullet1)
+				self.playerbullet_group.add(bullet2)
+				self.playerbullet_group.add(bullet3)
 				self.shoot_timer.restart()
 				self.extra_spread_pos += 1
 				if self.extra_spread_pos >= 5:

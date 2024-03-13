@@ -1,7 +1,7 @@
 import pygame
-from gameclass.enemybulletobject import EnemyBullet
+from object.enemybullet import EnemyBullet
 from math import pi
-from gameclass.timerobject import Timer
+from object.timer import Timer
 
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self, screen_info, enemybullet_group, black, red):
@@ -14,15 +14,15 @@ class Enemy(pygame.sprite.Sprite):
 		self.black = black
 		self.red = red
 		self.spritesheet = {
-			"idle": pygame.image.load("gameasset/img/enemy_idle.png").convert_alpha(),
-			"left": pygame.image.load("gameasset/img/enemy_left.png").convert_alpha(),
-			"right": pygame.image.load("gameasset/img/enemy_right.png").convert_alpha()
+			"idle": pygame.image.load("asset/img/enemy_idle.png").convert_alpha(),
+			"left": pygame.image.load("asset/img/enemy_left.png").convert_alpha(),
+			"right": pygame.image.load("asset/img/enemy_right.png").convert_alpha()
 			}
-		self.shooting_sound = pygame.mixer.Sound("gameasset/soundeffect/enemy_shoot.wav")
+		self.shooting_sound = pygame.mixer.Sound("asset/soundeffect/enemy_shoot.wav")
 		self.shooting_sound.set_volume(0.05)
-		self.damaged_sound = pygame.mixer.Sound("gameasset/soundeffect/enemy_damaged.wav")
+		self.damaged_sound = pygame.mixer.Sound("asset/soundeffect/enemy_damaged.wav")
 		self.damaged_sound.set_volume(0.07)
-		self.death_sound = pygame.mixer.Sound("gameasset/soundeffect/enemy_death.wav")
+		self.death_sound = pygame.mixer.Sound("asset/soundeffect/enemy_death.wav")
 		self.death_sound.set_volume(0.07)
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 72, i * 88, 72, 88)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0

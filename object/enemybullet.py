@@ -1,16 +1,16 @@
 import pygame
 from math import cos, sin, atan2, pi
-from gameclass.timerobject import Timer
+from object.timer import Timer
 
 class EnemyBullet(pygame.sprite.Sprite):
 	def __init__(self, x, y, angle, screen_width, screen_height, focus_player, style, slow_at_center, bounce_top):
 		pygame.sprite.Sprite.__init__(self)
 		self.style = style
 		if self.style == 1:
-			self.original_image = pygame.image.load("gameasset/img/enemy_bullet.png").convert_alpha()
+			self.original_image = pygame.image.load("asset/img/enemy_bullet.png").convert_alpha()
 			self.image = pygame.transform.rotate(self.original_image, -angle * 180 / pi)
 		else:
-			self.image = pygame.image.load("gameasset/img/enemy_bullet_round.png").convert_alpha()
+			self.image = pygame.image.load("asset/img/enemy_bullet_round.png").convert_alpha()
 		self.rect = self.image.get_rect(center = (x, y))
 		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.mask = pygame.mask.from_surface(self.image)

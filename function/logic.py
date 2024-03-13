@@ -1,6 +1,6 @@
 import pygame
-from gameclass.playerobject import GrazingHitbox
-from gamevariable.var import white, grey, black, red, green, player, enemy, bullet_group, enemybullet_group
+from object.player import GrazingHitbox
+from variable.var import white, grey, black, red, green, player, enemy, playerbullet_group, enemybullet_group
 
 def is_collide(object1, object2, method):
 	if method:
@@ -9,7 +9,7 @@ def is_collide(object1, object2, method):
 		return pygame.sprite.spritecollide(object1, object2, False, pygame.sprite.collide_rect)
 
 def bullet_hit_enemy():
-	return is_collide(enemy, bullet_group, True)
+	return is_collide(enemy, playerbullet_group, True)
 
 def bullet_hit_player(): 
 	return is_collide(player, enemybullet_group, True)
@@ -26,5 +26,5 @@ def update_graze_bullet():
 def clear_all_bullet():
 	for bullet in enemybullet_group:
 		bullet.kill()
-	for bullet in bullet_group:
+	for bullet in playerbullet_group:
 		bullet.kill()

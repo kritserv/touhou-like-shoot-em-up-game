@@ -1,6 +1,6 @@
 import pygame
 import time
-from gamevariable.var import clock, screen, white, grey, black, player, enemy, timer
+from variable.var import clock, screen, white, grey, black, player, enemy, timer
 
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:

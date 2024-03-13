@@ -6,18 +6,18 @@ pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 pygame.display.set_caption("Bullet Hell")
 
-from gamevariable.var import clock, screen, \
-	black, player_group, bullet_group, \
+from variable.var import clock, screen, \
+	black, player_group, playerbullet_group, \
 	enemy_group, enemybullet_group, \
 	player, enemy, background, \
 	pause, game_start_sound, timer
-from gamefunc.utility import draw_ui_text, \
+from function.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	check_quit_game_event, check_any_key_event, \
 	show_title_screen, show_play_again, play_again, \
 	finish_game, check_r_key_event, check_esc_key_event, \
 	check_full_screen_toggle_event
-from gamefunc.logic import bullet_hit_enemy, bullet_hit_player, \
+from function.logic import bullet_hit_enemy, bullet_hit_player, \
     is_collide, update_graze_bullet, \
     clear_all_bullet
 
@@ -67,7 +67,7 @@ while run:
 					delay_before_focus = 0, 
 					style = 0, 
 					slow_at_center = True, 
-					bounce_top = False)
+					bounce_top = True)
 
 			if bullet_hit_player():
 				if not player.invincible:
@@ -102,7 +102,7 @@ while run:
 			if not pause:
 				player.update(dt)
 				enemy.update(dt)
-				bullet_group.update(dt)
+				playerbullet_group.update(dt)
 				enemybullet_group.update(dt)
 				
 			screen.fill(black)
@@ -111,7 +111,7 @@ while run:
 			player.draw_health_bar()
 			enemy.draw_health_bar()
 			player_group.draw(screen)
-			bullet_group.draw(screen)
+			playerbullet_group.draw(screen)
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
 
