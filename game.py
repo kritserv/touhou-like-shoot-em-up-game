@@ -10,16 +10,16 @@ from variable.var import clock, screen, \
 	black, player_group, playerbullet_group, \
 	enemy_group, enemybullet_group, \
 	player, enemy, background, \
-	pause, game_start_sound, timer
+	pause, timer, game_start_sound
 from function.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
-	show_title_screen, show_play_again, play_again, \
-	finish_game
+	show_title_screen, show_play_again, start_game, \
+	play_again, pause_game, finish_game
 from function.eventmanage import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
     check_esc_key_event, check_f_and_f11_key_event
-from function.logic import bullet_hit_enemy, bullet_hit_player, \
-    is_collide, update_graze_bullet, \
+from function.logic import bullet_hit_enemy, \
+    bullet_hit_player, is_collide, update_graze_bullet, \
     clear_all_bullet
 
 hi_score = load_highscore()
@@ -39,10 +39,7 @@ while run:
 			run = check_quit_game_event(event)
 			title_screen_toggle = check_any_key_event(event)
 			if title_screen_toggle:
-				game_start_sound.play()
-				timer.start()
-				player.start_timer()
-				enemy.start_timer()
+				start_game()
 				title_screen = not title_screen
 			check_f_and_f11_key_event(event)
 
@@ -62,13 +59,13 @@ while run:
 					game_start = finish_game()
 
 			if not enemy.stop_shooting and not pause:
-				enemy.circular_shoot(amount = 50, 
+				enemy.circular_shoot(amount = 20, 
 					focus_player = False, 
 					player = player, 
 					delay_before_focus = 0, 
 					style = 0, 
 					slow_at_center = True, 
-					bounce_top = True)
+					bounce_top = False)
 
 			if bullet_hit_player():
 				if not player.invincible:
@@ -85,18 +82,14 @@ while run:
 				run = check_quit_game_event(event)
 				toggle_pause = check_esc_key_event(event)
 				if toggle_pause:
+					pause_game()
 					pause = not pause
-					timer.toggle_pause()
-					player.toggle_pause_timer()
-					enemy.toggle_pause_timer()
-					for enemybullet in enemybullet_group: enemybullet.toggle_pause_timer()
 				quick_retry = check_r_key_event(event)
 				if quick_retry:
 					game_start_sound.play()
 					if pause:
 						pause = not pause
 					clear_all_bullet()
-					game_run_time = time.time()
 					play_again()
 				check_f_and_f11_key_event(event)
 					

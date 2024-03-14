@@ -1,6 +1,6 @@
 import pygame
 import time
-from variable.var import clock, screen, white, grey, black, player, enemy, timer
+from variable.var import clock, screen, white, grey, black, player, enemy, enemybullet_group, timer, game_start_sound
 
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:
@@ -49,6 +49,18 @@ def show_play_again():
 	pygame.draw.rect(screen, (0, 0, 0), [105, 575, 405, 40])
 	title_font = pygame.font.SysFont(None, 45)
 	draw_text("PRESS R TO PLAY AGAIN", title_font, white, 120, 584, screen)
+
+def start_game():
+	game_start_sound.play()
+	timer.start()
+	player.start_timer()
+	enemy.start_timer()
+
+def pause_game():
+	timer.toggle_pause()
+	player.toggle_pause_timer()
+	enemy.toggle_pause_timer()
+	for enemybullet in enemybullet_group: enemybullet.toggle_pause_timer()
 
 def finish_game():
 	player.finish_game()
