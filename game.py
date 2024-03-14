@@ -9,8 +9,7 @@ pygame.display.set_caption("Bullet Hell")
 from variable.var import clock, screen, \
 	black, player_group, playerbullet_group, \
 	enemy_group, enemybullet_group, \
-	player, enemy, background, \
-	pause, timer, game_start_sound
+	player, enemy, background, pause
 from function.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	show_title_screen, show_play_again, start_game, \
@@ -19,7 +18,7 @@ from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
     check_esc_key_event, check_f_and_f11_key_event
 from function.logic import bullet_hit_enemy, \
-    bullet_hit_player, is_collide, update_graze_bullet, \
+    bullet_hit_player, update_graze_bullet, \
     clear_all_bullet
 
 hi_score = load_highscore()
