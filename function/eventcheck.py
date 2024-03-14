@@ -1,8 +1,13 @@
 import pygame
 
 def check_quit_game_event(event):
-	if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_q):
+	if event.type == pygame.QUIT:
 		return False
+	elif event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_q and pygame.key.get_mods() & pygame.KMOD_CTRL:
+			return False
+		else:
+			return True
 	else:
 		return True
 

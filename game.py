@@ -15,7 +15,7 @@ from function.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	show_title_screen, show_play_again, start_game, \
 	play_again, pause_game, finish_game
-from function.eventmanage import check_quit_game_event, \
+from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
     check_esc_key_event, check_f_and_f11_key_event
 from function.logic import bullet_hit_enemy, \
@@ -64,7 +64,7 @@ while run:
 					delay_before_focus = 0, 
 					style = 0, 
 					slow_at_center = True, 
-					bounce_top = False)
+					bounce_top = True)
 
 			if bullet_hit_player():
 				if not player.invincible:
