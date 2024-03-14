@@ -2,6 +2,9 @@ import pygame
 import time
 from variable.var import clock, screen, white, grey, black, player, enemy, enemybullet_group, timer, game_start_sound
 
+ui_font = pygame.font.SysFont(None, 26)
+title_font = pygame.font.SysFont(None, 45)
+
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:
 		with open(".hiscore", "w") as file:
@@ -25,7 +28,6 @@ def draw_text(text, font, text_col, x, y, screen):
 def draw_ui_text(hi_score, player_score, player_graze):
 	if player_score >= hi_score:
 		hi_score = player_score
-	ui_font = pygame.font.SysFont(None, 26)
 	draw_text("HISCORE", ui_font, white, 650, 50, screen)
 	draw_text(str(hi_score), ui_font, white, 750, 50, screen)
 	draw_text("SCORE", ui_font, white, 650, 100, screen)
@@ -42,12 +44,10 @@ def draw_ui_text(hi_score, player_score, player_graze):
 
 def show_title_screen():
 	screen.fill(white)
-	title_font = pygame.font.SysFont(None, 45)
 	draw_text("PRESS ANY KEY TO START", title_font, black, 310, 584, screen)
 
 def show_play_again():
 	pygame.draw.rect(screen, (0, 0, 0), [105, 575, 405, 40])
-	title_font = pygame.font.SysFont(None, 45)
 	draw_text("PRESS R TO PLAY AGAIN", title_font, white, 120, 584, screen)
 
 def start_game():
