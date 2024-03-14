@@ -175,7 +175,22 @@ class Player(pygame.sprite.Sprite):
 		self.animate(dt)
 		if self.invincible:
 			self.make_transparent()
+			
+	def finish_game(self):
+		self.stop_shooting = True
+		self.disable_hitbox = True
+		self.pause_timer()
 
+	def play_again(self):
+		self.reset_position()
+		self.invincible = False
+		self.life_remaining = 3
+		self.stop_shooting = False
+		self.disable_hitbox = False
+		self.graze = 0
+		self.score = 0
+		self.restart_timer()
+			
 class GrazingHitbox(pygame.sprite.Sprite):
 	def __init__(self, player):
 		self.player = player

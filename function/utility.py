@@ -51,27 +51,14 @@ def show_play_again():
 	draw_text("PRESS R TO PLAY AGAIN", title_font, white, 120, 584, screen)
 
 def finish_game():
-	enemy.stop_shooting = True
-	player.stop_shooting = True
-	player.disable_hitbox = True
-	player.pause_timer()
-	enemy.pause_timer()
+	player.finish_game()
+	enemy.finish_game()
 	timer.pause()
 	return False
 
 def play_again():
-	player.reset_position()
-	enemy.reset_position()
-	player.invincible = False
-	player.life_remaining = 3
-	enemy.health_remaining = 500
-	enemy.stop_shooting = False
-	player.stop_shooting = False
-	player.disable_hitbox = False
-	player.graze = 0
-	player.score = 0
-	player.restart_timer()
-	enemy.restart_timer()
+	player.play_again()
+	enemy.play_again()
 	timer.restart()
 
 def check_quit_game_event(event):

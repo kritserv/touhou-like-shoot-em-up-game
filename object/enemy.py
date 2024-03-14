@@ -149,3 +149,13 @@ class Enemy(pygame.sprite.Sprite):
 	def update(self, dt):
 		self.animate(dt)
 		self.move_mask()
+
+	def finish_game(self):
+		self.stop_shooting = True
+		self.pause_timer()
+
+	def play_again(self):
+		self.reset_position()
+		self.health_remaining = 500
+		self.stop_shooting = False
+		self.restart_timer()
