@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
 		self.original_y = self.y
 		self.life_start = 3
 		self.life_remaining = 3
+		self.power = 1.00
 		self.animation_time = 0.1
 		self.current_frame = 0
 		self.direction = "idle"
@@ -74,7 +75,8 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = (self.original_x, self.original_y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)
 
-	def damage_and_reset(self, timer):
+	def damage_and_reset(self):
+		self.damaged_sound.play()
 		self.life_remaining -= 1
 		self.reset_position()
 		self.direction = "idle"

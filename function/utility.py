@@ -25,18 +25,19 @@ def draw_text(text, font, text_col, x, y, screen):
 	image = font.render(text, True, text_col)
 	screen.blit(image, (x, y))
 
-def draw_ui_text(hi_score, player_score, player_graze):
-	if player_score >= hi_score:
-		hi_score = player_score
+def draw_ui_text(hi_score):
+	if player.score >= hi_score:
+		hi_score = player.score
 	draw_text("HISCORE", ui_font, white, 650, 50, screen)
 	draw_text(str(hi_score), ui_font, white, 750, 50, screen)
 	draw_text("SCORE", ui_font, white, 650, 100, screen)
-	draw_text(str(player_score), ui_font, white, 750, 100, screen)
+	draw_text(str(player.score), ui_font, white, 750, 100, screen)
 	draw_text("PLAYER", ui_font, grey, 650, 200, screen)
 	draw_text("BOMB", ui_font, grey, 650, 250, screen)
 	draw_text("POWER", ui_font, grey, 650, 350, screen)
+	draw_text("%s / 4.00" % str(player.power), ui_font, white, 750, 350, screen)
 	draw_text("GRAZE", ui_font, grey, 650, 400, screen)
-	draw_text(str(player_graze), ui_font, white, 750, 400, screen)
+	draw_text(str(player.graze), ui_font, white, 750, 400, screen)
 	draw_text("TIMER", ui_font, white, 630, 720, screen)
 	draw_text(str(timer.get_elapsed_time()), ui_font, white, 690, 720, screen)
 	draw_text(str(clock.get_fps() // 0.1 / 10), ui_font, white, 940, 720, screen)
@@ -69,6 +70,7 @@ def finish_game():
 	return False
 
 def play_again():
+	game_start_sound.play()
 	player.play_again()
 	enemy.play_again()
 	timer.restart()

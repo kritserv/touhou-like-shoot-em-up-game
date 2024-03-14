@@ -47,8 +47,7 @@ while run:
 		if game_start:
 				
 			if bullet_hit_enemy():
-				enemy.damaged_sound.play()
-				enemy.health_remaining -= 10
+				enemy.take_damage(player.power * 10)
 				player.score += 30
 
 				if enemy.health_remaining < 0:
@@ -69,8 +68,7 @@ while run:
 
 			if bullet_hit_player():
 				if not player.invincible:
-					player.damaged_sound.play()
-					player.damage_and_reset(timer)
+					player.damage_and_reset()
 
 				if player.life_remaining <= 0:
 					clear_all_bullet()
@@ -86,7 +84,6 @@ while run:
 					pause = not pause
 				quick_retry = check_r_key_event(event)
 				if quick_retry:
-					game_start_sound.play()
 					if pause:
 						pause = not pause
 					clear_all_bullet()
@@ -101,7 +98,7 @@ while run:
 				
 			screen.fill(black)
 			background.update(0, pause, dt)
-			draw_ui_text(hi_score, player.score, player.graze)
+			draw_ui_text(hi_score)
 			player.draw_health_bar()
 			enemy.draw_health_bar()
 			player_group.draw(screen)
@@ -119,7 +116,6 @@ while run:
 				run = check_quit_game_event(event)
 				retry = check_r_key_event(event)
 				if retry:
-					game_start_sound.play()
 					play_again()
 					hi_score = load_highscore()
 					game_start = True

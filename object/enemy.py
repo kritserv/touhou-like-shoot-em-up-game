@@ -61,6 +61,10 @@ class Enemy(pygame.sprite.Sprite):
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
 
+	def take_damage(self, value):
+		self.damaged_sound.play()
+		self.health_remaining -= value
+
 	def normal_shoot(self, focus_player, player, delay_before_focus, style, slow_at_center, bounce_top):
 		self.current_time = self.shoot_timer.get_elapsed_time()
 		if self.current_time - self.last_bullet_time > self.bullet_delay and self.stop_shooting == False:
