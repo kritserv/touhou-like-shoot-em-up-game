@@ -11,13 +11,14 @@ from variable.var import clock, screen, \
 	enemy_group, enemybullet_group, \
 	player, enemy, background, pause, \
 	bullet_hell
-from function.utility import draw_ui_text, \
-	load_highscore, save_hi_score, \
-	show_title_screen, show_play_again, start_game, \
-	play_again, pause_game, finish_game
+from function.utility import draw_ui_text
 from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
     check_esc_key_event, check_f_and_f11_key_event
+from function.gamestate import load_highscore, \
+	save_hi_score, show_title_screen, \
+	show_play_again, start_game, \
+	play_again, pause_game, finish_game
 from function.logic import bullet_hit_enemy, \
     bullet_hit_player, update_graze_bullet, \
     clear_all_bullet
