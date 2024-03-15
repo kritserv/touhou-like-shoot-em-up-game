@@ -3,7 +3,7 @@ from math import cos, sin, atan2, pi
 from object.timer import Timer
 
 class EnemyBullet(pygame.sprite.Sprite):
-	def __init__(self, x, y, angle, screen_width, screen_height, focus_player, style, slow_at_center, bounce_top):
+	def __init__(self, x, y, angle, speed, slow_speed, screen_width, screen_height, focus_player, style, slow_at_center, bounce_top):
 		pygame.sprite.Sprite.__init__(self)
 		self.style = style
 		if self.style == 1:
@@ -15,7 +15,8 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.mask = pygame.mask.from_surface(self.image)
 		self.grazed = False
-		self.speed = 500
+		self.speed = speed
+		self.slow_speed = slow_speed
 		self.angle = angle
 		self.slow_at_center = slow_at_center
 		self.slowed = False
@@ -82,7 +83,7 @@ class EnemyBullet(pygame.sprite.Sprite):
 	def slow_down_at_center(self):
 		if self.slow_at_center:
 			if self.rect.centery > self.screen_height / 2:
-				self.speed = 380
+				self.speed = self.slow_speed
 				self.slowed = True
 
 	def update(self, dt):

@@ -63,10 +63,6 @@ class Player(pygame.sprite.Sprite):
 		self.shoot_timer.pause()
 		self.invincible_timer.pause()
 
-	def resume_timer(self):
-		self.shoot_timer.resume()
-		self.invincible_timer.resume()
-
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
 		self.invincible_timer.toggle_pause()

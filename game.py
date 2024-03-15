@@ -9,7 +9,8 @@ pygame.display.set_caption("Bullet Hell")
 from variable.var import clock, screen, \
 	black, player_group, playerbullet_group, \
 	enemy_group, enemybullet_group, \
-	player, enemy, background, pause
+	player, enemy, background, pause, \
+	bullet_hell
 from function.utility import draw_ui_text, \
 	load_highscore, save_hi_score, \
 	show_title_screen, show_play_again, start_game, \
@@ -56,15 +57,6 @@ while run:
 					save_hi_score(player.score, hi_score)
 					game_start = finish_game()
 
-			if not enemy.stop_shooting and not pause:
-				enemy.circular_shoot(amount = 20, 
-					focus_player = False, 
-					player = player, 
-					delay_before_focus = 0, 
-					style = 0, 
-					slow_at_center = True, 
-					bounce_top = True)
-
 			if bullet_hit_player():
 				if not player.invincible:
 					player.damage_and_reset()
@@ -90,6 +82,7 @@ while run:
 				check_f_and_f11_key_event(event)
 					
 			if not pause:
+				bullet_hell.update(dt)
 				player.update(dt)
 				enemy.update(dt)
 				playerbullet_group.update(dt)

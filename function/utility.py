@@ -1,6 +1,6 @@
 import pygame
 import time
-from variable.var import clock, screen, white, grey, black, player, enemy, enemybullet_group, timer, game_start_sound
+from variable.var import clock, screen, white, grey, black, player, enemy, enemybullet_group, bullet_hell, timer, game_start_sound
 
 ui_font = pygame.font.SysFont(None, 26)
 title_font = pygame.font.SysFont(None, 45)
@@ -56,21 +56,25 @@ def start_game():
 	timer.start()
 	player.start_timer()
 	enemy.start_timer()
+	bullet_hell.start_timer()
 
 def pause_game():
 	timer.toggle_pause()
 	player.toggle_pause_timer()
 	enemy.toggle_pause_timer()
+	bullet_hell.toggle_pause_timer()
 	for enemybullet in enemybullet_group: enemybullet.toggle_pause_timer()
 
 def finish_game():
 	player.finish_game()
 	enemy.finish_game()
 	timer.pause()
+	bullet_hell.pause_timer()
 	return False
 
 def play_again():
 	game_start_sound.play()
 	player.play_again()
 	enemy.play_again()
+	bullet_hell.play_again()
 	timer.restart()

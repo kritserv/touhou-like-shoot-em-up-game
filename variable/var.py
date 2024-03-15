@@ -3,6 +3,7 @@ from object.player import Player
 from object.enemy import Enemy
 from object.background import BackGround
 from object.timer import Timer
+from object.bullethell import BulletHell
 
 clock = pygame.time.Clock()
 
@@ -29,6 +30,8 @@ player = Player(screen_info, playerbullet_group, black, green)
 player_group.add(player)
 enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)
+
+bullet_hell = BulletHell(enemy, player)
 
 game_start_sound = pygame.mixer.Sound("asset/soundeffect/start_game.wav")
 game_start_sound.set_volume(0.06)
