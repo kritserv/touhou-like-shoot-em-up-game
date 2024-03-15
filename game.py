@@ -96,7 +96,7 @@ while run:
 				enemybullet_group.update(dt)
 				
 			screen.fill(black)
-			background.update(0, pause, dt)
+			background.update(pause, dt, True)
 			draw_ui_text(hi_score)
 			player.draw_health_bar()
 			enemy.draw_health_bar()

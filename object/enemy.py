@@ -150,10 +150,6 @@ class Enemy(pygame.sprite.Sprite):
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
 
-	def update(self, dt):
-		self.animate(dt)
-		self.move_mask()
-
 	def finish_game(self):
 		self.stop_shooting = True
 		self.pause_timer()
@@ -163,3 +159,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.health_remaining = 500
 		self.stop_shooting = False
 		self.restart_timer()
+
+	def update(self, dt):
+		self.animate(dt)
+		self.move_mask()

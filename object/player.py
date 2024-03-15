@@ -168,15 +168,6 @@ class Player(pygame.sprite.Sprite):
 			self.current_frame -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
-
-	def update(self, dt):
-		key = pygame.key.get_pressed()
-		speed, dx, dy, bullet_spread, bullet_extra_spread = self.calculate_value_from_key_pressed(key)
-		self.move(speed, dx, dy, dt)
-		self.shoot(bullet_spread, bullet_extra_spread, key)
-		self.animate(dt)
-		if self.invincible:
-			self.make_transparent()
 			
 	def finish_game(self):
 		self.stop_shooting = True
@@ -192,6 +183,15 @@ class Player(pygame.sprite.Sprite):
 		self.graze = 0
 		self.score = 0
 		self.restart_timer()
+
+	def update(self, dt):
+		key = pygame.key.get_pressed()
+		speed, dx, dy, bullet_spread, bullet_extra_spread = self.calculate_value_from_key_pressed(key)
+		self.move(speed, dx, dy, dt)
+		self.shoot(bullet_spread, bullet_extra_spread, key)
+		self.animate(dt)
+		if self.invincible:
+			self.make_transparent()
 			
 class GrazingHitbox(pygame.sprite.Sprite):
 	def __init__(self, player):
