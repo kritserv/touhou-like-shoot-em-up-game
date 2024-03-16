@@ -34,29 +34,37 @@ class Enemy(pygame.sprite.Sprite):
 		self.health_remaining = 500
 		self.speed = 50
 		self.shoot_timer = Timer()
+		self.bomb_damage_timer = Timer()
 		self.bullet_delay = 0.6
 		self.bullet_spiral_delay = 0.06
 		self.last_bullet_time = self.shoot_timer.get_elapsed_time()
+		self.last_bomb_time = self.bomb_damage_timer.get_elapsed_time()
 		self.bullet_index = 0
 		self.animation_time = 0.1
 		self.current_frame = 0
 		self.current_time = 0
+		self.current_bomb_time = 0
 		self.direction = "idle"
 		self.stop_shooting = False
 		self.enemybullet_group = enemybullet_group
 
 	def start_timer(self):
 		self.shoot_timer.start()
+		self.bomb_damage_timer.start()
 
 	def restart_timer(self):
 		self.shoot_timer.restart()
 		self.last_bullet_time = self.shoot_timer.get_elapsed_time()
+		self.bomb_damage_timer.restart()
+		self.last_bomb_time = self.bomb_damage_timer.get_elapsed_time()
 
 	def pause_timer(self):
 		self.shoot_timer.pause()
+		self.bomb_damage_timer.pause()
 
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
+		self.bomb_damage_timer.toggle_pause()
 
 	def take_damage(self, value):
 		self.damaged_sound.play()
@@ -134,6 +142,12 @@ class Enemy(pygame.sprite.Sprite):
 	def reset_position(self):
 		self.rect.center = (self.x, self.y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)
+
+	def take_bomb_damage(self):
+		self.current_bomb_time = self.bomb_damage_timer.get_elapsed_time()
+		if self.current_bomb_time - self.last_bomb_time > 0.5:
+			self.take_damage(20)
+			self.last_bomb_time = self.current_bomb_time
 
 	def draw_health_bar(self):
 		pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))

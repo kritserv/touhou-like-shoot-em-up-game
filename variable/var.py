@@ -24,9 +24,10 @@ grey = (200, 200, 200)
 black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
+yellow = (255, 255, 0)
 
 player_group, playerbullet_group, enemy_group, enemybullet_group = [pygame.sprite.Group() for i in range(4)]
-player = Player(screen_info, playerbullet_group, black, green)
+player = Player(screen_info, playerbullet_group, black, green, yellow)
 player_group.add(player)
 enemy = Enemy(screen_info, enemybullet_group, black, red)
 enemy_group.add(enemy)

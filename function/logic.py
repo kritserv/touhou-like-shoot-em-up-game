@@ -28,3 +28,10 @@ def clear_all_bullet():
 		bullet.kill()
 	for bullet in playerbullet_group:
 		bullet.kill()
+
+def bomb_enemy_and_bullet(pause, dt):
+	if not pause:
+		player.do_bomb(dt)
+		for bullet in enemybullet_group:
+			bullet.kill()
+		enemy.take_bomb_damage()

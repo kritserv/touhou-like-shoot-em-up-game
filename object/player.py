@@ -4,7 +4,7 @@ from object.timer import Timer
 from math import sqrt
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self, screen_info, playerbullet_group, black, green):
+	def __init__(self, screen_info, playerbullet_group, black, green, yellow):
 		pygame.sprite.Sprite.__init__(self)
 		self.screen_width = screen_info[0]
 		self.screen_height = screen_info[1]
@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
 		self.y = self.screen_height - 100
 		self.black = black
 		self.green = green
+		self.yellow = yellow
 		self.spritesheet = {
 			"idle": pygame.image.load("asset/img/player_idle.png").convert_alpha(),
 			"left": pygame.image.load("asset/img/player_left.png").convert_alpha(),
@@ -29,6 +30,15 @@ class Player(pygame.sprite.Sprite):
 		self.current_image = 0
 		self.image = self.images["idle"][self.current_image]
 		self.original_image = self.image
+		self.bomb_spritesheet = pygame.image.load("asset/img/snake.png").convert_alpha()
+		self.bomb_images = [self.bomb_spritesheet.subsurface(pygame.Rect(j * 221, i * 768, 221, 768)) for i in range(1) for j in range(5)]
+		self.bomb_image = self.bomb_images[0]
+		self.current_bomb_frame = 0
+		self.current_bomb_image = 0
+		self.bomb_animation_time = 0.08
+		self.bombing = False
+		self.bomb_origin_pos = (185, 200)
+		self.bomb_pos = (185, 200)
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)
@@ -36,6 +46,8 @@ class Player(pygame.sprite.Sprite):
 		self.original_y = self.y
 		self.life_start = 3
 		self.life_remaining = 3
+		self.bomb_start = 3
+		self.bomb_remaining = 3
 		self.power = 1.00
 		self.animation_time = 0.1
 		self.current_frame = 0
@@ -50,22 +62,27 @@ class Player(pygame.sprite.Sprite):
 		self.graze = 0
 		self.shoot_timer = Timer()
 		self.invincible_timer = Timer()
+		self.bomb_timer = Timer()
 
 	def start_timer(self):
 		self.shoot_timer.start()
 		self.invincible_timer.start()
+		self.bomb_timer.start()
 
 	def restart_timer(self):
 		self.shoot_timer.restart()
 		self.invincible_timer.restart()
+		self.bomb_timer.start()
 
 	def pause_timer(self):
 		self.shoot_timer.pause()
 		self.invincible_timer.pause()
+		self.bomb_timer.start()
 
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
 		self.invincible_timer.toggle_pause()
+		self.bomb_timer.start()
 
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)
@@ -74,15 +91,26 @@ class Player(pygame.sprite.Sprite):
 	def damage_and_reset(self):
 		self.damaged_sound.play()
 		self.life_remaining -= 1
-		self.reset_position()
-		self.direction = "idle"
-		self.invincible = True
-		self.last_hit_time = self.invincible_timer.get_elapsed_time()
+		if not self.life_remaining == 0:
+			self.reset_position()
+			self.direction = "idle"
+			self.invincible = True
+			self.last_hit_time = self.invincible_timer.get_elapsed_time()
+			self.bomb_remaining = 3
 
 	def draw_hitbox(self):
 	    if not self.disable_hitbox:
 	        hitbox_position = self.rect.topleft
 	        self.screen.blit(self.hitbox_image, hitbox_position)
+
+	def update_bomb(self, dt):
+		if self.bombing:
+			self.bomb_pos = self.bomb_pos[0], self.bomb_pos[1] - round(300 * dt)
+		else:
+			self.bomb_pos = self.bomb_origin_pos
+
+	def draw_bomb(self):
+		self.screen.blit(self.bomb_image, self.bomb_pos)
 
 	def make_transparent(self):
 	    if self.invincible_timer.get_elapsed_time() - self.last_hit_time <= 2:
@@ -94,10 +122,13 @@ class Player(pygame.sprite.Sprite):
 	        self.invincible = False
 	        self.image.set_alpha(255)
 
-	def draw_health_bar(self):
+	def draw_bomb_and_health_bar(self):
 		pygame.draw.rect(self.screen, self.black, (750, 190, 210, 25))
 		if self.life_remaining > 0:
 			pygame.draw.rect(self.screen, self.green, (750, 190, int(210 * (self.life_remaining / self.life_start)), 25))
+		pygame.draw.rect(self.screen, self.black, (750, 240, 210, 25))
+		if self.bomb_remaining > 0:
+			pygame.draw.rect(self.screen, self.yellow, (750, 240, int(210 * (self.bomb_remaining / self.bomb_start)), 25))
 
 	def calculate_value_from_key_pressed(self, key):
 		speed = 450
@@ -158,6 +189,29 @@ class Player(pygame.sprite.Sprite):
 				if self.extra_spread_pos >= 5:
 					self.extra_spread_pos = -1
 
+	def bomb(self, key):
+		if self.stop_shooting == False and self.bomb_remaining > 0:
+			if key[pygame.K_x] and self.bombing == False:
+				self.bombing = True
+				self.bomb_remaining -= 1
+				self.last_bomb = self.bomb_timer.get_elapsed_time()
+
+	def animate_bomb(self, dt):
+		self.current_bomb_frame += dt
+		if self.current_bomb_frame >= self.bomb_animation_time:
+			self.current_bomb_frame -= self.bomb_animation_time
+			self.current_bomb_image = (self.current_bomb_image + 1) % len(self.bomb_images)
+			self.bomb_image = self.bomb_images[self.current_bomb_image]
+
+	def do_bomb(self, dt):
+		if self.bomb_timer.get_elapsed_time() - self.last_bomb <= 2.3:
+			self.animate_bomb(dt)
+			self.draw_bomb()
+		else:
+			self.bombing = False
+			self.bomb_timer.restart()
+			self.bomb_pos = self.bomb_origin_pos
+
 	def animate(self, dt):
 		self.current_frame += dt
 		if self.current_frame >= self.animation_time:
@@ -174,10 +228,13 @@ class Player(pygame.sprite.Sprite):
 		self.reset_position()
 		self.invincible = False
 		self.life_remaining = 3
+		self.bomb_remaining = 3
 		self.stop_shooting = False
 		self.disable_hitbox = False
 		self.graze = 0
 		self.score = 0
+		self.bomb_pos = self.bomb_origin_pos
+		self.bombing = False
 		self.restart_timer()
 
 	def update(self, dt):
@@ -185,6 +242,7 @@ class Player(pygame.sprite.Sprite):
 		speed, dx, dy, bullet_spread, bullet_extra_spread = self.calculate_value_from_key_pressed(key)
 		self.move(speed, dx, dy, dt)
 		self.shoot(bullet_spread, bullet_extra_spread, key)
+		self.bomb(key)
 		self.animate(dt)
 		if self.invincible:
 			self.make_transparent()

@@ -21,7 +21,7 @@ from function.gamestate import load_highscore, \
 	play_again, pause_game, finish_game
 from function.logic import bullet_hit_enemy, \
     bullet_hit_player, update_graze_bullet, \
-    clear_all_bullet
+    clear_all_bullet, bomb_enemy_and_bullet
 
 hi_score = load_highscore()
 prev_time = time.time()
@@ -48,15 +48,15 @@ while run:
 		if game_start:
 				
 			if bullet_hit_enemy():
-				enemy.take_damage(player.power * 10)
+				enemy.take_damage(player.power)
 				player.score += 30
 
-				if enemy.health_remaining < 0:
-					enemy.death_sound.play()
-					clear_all_bullet()
-					player.score += 300
-					save_hi_score(player.score, hi_score)
-					game_start = finish_game()
+			if enemy.health_remaining < 0:
+				enemy.death_sound.play()
+				clear_all_bullet()
+				player.score += 300
+				save_hi_score(player.score, hi_score)
+				game_start = finish_game()
 
 			if bullet_hit_player():
 				if not player.invincible:
@@ -85,15 +85,20 @@ while run:
 			if not pause:
 				bullet_hell.update(dt)
 				player.update(dt)
+				player.update_bomb(dt)
 				enemy.update(dt)
 				playerbullet_group.update(dt)
 				enemybullet_group.update(dt)
 				
 			screen.fill(black)
 			background.update(pause, dt, True)
+			player.draw_bomb_and_health_bar()
 			draw_ui_text(hi_score)
-			player.draw_health_bar()
 			enemy.draw_health_bar()
+
+			if player.bombing:
+				bomb_enemy_and_bullet(pause, dt)
+
 			player_group.draw(screen)
 			playerbullet_group.draw(screen)
 			enemy_group.draw(screen)
