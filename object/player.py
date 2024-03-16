@@ -110,7 +110,8 @@ class Player(pygame.sprite.Sprite):
 			self.bomb_pos = self.bomb_origin_pos
 
 	def draw_bomb(self):
-		self.screen.blit(self.bomb_image, self.bomb_pos)
+		if self.bombing:
+			self.screen.blit(self.bomb_image, self.bomb_pos)
 
 	def make_transparent(self):
 	    if self.invincible_timer.get_elapsed_time() - self.last_hit_time <= 2:
@@ -206,7 +207,6 @@ class Player(pygame.sprite.Sprite):
 	def do_bomb(self, dt):
 		if self.bomb_timer.get_elapsed_time() - self.last_bomb <= 2.3:
 			self.animate_bomb(dt)
-			self.draw_bomb()
 		else:
 			self.bombing = False
 			self.bomb_timer.restart()

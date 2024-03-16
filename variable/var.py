@@ -15,8 +15,6 @@ screen = pygame.display.set_mode((screen_width, screen_height),
 
 screen_info = (screen_width, screen_height, screen)
 
-pause = False
-
 background = BackGround(screen_info)
 
 white = (255, 255, 255)

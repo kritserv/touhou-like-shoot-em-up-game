@@ -9,8 +9,7 @@ pygame.display.set_caption("Bullet Hell")
 from variable.var import clock, screen, \
 	black, player_group, playerbullet_group, \
 	enemy_group, enemybullet_group, \
-	player, enemy, background, pause, \
-	bullet_hell
+	player, enemy, background, bullet_hell
 from function.utility import draw_ui_text
 from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
@@ -28,6 +27,7 @@ prev_time = time.time()
 title_screen = True
 game_start = True
 run = True
+pause = False
 while run:
 	clock.tick()
 	dt = time.time() - prev_time
@@ -95,15 +95,15 @@ while run:
 			player.draw_bomb_and_health_bar()
 			draw_ui_text(hi_score)
 			enemy.draw_health_bar()
-
-			if player.bombing:
-				bomb_enemy_and_bullet(pause, dt)
-
 			player_group.draw(screen)
+			player.draw_bomb()
 			playerbullet_group.draw(screen)
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
 
+			if player.bombing:
+				bomb_enemy_and_bullet(pause, dt)
+				
 			if player.show_hitbox:
 			    player.draw_hitbox()
 
