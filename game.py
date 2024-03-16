@@ -23,11 +23,11 @@ from function.logic import bullet_hit_enemy, \
     clear_all_bullet, bomb_enemy_and_bullet
 
 hi_score = load_highscore()
-prev_time = time.time()
 title_screen = True
 game_start = True
 run = True
 pause = False
+prev_time = time.time()
 while run:
 	clock.tick()
 	dt = time.time() - prev_time
@@ -81,9 +81,13 @@ while run:
 					clear_all_bullet()
 					play_again()
 				check_f_and_f11_key_event(event)
-					
+
+			if player.bombing:
+				bomb_enemy_and_bullet(pause, dt)
+
 			if not pause:
 				bullet_hell.update(dt)
+				background.update(dt)
 				player.update(dt)
 				player.update_bomb(dt)
 				enemy.update(dt)
@@ -91,7 +95,7 @@ while run:
 				enemybullet_group.update(dt)
 				
 			screen.fill(black)
-			background.update(pause, dt, True)
+			background.draw(0)
 			player.draw_bomb_and_health_bar()
 			draw_ui_text(hi_score)
 			enemy.draw_health_bar()
@@ -101,9 +105,6 @@ while run:
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
 
-			if player.bombing:
-				bomb_enemy_and_bullet(pause, dt)
-				
 			if player.show_hitbox:
 			    player.draw_hitbox()
 

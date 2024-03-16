@@ -23,11 +23,11 @@ class BackGround():
 		if self.scrolls < -self.bg_height:
 		 	self.scrolls = 0
 
-	def update(self, pause, dt, scrolling_up):
+	def draw(self, scrolling_up):
 		if scrolling_up:
 			self.scroll_up()
 		else:
 			self.scroll_down()
 
-		if not pause:
-			self.scrolls -= 160 * dt
+	def update(self, dt):
+		self.scrolls -= 160 * dt
