@@ -1,6 +1,6 @@
 import time
 
-class Timer():
+class Timer:
 	def __init__(self):
 		self.start_time = 0
 		self.elapsed_time = 0

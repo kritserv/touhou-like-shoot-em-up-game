@@ -1,6 +1,6 @@
 import pygame
 
-class BackGround():
+class BackGround(pygame.sprite.Sprite):
 	def __init__(self, screen_info):
 		self.bg = pygame.image.load("asset/img/background.png").convert()
 		self.bg_height = self.bg.get_height()

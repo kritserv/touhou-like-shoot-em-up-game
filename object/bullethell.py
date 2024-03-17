@@ -1,6 +1,6 @@
 from object.timer import Timer
 
-class BulletHell():
+class BulletHell:
 	def __init__(self, enemy, player):
 		self.enemy = enemy
 		self.player = player
