@@ -16,8 +16,9 @@ from function.eventcheck import check_quit_game_event, \
     check_esc_key_event, check_f_and_f11_key_event
 from function.gamestate import load_highscore, \
 	save_hi_score, show_title_screen, \
-	show_play_again, start_game, \
-	play_again, pause_game, finish_game
+	show_play_again, show_pause_menu, \
+	start_game, play_again, pause_game, \
+	finish_game
 from function.logic import bullet_hit_enemy, \
     bullet_hit_player, update_graze_bullet, \
     clear_all_bullet, bomb_enemy_and_bullet
@@ -82,6 +83,7 @@ while run:
 			playerbullet_group.draw(screen)
 			enemy_group.draw(screen)
 			enemybullet_group.draw(screen)
+			if pause: show_pause_menu()
 
 		else:
 			show_play_again()

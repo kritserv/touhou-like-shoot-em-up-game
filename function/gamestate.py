@@ -7,8 +7,18 @@ def show_title_screen():
 	draw_text("PRESS ANY KEY TO START", title_font, black, 310, 584, screen)
 
 def show_play_again():
-	pygame.draw.rect(screen, (0, 0, 0), [105, 575, 405, 40])
+	pygame.draw.rect(screen, black, [105, 575, 405, 40])
 	draw_text("PRESS R TO PLAY AGAIN", title_font, white, 120, 584, screen)
+
+def show_pause_menu():
+    pygame.draw.rect(screen, black, [105, 250, 405, 40])
+    pygame.draw.rect(screen, black, [105, 350, 405, 40])
+    pygame.draw.rect(screen, black, [105, 450, 405, 40])
+    pygame.draw.rect(screen, black, [105, 550, 405, 40])
+    draw_text("R TO RETRY", title_font, white, 225, 259, screen)
+    draw_text("ESC TO UNPAUSE", title_font, white, 180, 359, screen)
+    draw_text("F OR F11 TO FULLSCREEN", title_font, white, 120, 459, screen)
+    draw_text("CTRL+Q TO QUIT", title_font, white, 180, 559, screen)
 
 def start_game():
 	game_start_sound.play()
