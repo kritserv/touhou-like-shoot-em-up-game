@@ -26,6 +26,8 @@ class Player(pygame.sprite.Sprite):
 		self.damaged_sound.set_volume(0.07)
 		self.pickup_sound = pygame.mixer.Sound("asset/soundeffect/player_pickup.wav")
 		self.pickup_sound.set_volume(0.07)
+		self.bomb_sound = pygame.mixer.Sound("asset/soundeffect/player_bomb.wav")
+		self.bomb_sound.set_volume(0.01)
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 64, i * 64, 64, 64)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
 		self.current_image = 0
 		self.image = self.images["idle"][self.current_image]
@@ -106,6 +108,7 @@ class Player(pygame.sprite.Sprite):
 	def update_bomb(self, dt):
 		if self.bombing:
 			self.bomb_pos = self.bomb_pos[0], self.bomb_pos[1] - round(300 * dt)
+			self.bomb_sound.play()
 		else:
 			self.bomb_pos = self.bomb_origin_pos
 
