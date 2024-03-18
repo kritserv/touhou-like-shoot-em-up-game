@@ -67,24 +67,24 @@ class Player(pygame.sprite.Sprite):
 		self.bomb_timer = Timer()
 
 	def start_timer(self):
-		self.shoot_timer.start()
-		self.invincible_timer.start()
-		self.bomb_timer.start()
+		self.shoot_timer.start_or_resume()
+		self.invincible_timer.start_or_resume()
+		self.bomb_timer.start_or_resume()
 
 	def restart_timer(self):
 		self.shoot_timer.restart()
 		self.invincible_timer.restart()
-		self.bomb_timer.start()
+		self.bomb_timer.restart()
 
 	def pause_timer(self):
 		self.shoot_timer.pause()
 		self.invincible_timer.pause()
-		self.bomb_timer.start()
+		self.bomb_timer.pause()
 
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
 		self.invincible_timer.toggle_pause()
-		self.bomb_timer.start()
+		self.bomb_timer.toggle_pause()
 
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)

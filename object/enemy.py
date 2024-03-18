@@ -49,8 +49,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.enemybullet_group = enemybullet_group
 
 	def start_timer(self):
-		self.shoot_timer.start()
-		self.bomb_damage_timer.start()
+		self.shoot_timer.start_or_resume()
+		self.bomb_damage_timer.start_or_resume()
 
 	def restart_timer(self):
 		self.shoot_timer.restart()

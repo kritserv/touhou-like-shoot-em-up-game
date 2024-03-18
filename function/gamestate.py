@@ -22,7 +22,7 @@ def show_pause_menu():
 
 def start_game():
 	game_start_sound.play()
-	timer.start()
+	timer.start_or_resume()
 	player.start_timer()
 	enemy.start_timer()
 	bullet_hell.start_timer()

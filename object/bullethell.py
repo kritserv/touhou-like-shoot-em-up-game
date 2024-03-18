@@ -7,7 +7,7 @@ class BulletHell:
 		self.timer = Timer()
 
 	def start_timer(self):
-		self.timer.start()
+		self.timer.start_or_resume()
 
 	def restart_timer(self):
 		self.timer.restart()

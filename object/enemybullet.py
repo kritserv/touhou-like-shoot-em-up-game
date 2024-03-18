@@ -25,7 +25,7 @@ class EnemyBullet(pygame.sprite.Sprite):
 		self.focus_player = focus_player
 		self.direction_updated = False
 		self.target_delay_timer = Timer()
-		self.target_delay_timer.start()
+		self.target_delay_timer.start_or_resume()
 		if bounce_top:
 			self.bounced = False
 		else:

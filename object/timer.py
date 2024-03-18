@@ -6,7 +6,7 @@ class Timer:
 		self.elapsed_time = 0
 		self.is_paused = True
 
-	def start(self):
+	def start_or_resume(self):
 		if self.is_paused:
 			self.start_time = time.time()
 			self.is_paused = False
@@ -16,11 +16,6 @@ class Timer:
 			self.elapsed_time += time.time() - self.start_time
 			self.is_paused = True
 
-	def resume(self):
-		if self.is_paused:
-			self.start_time = time.time()
-			self.is_paused = False
-
 	def reset(self):
 		self.start_time = 0
 		self.elapsed_time = 0
@@ -28,11 +23,11 @@ class Timer:
 
 	def restart(self):
 		self.reset()
-		self.start()
+		self.start_or_resume()
 
 	def toggle_pause(self):
 		if self.is_paused:
-			self.resume()
+			self.start_or_resume()
 		else:
 			self.pause()
 
