@@ -24,6 +24,7 @@ from function.logic import bullet_hit_enemy, \
     clear_all_bullet, bomb_enemy_and_bullet
 
 hi_score = load_highscore()
+dialog = Dialog()
 title_screen = True
 game_start = True
 run = True

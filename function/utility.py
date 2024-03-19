@@ -3,6 +3,7 @@ from variable.var import clock, screen, white, grey, player, timer
 
 ui_font = pygame.font.SysFont(None, 26)
 title_font = pygame.font.SysFont(None, 45)
+dialog_font = pygame.font.SysFont(None, 32)
 
 def draw_text(text, font, text_col, x, y, screen):
 	image = font.render(text, True, text_col)
