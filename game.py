@@ -4,7 +4,7 @@ import time
 pygame.mixer.init()
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
-pygame.display.set_caption("Bullet Hell")
+pygame.display.set_caption("Pygame shoot-em-up")
 
 from variable.var import clock, screen, \
 	black, player_group, playerbullet_group, \
