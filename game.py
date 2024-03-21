@@ -9,7 +9,7 @@ pygame.display.set_caption("Pygame shoot-em-up")
 from variable.var import clock, screen, \
 	black, player_group, playerbullet_group, \
 	enemy_group, enemybullet_group, \
-	player, enemy, background, bullet_hell
+	player, enemy, background, bullet_hell, timer
 from function.utility import draw_ui_text
 from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
@@ -28,6 +28,7 @@ title_screen = True
 game_start = True
 run = True
 pause = False
+enemy_intro = True
 prev_time = time.time()
 
 while run:
@@ -39,6 +40,18 @@ while run:
 
 	else:
 		if game_start:
+			if enemy_intro:
+				if 2 <= timer.get_elapsed_time() <= 4 and not pause:
+					enemy.move_down(dt)
+				elif timer.get_elapsed_time() > 4:
+					bullet_hell.restart_timer()
+					enemy.refill_health()
+					if enemy.health_remaining >= 500:
+						enemy.stop_shooting = False
+						player.stop_shooting = False
+						enemy.speed = 50
+						enemy_intro = False
+
 			if bullet_hit_enemy():
 				enemy.take_damage(player.power)
 				player.score += 30
@@ -106,11 +119,13 @@ while run:
 				if pause:
 					pause = not pause
 				clear_all_bullet()
+				enemy_intro = True
 				play_again()
 		else:
 			retry = check_r_key_event(event)
 			if retry:
 				play_again()
+				enemy_intro = True
 				hi_score = load_highscore()
 				game_start = True
 

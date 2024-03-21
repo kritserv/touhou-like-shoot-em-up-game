@@ -10,7 +10,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.screen_height = screen_info[1]
 		self.screen = screen_info[2]
 		self.x = int(self.screen_width / 2) - 200
-		self.y = self.screen_height - 600
+		self.y = self.screen_height - 810
 		self.black = black
 		self.red = red
 		self.spritesheet = {
@@ -31,8 +31,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.health_start = 500
-		self.health_remaining = 500
-		self.speed = 50
+		self.health_remaining = 1
+		self.speed = 120
 		self.shoot_timer = Timer()
 		self.bomb_damage_timer = Timer()
 		self.bullet_delay = 0.6
@@ -45,7 +45,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.current_time = 0
 		self.current_bomb_time = 0
 		self.direction = "idle"
-		self.stop_shooting = False
+		self.stop_shooting = True
+		self.invincible = True
 		self.enemybullet_group = enemybullet_group
 
 	def start_timer(self):
@@ -65,6 +66,12 @@ class Enemy(pygame.sprite.Sprite):
 	def toggle_pause_timer(self):
 		self.shoot_timer.toggle_pause()
 		self.bomb_damage_timer.toggle_pause()
+
+	def refill_health(self):
+		if self.health_remaining < 500:
+			self.health_remaining += 3
+		else:
+			self.invincible = False
 
 	def take_damage(self, value):
 		self.damaged_sound.play()
@@ -150,8 +157,8 @@ class Enemy(pygame.sprite.Sprite):
 			self.last_bomb_time = self.current_bomb_time
 
 	def draw_health_bar(self):
-		pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))
-		if self.health_remaining > 0:
+		if self.health_remaining > 1:
+			pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))
 			pygame.draw.rect(self.screen, self.red, (55, 20, int(530 * (self.health_remaining / self.health_start)), 15))
 
 	def animate(self, dt):
@@ -167,13 +174,15 @@ class Enemy(pygame.sprite.Sprite):
 
 	def play_again(self):
 		self.reset_position()
-		self.health_remaining = 500
-		self.stop_shooting = False
+		self.health_remaining = 1
+		self.stop_shooting = True
+		self.invincible = True
 		self.restart_timer()
 		self.bullet_delay = 0.6
 		self.bullet_spiral_delay = 0.06
 		self.bullet_index = 0
-		self.speed = 50
+		self.direction = "idle"
+		self.speed = 120
 
 	def update(self, dt):
 		self.animate(dt)

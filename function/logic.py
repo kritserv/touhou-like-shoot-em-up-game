@@ -1,6 +1,6 @@
 import pygame
 from object.player import GrazingHitbox
-from variable.var import white, grey, black, red, green, player, enemy, playerbullet_group, enemybullet_group
+from variable.var import white, grey, black, red, green, player, enemy, playerbullet_group, enemybullet_group, timer
 
 def is_collide(object1, object2, method):
 	if method:

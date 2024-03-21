@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
 		self.direction = "idle"
 		self.playerbullet_group = playerbullet_group
 		self.extra_spread_pos = 0
-		self.stop_shooting = False
+		self.stop_shooting = True
 		self.disable_hitbox = False
 		self.show_hitbox = False
 		self.invincible = False
@@ -232,7 +232,7 @@ class Player(pygame.sprite.Sprite):
 		self.invincible = False
 		self.life_remaining = 3
 		self.bomb_remaining = 3
-		self.stop_shooting = False
+		self.stop_shooting = True
 		self.disable_hitbox = False
 		self.graze = 0
 		self.score = 0
