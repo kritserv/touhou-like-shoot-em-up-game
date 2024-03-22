@@ -21,7 +21,8 @@ from function.gamestate import load_highscore, \
 	finish_game
 from function.logic import bullet_hit_enemy, \
     bullet_hit_player, update_graze_bullet, \
-    clear_all_bullet, bomb_enemy_and_bullet
+    clear_all_bullet, bomb_enemy_and_bullet, \
+    enemy_enter_scene
 
 hi_score = load_highscore()
 title_screen = True
@@ -41,16 +42,7 @@ while run:
 	else:
 		if game_start:
 			if enemy_intro:
-				if 2 <= timer.get_elapsed_time() <= 4 and not pause:
-					enemy.move_down(dt)
-				elif timer.get_elapsed_time() > 4:
-					bullet_hell.restart_timer()
-					enemy.refill_health()
-					if enemy.health_remaining >= 500:
-						enemy.stop_shooting = False
-						player.stop_shooting = False
-						enemy.speed = 50
-						enemy_intro = False
+				enemy_intro = enemy_enter_scene(pause, dt)
 
 			if bullet_hit_enemy():
 				enemy.take_damage(player.power)

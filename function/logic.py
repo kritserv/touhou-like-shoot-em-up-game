@@ -1,6 +1,6 @@
 import pygame
 from object.player import GrazingHitbox
-from variable.var import white, grey, black, red, green, player, enemy, playerbullet_group, enemybullet_group, timer
+from variable.var import white, grey, black, red, green, player, enemy, playerbullet_group, enemybullet_group, timer, bullet_hell
 
 def is_collide(object1, object2, method):
 	if method:
@@ -35,3 +35,20 @@ def bomb_enemy_and_bullet(pause, dt):
 		for bullet in enemybullet_group:
 			bullet.kill()
 		enemy.take_bomb_damage()
+
+def enemy_enter_scene(pause, dt):
+	if 2 <= timer.get_elapsed_time() <= 4 and not pause:
+		enemy.move_down(dt)
+		return True
+	elif timer.get_elapsed_time() > 4:
+		bullet_hell.restart_timer()
+		enemy.refill_health()
+		if enemy.health_remaining >= 500:
+			enemy.stop_shooting = False
+			player.stop_shooting = False
+			enemy.speed = 50
+			return False
+		else:
+			return True
+	else:
+		return True
