@@ -67,9 +67,11 @@ class Enemy(pygame.sprite.Sprite):
 		self.shoot_timer.toggle_pause()
 		self.bomb_damage_timer.toggle_pause()
 
-	def refill_health(self):
+	def refill_health(self, dt):
 		if self.health_remaining < 500:
-			self.health_remaining += 3
+			if not self.shoot_timer.is_paused:
+				regen = 250 * dt
+				self.health_remaining += regen
 		else:
 			self.invincible = False
 

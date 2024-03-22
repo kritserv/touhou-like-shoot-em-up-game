@@ -42,7 +42,7 @@ def enemy_enter_scene(pause, dt):
 		return True
 	elif timer.get_elapsed_time() > 4:
 		bullet_hell.restart_timer()
-		enemy.refill_health()
+		enemy.refill_health(dt)
 		if enemy.health_remaining >= 500:
 			enemy.stop_shooting = False
 			player.stop_shooting = False
