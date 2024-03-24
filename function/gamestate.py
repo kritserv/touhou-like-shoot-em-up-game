@@ -50,16 +50,16 @@ def play_again():
 
 def save_hi_score(player_score, hi_score):
 	if player_score >= hi_score:
-		with open(".hiscore", "w") as file:
+		with open("hiscore.txt", "w") as file:
 			file.write(str(player_score))
 		file.close()
 		
 def load_highscore():
 	try:
-		with open(".hiscore", "r") as file:
+		with open("hiscore.txt", "r") as file:
 			return int(file.read())
 	except:
-		with open(".hiscore", "w") as file:
+		with open("hiscore.txt", "w") as file:
 			file.write("0")
 		file.close()
 		return 0
