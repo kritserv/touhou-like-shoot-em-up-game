@@ -24,8 +24,6 @@ class Player(pygame.sprite.Sprite):
 		self.shooting_sound.set_volume(0.06)
 		self.damaged_sound = pygame.mixer.Sound("asset/soundeffect/player_damaged.wav")
 		self.damaged_sound.set_volume(0.07)
-		self.pickup_sound = pygame.mixer.Sound("asset/soundeffect/player_pickup.wav")
-		self.pickup_sound.set_volume(0.07)
 		self.bomb_sound = pygame.mixer.Sound("asset/soundeffect/player_bomb.wav")
 		self.bomb_sound.set_volume(0.01)
 		self.images = {key: [sprite.subsurface(pygame.Rect(j * 64, i * 64, 64, 64)) for i in range(1) for j in range(4)] for key, sprite in self.spritesheet.items()}
