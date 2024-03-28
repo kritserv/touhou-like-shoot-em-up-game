@@ -9,6 +9,8 @@ class Dialog:
         self.text_list = text_list
         self.current_text = 0
         self.total = len(self.text_list)
+        self.next_sound = pygame.mixer.Sound("asset/soundeffect/next_dialog.wav")
+        self.next_sound.set_volume(0.07)
         self.started = False
         self.cooldown_timer = Timer()
 
@@ -20,6 +22,7 @@ class Dialog:
 
     def next(self):
         if self.cooldown_timer.get_elapsed_time() >= 0.3:
+            self.next_sound.play()
             self.current_text += 1
             self.cooldown_timer.restart()
         if self.current_text >= self.total:
