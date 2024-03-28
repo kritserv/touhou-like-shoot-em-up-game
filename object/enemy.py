@@ -35,6 +35,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.life_remaining = 2
 		self.show_life = False
 		self.need_healing = False
+		self.is_healing = False
 		self.speed = 120
 		self.shoot_timer = Timer()
 		self.bomb_damage_timer = Timer()
@@ -197,11 +198,13 @@ class Enemy(pygame.sprite.Sprite):
 			self.direction = "idle"
 			self.refill_health(dt)
 			self.stop_shooting = True
+			self.is_healing = True
 
 		if self.health_remaining >= self.health_start:
 			self.need_healing = False
 			self.invincible = False
 			self.stop_shooting = False
+			self.is_healing = False
 
 	def finish_game(self):
 		self.stop_shooting = True
@@ -221,6 +224,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.show_life = False
 		self.life_remaining = 2
 		self.need_healing = False
+		self.is_healing = False
 
 	def update(self, dt):
 		self.animate(dt)

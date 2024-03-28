@@ -66,7 +66,7 @@ def main():
 							save_hi_score(player.score, hi_score)
 							game_start = finish_game()
 
-				if enemy.need_healing:
+				if enemy.is_healing:
 					bullet_hell.restart_timer()
 
 				if bullet_hit_player():
