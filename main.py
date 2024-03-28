@@ -20,6 +20,7 @@ from function.logic import bullet_hit_enemy, \
     enemy_enter_scene
 from function.updater import update_every_thing
 from function.drawer import draw_every_thing
+from object.dialog import Dialog
 
 def main():
 	hi_score = load_highscore()
@@ -28,6 +29,11 @@ def main():
 	run = True
 	pause = False
 	enemy_intro = True
+	dialog = Dialog(
+		[["PYGAME", "Hello, This is dialog 1."],
+		["ENEMY", "Hello, This is dialog 2."],
+		["PYGAME", "Hello, This is dialog 3."]]
+	)
 	prev_time = time.time()
 
 	while run:
@@ -39,8 +45,9 @@ def main():
 
 		else:
 			if game_start:
+
 				if enemy_intro:
-					enemy_intro = enemy_enter_scene(pause, dt)
+					enemy_intro = enemy_enter_scene(pause, dt, dialog)
 
 				if bullet_hit_enemy():
 					enemy.take_damage(player.power)
@@ -67,9 +74,9 @@ def main():
 					bomb_enemy_and_bullet(pause, dt)
 
 				if not pause:
-					update_every_thing(dt)
+					update_every_thing(dt, dialog)
 
-				draw_every_thing(pause, hi_score)
+				draw_every_thing(pause, hi_score, dialog)
 
 			else:
 				show_play_again()
@@ -93,6 +100,7 @@ def main():
 						pause = not pause
 					clear_all_bullet()
 					enemy_intro = True
+					dialog.restart()
 					play_again()
 			else:
 				retry = check_r_key_event(event)
@@ -101,6 +109,7 @@ def main():
 					enemy_intro = True
 					hi_score = load_highscore()
 					game_start = True
+					dialog.restart()
 
 
 		pygame.display.flip()
