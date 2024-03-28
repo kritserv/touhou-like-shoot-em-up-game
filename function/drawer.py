@@ -1,5 +1,5 @@
 from variable.var import background, player, enemy, playerbullet_group, enemybullet_group, player_group, enemy_group, screen, black
-from function.utility import draw_ui_text
+from function.utility import draw_ui_text, draw_enemy_life
 from function.gamestate import show_pause_menu
 
 def draw_every_thing(pause, hi_score, dialog):
@@ -8,6 +8,7 @@ def draw_every_thing(pause, hi_score, dialog):
 	player.draw_bomb_and_health_bar()
 	draw_ui_text(hi_score)
 	enemy.draw_health_bar()
+	draw_enemy_life()
 	player_group.draw(screen)
 	if player.show_hitbox:
 		player.draw_hitbox()

@@ -1,9 +1,10 @@
 import pygame
-from variable.var import clock, screen, white, grey, player, timer
+from variable.var import clock, screen, white, grey, player, enemy, timer
 
 ui_font = pygame.font.SysFont(None, 26)
 title_font = pygame.font.SysFont(None, 45)
 dialog_font = pygame.font.SysFont(None, 32)
+game_font = pygame.font.SysFont(None, 42)
 
 def draw_text(text, font, text_col, x, y, screen):
 	image = font.render(text, True, text_col)
@@ -26,3 +27,7 @@ def draw_ui_text(hi_score):
 	draw_text(str(timer.get_elapsed_time()), ui_font, white, 690, 720, screen)
 	draw_text(str(clock.get_fps() // 0.1 / 10), ui_font, white, 940, 720, screen)
 	draw_text("fps", ui_font, white, 990, 720, screen)
+
+def draw_enemy_life():
+	if enemy.show_life:
+		draw_text("Enemy "+str(enemy.life_remaining), title_font, white, 22, 15, screen)

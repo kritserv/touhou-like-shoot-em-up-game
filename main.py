@@ -6,7 +6,7 @@ pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 pygame.display.set_caption("Pygame shoot-em-up")
 
-from variable.var import clock, player, enemy
+from variable.var import clock, player, enemy, bullet_hell
 from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
     check_esc_key_event, check_f_and_f11_key_event
@@ -50,15 +50,24 @@ def main():
 					enemy_intro = enemy_enter_scene(pause, dt, dialog)
 
 				if bullet_hit_enemy():
-					enemy.take_damage(player.power)
-					player.score += 30
+					if not enemy.invincible:
+						enemy.take_damage(player.power)
+						player.score += 30
 
 				if enemy.health_remaining < 0:
-					enemy.death_sound.play()
-					clear_all_bullet()
-					player.score += 300
-					save_hi_score(player.score, hi_score)
-					game_start = finish_game()
+					if not enemy.invincible:
+						enemy.death_sound.play()
+						clear_all_bullet()
+						if enemy.life_remaining > 0:
+							enemy.take_1_life()
+						else:
+							enemy.show_life = False
+							player.score += 300
+							save_hi_score(player.score, hi_score)
+							game_start = finish_game()
+
+				if enemy.need_healing:
+					bullet_hell.restart_timer()
 
 				if bullet_hit_player():
 					if not player.invincible:

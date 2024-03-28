@@ -34,7 +34,8 @@ def bomb_enemy_and_bullet(pause, dt):
 		player.do_bomb(dt)
 		for bullet in enemybullet_group:
 			bullet.kill()
-		enemy.take_bomb_damage()
+		if not enemy.invincible:
+			enemy.take_bomb_damage()
 
 def enemy_enter_scene(pause, dt, dialog):
 	if 2 <= timer.get_elapsed_time() <= 4 and not pause:

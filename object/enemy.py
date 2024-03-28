@@ -32,6 +32,9 @@ class Enemy(pygame.sprite.Sprite):
 		self.pos = pygame.math.Vector2(self.rect.topleft)
 		self.health_start = 500
 		self.health_remaining = 1
+		self.life_remaining = 2
+		self.show_life = False
+		self.need_healing = False
 		self.speed = 120
 		self.shoot_timer = Timer()
 		self.bomb_damage_timer = Timer()
@@ -75,14 +78,28 @@ class Enemy(pygame.sprite.Sprite):
 	def refill_health(self, dt):
 		if self.health_remaining < 500:
 			if not self.shoot_timer.is_paused:
+				if not self.invincible:
+					self.invincible = True
+				if not self.show_life:
+					self.show_life = True
 				regen = 250 * dt
 				self.health_remaining += regen
 		else:
 			self.invincible = False
 
+	def respawn(self):
+		self.rect.center = (self.x, self.y + 250)
+		self.pos = pygame.math.Vector2(self.rect.topleft)
+
 	def take_damage(self, value):
 		self.damaged_sound.play()
 		self.health_remaining -= value
+
+	def take_1_life(self):
+		self.respawn()
+		self.life_remaining -= 1
+		self.need_healing = True
+		self.invincible = True
 
 	def normal_shoot(self, focus_player, player, delay_before_focus, style, speed, changed_speed, change_speed_at_center, bounce_top):
 		self.current_time = self.shoot_timer.get_elapsed_time()
@@ -165,8 +182,8 @@ class Enemy(pygame.sprite.Sprite):
 
 	def draw_health_bar(self):
 		if self.health_remaining > 1:
-			pygame.draw.rect(self.screen, self.black, (55, 20, 530, 15))
-			pygame.draw.rect(self.screen, self.red, (55, 20, int(530 * (self.health_remaining / self.health_start)), 15))
+			pygame.draw.rect(self.screen, self.black, (155, 20, 430, 15))
+			pygame.draw.rect(self.screen, self.red, (155, 20, int(430 * (self.health_remaining / self.health_start)), 15))
 
 	def animate(self, dt):
 		self.current_frame += dt
@@ -174,6 +191,17 @@ class Enemy(pygame.sprite.Sprite):
 			self.current_frame -= self.animation_time
 			self.current_image = (self.current_image + 1) % len(self.images[self.direction])
 			self.image = self.images[self.direction][self.current_image]
+
+	def healing(self, dt):
+		if self.need_healing:
+			self.direction = "idle"
+			self.refill_health(dt)
+			self.stop_shooting = True
+
+		if self.health_remaining >= self.health_start:
+			self.need_healing = False
+			self.invincible = False
+			self.stop_shooting = False
 
 	def finish_game(self):
 		self.stop_shooting = True
@@ -190,7 +218,11 @@ class Enemy(pygame.sprite.Sprite):
 		self.bullet_index = 0
 		self.direction = "idle"
 		self.speed = 120
+		self.show_life = False
+		self.life_remaining = 2
+		self.need_healing = False
 
 	def update(self, dt):
 		self.animate(dt)
 		self.move_mask()
+		self.healing(dt)
