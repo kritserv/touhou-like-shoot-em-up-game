@@ -13,6 +13,8 @@ class Dialog:
         self.next_sound.set_volume(0.07)
         self.started = False
         self.cooldown_timer = Timer()
+        self.player_display = 0
+        self.enemy_display = 0
 
     def start(self):
         if not self.started:
@@ -37,19 +39,32 @@ class Dialog:
         self.current_text = 0
         self.started = False
         self.cooldown_timer.reset()
+        self.player_display = 0
+        self.enemy_display = 0
 
     def draw(self):
         if self.show:
             name_text, dialog_text = self.text_list[self.current_text]
-            player.draw_portrait()
-            enemy.draw_portrait()
-            text_box_pos = [105, 550, 405, 200]
-            name_pos_y = 560
+            if name_text == "PYGAME" and self.player_display == 0:
+                self.player_display = 1
+            if name_text == "ENEMY" and self.enemy_display == 0:
+                self.enemy_display = 1
+            if self.player_display != 0 and self.enemy_display != 0:
+                if name_text == "PYGAME":
+                    self.player_display = 1
+                    self.enemy_display = 2
+                elif name_text == "ENEMY":
+                    self.player_display = 2
+                    self.enemy_display = 1
             dialog_pos_x, dialog_pos_y = 135, 620
             if name_text == "PYGAME":
                 name_pos_x = 115
             else:
                 name_pos_x = 415
+            player.draw_portrait(self.player_display)
+            enemy.draw_portrait(self.enemy_display)
+            text_box_pos = [105, 550, 405, 200]
+            name_pos_y = 560
             pygame.draw.rect(screen, black, text_box_pos)
             draw_text(
                 name_text, 

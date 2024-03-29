@@ -46,6 +46,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.bullet_index = 0
 		self.animation_time = 0.1
 		self.portrait = pygame.image.load("asset/img/enemy_portrait.png").convert_alpha()
+		self.darker_portrait = self.portrait.copy()
+		self.darker_portrait.fill((50, 50, 50, 255), special_flags=pygame.BLEND_RGBA_MULT)
 		self.current_frame = 0
 		self.current_time = 0
 		self.current_bomb_time = 0
@@ -73,9 +75,13 @@ class Enemy(pygame.sprite.Sprite):
 		self.shoot_timer.toggle_pause()
 		self.bomb_damage_timer.toggle_pause()
 
-	def draw_portrait(self):
+	def draw_portrait(self, portrait_display):
 		portrait_position = (320, 200)
-		self.screen.blit(self.portrait, portrait_position)
+		if portrait_display:
+			if portrait_display == 1:
+				self.screen.blit(self.portrait, portrait_position)
+			else:
+				self.screen.blit(self.darker_portrait, portrait_position)
 
 	def refill_health(self, dt):
 		if self.health_remaining < 500:

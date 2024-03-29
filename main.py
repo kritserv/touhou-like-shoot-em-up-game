@@ -32,17 +32,30 @@ def main():
 	enemy_intro = True
 	ending_dialog_end = False
 	start_dialog = Dialog(
-		[["PYGAME", "Hello, This is dialog 1."],
-		["ENEMY", "Hello, This is dialog 2."],
-		["PYGAME", "Hello, This is dialog 3."]]
+		[["PYGAME", "Hello! Player, Nice to meet you."],
+		["PYGAME", "Welcome to my game world."],
+		["PYGAME", "Let me show you around!"],
+		["ENEMY", ". . ."],
+		["PYGAME", "Oh no, How did you get in here!?"],
+		["PYGAME", "Hey! Player.."],
+		["PYGAME", "Let's fight this together."],
+		["ENEMY", "You can never defeat me."]]
 	)
 	ending_dialog = Dialog(
-		[["ENEMY", "Hello, This is ending dialog 1."],
-		["PYGAME", "Hello, This is ending dialog 2."]]
+		[["ENEMY", "You're strong."],
+		["PYGAME", "That's right!"],
+		["PYGAME", "Now, leave this place!"],
+		["ENEMY", "You win this time."],
+		["ENEMY", "Alright, I'll leave."],
+		["PYGAME", ". . ."],
+		["PYGAME", "Thank you for helping me, Player."],
+		["PYGAME", "You save my world."],
+		["PYGAME", "Feels free to visit again, ok?"]]
 	)
 	prev_time = time.time()
+	
 	while run:
-		clock.tick(30)
+		clock.tick()
 		dt = time.time() - prev_time
 		prev_time = time.time()
 		if title_screen:

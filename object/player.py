@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
 		self.image = self.images["idle"][self.current_image]
 		self.original_image = self.image
 		self.portrait = pygame.image.load("asset/img/player_portrait.png").convert_alpha()
+		self.darker_portrait = self.portrait.copy()
+		self.darker_portrait.fill((50, 50, 50, 255), special_flags=pygame.BLEND_RGBA_MULT)
 		self.bomb_spritesheet = pygame.image.load("asset/img/snake.png").convert_alpha()
 		self.bomb_images = [self.bomb_spritesheet.subsurface(pygame.Rect(j * 221, i * 768, 221, 768)) for i in range(1) for j in range(5)]
 		self.bomb_image = self.bomb_images[0]
@@ -85,9 +87,13 @@ class Player(pygame.sprite.Sprite):
 		self.invincible_timer.toggle_pause()
 		self.bomb_timer.toggle_pause()
 
-	def draw_portrait(self):
+	def draw_portrait(self, portrait_display):
 		portrait_position = (-90, 200)
-		self.screen.blit(self.portrait, portrait_position)
+		if portrait_display:
+			if portrait_display == 1:
+				self.screen.blit(self.portrait, portrait_position)
+			else:
+				self.screen.blit(self.darker_portrait, portrait_position)
 
 	def reset_position(self):
 		self.rect.center = (self.original_x, self.original_y)
