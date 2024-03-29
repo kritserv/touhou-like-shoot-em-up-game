@@ -57,3 +57,10 @@ def enemy_enter_scene(pause, dt, dialog):
 			return True
 	else:
 		return True
+
+def play_ending_dialog(dialog):
+	dialog.start()
+	if not dialog.show:
+		return True
+	else:
+		return False

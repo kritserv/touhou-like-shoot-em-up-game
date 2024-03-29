@@ -6,7 +6,8 @@ pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 pygame.display.set_caption("Pygame shoot-em-up")
 
-from variable.var import clock, player, enemy, bullet_hell
+from variable.var import clock, player, enemy, \
+	bullet_hell, timer
 from function.eventcheck import check_quit_game_event, \
     check_any_key_event, check_r_key_event, \
     check_esc_key_event, check_f_and_f11_key_event
@@ -17,7 +18,7 @@ from function.gamestate import load_highscore, \
 from function.logic import bullet_hit_enemy, \
     bullet_hit_player, update_graze_bullet, \
     clear_all_bullet, bomb_enemy_and_bullet, \
-    enemy_enter_scene
+    enemy_enter_scene, play_ending_dialog
 from function.updater import update_every_thing
 from function.drawer import draw_every_thing
 from object.dialog import Dialog
@@ -29,15 +30,19 @@ def main():
 	run = True
 	pause = False
 	enemy_intro = True
-	dialog = Dialog(
+	ending_dialog_end = False
+	start_dialog = Dialog(
 		[["PYGAME", "Hello, This is dialog 1."],
 		["ENEMY", "Hello, This is dialog 2."],
 		["PYGAME", "Hello, This is dialog 3."]]
 	)
+	ending_dialog = Dialog(
+		[["ENEMY", "Hello, This is ending dialog 1."],
+		["PYGAME", "Hello, This is ending dialog 2."]]
+	)
 	prev_time = time.time()
-
 	while run:
-		clock.tick()
+		clock.tick(30)
 		dt = time.time() - prev_time
 		prev_time = time.time()
 		if title_screen:
@@ -47,7 +52,7 @@ def main():
 			if game_start:
 
 				if enemy_intro:
-					enemy_intro = enemy_enter_scene(pause, dt, dialog)
+					enemy_intro = enemy_enter_scene(pause, dt, start_dialog)
 
 				if bullet_hit_enemy():
 					if not enemy.invincible:
@@ -56,15 +61,22 @@ def main():
 
 				if enemy.health_remaining < 0:
 					if not enemy.invincible:
-						enemy.death_sound.play()
 						clear_all_bullet()
 						if enemy.life_remaining > 0:
+							enemy.death_sound.play()
 							enemy.take_1_life()
 						else:
-							enemy.show_life = False
-							player.score += 300
-							save_hi_score(player.score, hi_score)
-							game_start = finish_game()
+							if not enemy.is_dead:
+								enemy.dying()
+								enemy.is_dead = True
+								bullet_hell.pause_timer()
+								player.score += 300
+								save_hi_score(player.score, hi_score)
+								timer.pause()
+							ending_dialog_end = play_ending_dialog(ending_dialog)
+
+							if ending_dialog_end:
+								game_start = finish_game()
 
 				if enemy.is_healing:
 					bullet_hell.restart_timer()
@@ -83,9 +95,9 @@ def main():
 					bomb_enemy_and_bullet(pause, dt)
 
 				if not pause:
-					update_every_thing(dt, dialog)
+					update_every_thing(dt, start_dialog, ending_dialog)
 
-				draw_every_thing(pause, hi_score, dialog)
+				draw_every_thing(pause, hi_score, start_dialog, ending_dialog)
 
 			else:
 				show_play_again()
@@ -109,16 +121,20 @@ def main():
 						pause = not pause
 					clear_all_bullet()
 					enemy_intro = True
-					dialog.restart()
+					ending_dialog_end = False
+					start_dialog.restart()
+					ending_dialog.restart()
 					play_again()
 			else:
 				retry = check_r_key_event(event)
 				if retry:
 					play_again()
 					enemy_intro = True
+					ending_dialog_end = False
 					hi_score = load_highscore()
 					game_start = True
-					dialog.restart()
+					start_dialog.restart()
+					ending_dialog.restart()
 
 
 		pygame.display.flip()

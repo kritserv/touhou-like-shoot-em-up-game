@@ -52,6 +52,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.direction = "idle"
 		self.stop_shooting = True
 		self.invincible = True
+		self.is_dead = False
 		self.enemybullet_group = enemybullet_group
 
 	def start_timer(self):
@@ -206,6 +207,12 @@ class Enemy(pygame.sprite.Sprite):
 			self.stop_shooting = False
 			self.is_healing = False
 
+	def dying(self):
+		self.reset_position()
+		self.death_sound.play()
+		self.stop_shooting = True
+		self.show_life = False
+
 	def finish_game(self):
 		self.stop_shooting = True
 		self.pause_timer()
@@ -225,6 +232,7 @@ class Enemy(pygame.sprite.Sprite):
 		self.life_remaining = 2
 		self.need_healing = False
 		self.is_healing = False
+		self.is_dead = False
 
 	def update(self, dt):
 		self.animate(dt)

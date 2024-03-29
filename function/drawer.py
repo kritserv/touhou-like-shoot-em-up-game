@@ -2,7 +2,7 @@ from variable.var import background, player, enemy, playerbullet_group, enemybul
 from function.utility import draw_ui_text, draw_enemy_life
 from function.gamestate import show_pause_menu
 
-def draw_every_thing(pause, hi_score, dialog):
+def draw_every_thing(pause, hi_score, start_dialog, ending_dialog):
 	screen.fill(black)
 	background.draw(0)
 	player.draw_bomb_and_health_bar()
@@ -16,7 +16,9 @@ def draw_every_thing(pause, hi_score, dialog):
 	playerbullet_group.draw(screen)
 	enemy_group.draw(screen)
 	enemybullet_group.draw(screen)
-	if dialog.show:
-		dialog.draw()
+	if start_dialog.show:
+		start_dialog.draw()
+	if ending_dialog.show:
+		ending_dialog.draw()
 	if pause:
 		show_pause_menu()
