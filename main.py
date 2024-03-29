@@ -34,28 +34,33 @@ def main():
 	start_dialog = Dialog(
 		[["PYGAME", "Hello! Player, Nice to meet you."],
 		["PYGAME", "Welcome to my game world."],
-		["PYGAME", "Let me show you around!"],
+		["PYGAME", "Allow me to be your guide."],
 		["ENEMY", ". . ."],
-		["PYGAME", "Oh no, How did you get in here!?"],
-		["PYGAME", "Hey! Player.."],
-		["PYGAME", "Let's fight this together."],
-		["ENEMY", "You can never defeat me."]]
+		["PYGAME", "Oh no!"],
+		["PYGAME", "How did you find your way here!?"],
+		["PYGAME", "Listen up, Player ..."],
+		["PYGAME", "Let's face this together."],
+		["ENEMY", "You'll never defeat me."]]
 	)
 	ending_dialog = Dialog(
-		[["ENEMY", "You're strong."],
-		["PYGAME", "That's right!"],
-		["PYGAME", "Now, leave this place!"],
-		["ENEMY", "You win this time."],
-		["ENEMY", "Alright, I'll leave."],
+		[["ENEMY", "You're quite tough."],
+		["PYGAME", "Exactly!"],
+		["PYGAME", "Now, depart from this place!"],
+		["ENEMY", "You've won this time."],
+		["ENEMY", "Alright, I'll withdraw."],
 		["PYGAME", ". . ."],
-		["PYGAME", "Thank you for helping me, Player."],
-		["PYGAME", "You save my world."],
-		["PYGAME", "Feels free to visit again, ok?"]]
+		["PYGAME", "Thank you for your help, Player."],
+		["PYGAME", "You've save my world."],
+		["PYGAME", "There's nothing else to see here."],
+		["PYGAME", "It's time to say goodbye now..."],
+		["PYGAME", "Feel free to visit me again!"],
+		["PYGAME", "See you."]]
 	)
 	prev_time = time.time()
 	
 	while run:
 		clock.tick()
+		#clock.tick(60)
 		dt = time.time() - prev_time
 		prev_time = time.time()
 		if title_screen:
