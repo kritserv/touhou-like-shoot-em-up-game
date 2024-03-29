@@ -1,16 +1,22 @@
 # Pygame Touhou-like shoot-em-up
 
+### Clone
+
 ```
 git clone https://github.com/kritserv/touhou-like-shoot-em-up-game.git
 ```
 
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 ```
 py main.py
 ```
+
+### ⚠️Caution
+
+main.exe is not portable (need to be run in the same directory with asset)
 
 # Recommended Pygame Tutorial
 
