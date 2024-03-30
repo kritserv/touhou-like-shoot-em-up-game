@@ -1,25 +1,51 @@
 # Pygame Touhou-like shoot-em-up
 
-### Clone
+This branch is made specifically for exporting the game.
 
+## Clone
 ```
-git clone https://github.com/kritserv/touhou-like-shoot-em-up-game.git
+git clone -b onescript --single-branch https://github.com/kritsev/touhou-like-shoot-em-up-game.git
 ```
 
 ```
 pip install -r requirements.txt
 ```
 
+# Export to web
+
+#### Go to parent directory of directory including game file
+
 ```
-py main.py
+cd ..
 ```
 
-### ⚠️Caution
+#### Export to web with pygbag
 
-main.exe is not portable (need to be run in the same directory with asset)
+```
+pygbag touhou-like-shoot-em-up-game
+```
 
-# Recommended Pygame Tutorial
+#### Play test
 
-Space Invader Tutorial by Code With Russ: https://youtu.be/f4coFYbYQzw?si=j8lB7A3HHhL3eacm
+http://localhost:8000
 
-Framerate Independence Tutorial by Clear code https://youtu.be/rWtfClpWSb8?si=s_bYACqPUM7FCZOy
+#### Archive game
+
+```
+pygbag --archive touhou-like-shoot-em-up-game
+```
+
+
+# Export to desktop
+
+#### Go to root directory that include game file
+
+```
+cd touhou-like-shoot-em-up-game
+```
+
+#### Export to desktop with pyinstaller
+
+```
+pyinstaller --noconsole main.py --onefile
+```
