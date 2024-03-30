@@ -16,7 +16,7 @@ py main.py
 
 ### ⚠️Caution
 
-main.exe is not portable (need to be run in the same directory with asset)
+game.exe is not portable (need to be run in the same directory with asset)
 
 # Recommended Pygame Tutorial
 
